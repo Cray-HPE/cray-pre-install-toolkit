@@ -10,7 +10,7 @@
     </description>
     <preferences>
         <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="efi" kernelcmdline="splash" hybridpersistent_filesystem="ext4" hybridpersistent="true" />
-        <version>1.15.1</version>
+        <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
         <keytable>us</keytable>
