@@ -7,6 +7,8 @@
 
 pipeline {
 	environment {
+		DOCKER_IMAGE="dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest"
+
 		// Set product family
 		PRODUCT = "internal"
 		// Set the target for building
@@ -45,6 +47,15 @@ pipeline {
 
 		stage('BUILD: Build Image') {
 			steps {
+				// If the image already exists on the node,
+				// remove it. If the image is in use by a
+				// running container it will only be untagged.
+				// The untagged container will eventually be
+				// deleted by pruning. The test for count
+				// of lines from docker image ls has to account
+				// for the always present header line.
+				sh "if [[ \$(docker image ls $DOCKER_IMAGE | wc -l) -gt 1 ]]; then docker rmi -f $DOCKER_IMAGE; fi"
+
 				sh "docker run -e PARENT_BRANCH -e IMG_VER -e BUILD_TS -v ${WORKSPACE}/build:/build -v ${WORKSPACE}/cray:/cray -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest bash /base/build.sh"
 			}
 		}
