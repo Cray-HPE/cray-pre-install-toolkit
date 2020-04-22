@@ -7,7 +7,7 @@
 
 set -ex
 
-DESC_DIR=suse/x86_64/suse-leap-15.1-JeOS
+DESC_DIR=suse/x86_64/cray-sles15sp1-JeOS
 
 cd /base
 
