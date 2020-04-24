@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+WARNING: Please consult the README.md file in the top level directory of
+	 this repo for instructions on modifying this file.
+-->
+
 <image schemaversion="6.8" name="cray-preinstall-toolkit-sles15sp1">
     <description type="system">
         <author>Sam Watters</author>
@@ -17,8 +22,6 @@
 	<timezone>America/Chicago</timezone>
         <rpm-excludedocs>true</rpm-excludedocs>
         <rpm-check-signatures>false</rpm-check-signatures>
-        <bootsplash-theme>openSUSE</bootsplash-theme>
-        <bootloader-theme>openSUSE</bootloader-theme>
     </preferences>
     <preferences>
         <type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/>
@@ -39,27 +42,27 @@
         <user password="$2y$12$zIitnBqEOgiB9FtnGIKjyO0wSuqutDKSeCwp8m9dEK4zaS/lnAk/W" home="/root" name="root" groups="root"/>
     </users>
 
-    <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="1" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="2" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Basesystem/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="1" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="2" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Basesystem/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Development_Tools" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Development-Tools/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Development-Tools/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Product_SLES" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Product_SLES" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Product-SLES/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Product-SLES/"/>
     </repository>
 
