@@ -8,7 +8,7 @@
 pipeline {
 	environment {
 		DOCKER_IMAGE="dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest"
-		LATEST_NAME="cray-preinstall-tookit-latest"
+		LATEST_NAME="cray-preinstall-toolkit-latest"
 
 		// Set product family
 		PRODUCT = "internal"
