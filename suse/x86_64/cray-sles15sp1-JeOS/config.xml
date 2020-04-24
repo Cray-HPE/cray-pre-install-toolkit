@@ -14,7 +14,7 @@ WARNING: Please consult the README.md file in the top level directory of
         </specification>
     </description>
     <preferences>
-        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="efi" kernelcmdline="splash" hybridpersistent_filesystem="ext4" hybridpersistent="true" />
+        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="efi" kernelcmdline="splash console=ttyS0,115200n8" hybridpersistent_filesystem="ext4" hybridpersistent="true" />
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
@@ -25,7 +25,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </preferences>
     <preferences>
         <type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/>
-        <type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" bootloader="grub2" kernelcmdline="splash" firmware="efi">
+        <type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" bootloader="grub2" kernelcmdline="splash console=ttyS0,115200n8" firmware="efi">
             <oemconfig>
                 <oem-systemsize>2048</oem-systemsize>
                 <oem-swap>true</oem-swap>
