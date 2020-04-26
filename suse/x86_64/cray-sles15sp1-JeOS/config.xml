@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 WARNING: Please consult the README.md file in the top level directory of
-	 this repo for instructions on modifying this file.
+     this repo for instructions on modifying this file.
 -->
 
 <image schemaversion="6.8" name="cray-preinstall-toolkit-sles15sp1">
@@ -14,12 +13,12 @@ WARNING: Please consult the README.md file in the top level directory of
         </specification>
     </description>
     <preferences>
-        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="efi" kernelcmdline="splash" hybridpersistent_filesystem="ext4" hybridpersistent="true" />
+        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="edd=off splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200n8 iommu=pt pcie_ports=native transparent_hugepages=never rd.shell rd.debug log_buf_len=1M" hybridpersistent_filesystem="ext4" hybridpersistent="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
         <keytable>us</keytable>
-	<timezone>America/Chicago</timezone>
+        <timezone>America/Chicago</timezone>
         <rpm-excludedocs>true</rpm-excludedocs>
         <rpm-check-signatures>false</rpm-check-signatures>
     </preferences>
@@ -77,8 +76,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="grub2-i386-pc"/>
         <package name="syslinux"/>
         <package name="lvm2"/>
-	<package name="blog"/>
-	<package name="blog-plymouth"/>
+        <package name="blog"/>
+        <package name="blog-plymouth"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
         <package name="tar"/>
@@ -93,7 +92,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="kernel-default"/>
         <package name="timezone"/>
     </packages>
-    <packages type="iso">
+        <packages type="iso">
         <package name="branding-SLE"/>
         <package name="dracut-kiwi-live"/>
     </packages>
@@ -111,3 +110,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="sles-release"/>
     </packages>
 </image>
+<!--
+vim: et sw=4 ts=4
+-->
