@@ -13,7 +13,7 @@ WARNING: Please consult the README.md file in the top level directory of
         </specification>
     </description>
     <preferences>
-        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="edd=off splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200n8 iommu=pt pcie_ports=native transparent_hugepages=never rd.shell rd.debug log_buf_len=1M" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
+        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="edd=off splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
@@ -92,6 +92,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="openssh"/>
         <package name="parted"/>
         <package name="patterns-base-base"/>
+        <package name="pciutils"/>
         <package name="shim"/>
         <package name="syslinux"/>
         <package name="tar"/>
