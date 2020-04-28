@@ -45,69 +45,76 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Basesystem/"/>
     </repository>
 
+    <!--
     <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="2" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Basesystem/"/>
     </repository>
+    -->
 
     <repository type="rpm-md" alias="SLES15_Module_Development_Tools" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Development-Tools/"/>
     </repository>
 
+    <!--
     <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Development-Tools/"/>
     </repository>
+    -->
 
     <repository type="rpm-md" alias="SLES15_Product_SLES" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Product-SLES/"/>
     </repository>
 
+    <!--
     <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Product-SLES/"/>
     </repository>
+    -->
 
     <packages type="image">
-        <package name="checkmedia"/>
-        <package name="patterns-base-base"/>
-        <package name="grub2-branding-SLE"/>
-        <package name="iputils"/>
-        <package name="vim"/>
-        <package name="grub2"/>
-        <package name="grub2-x86_64-efi" arch="x86_64"/>
-        <package name="grub2-i386-pc"/>
-        <package name="syslinux"/>
-        <package name="lvm2"/>
+        <!-- Section: SUSE Packages -->
+        <package name="bash-completion"/>
         <package name="blog"/>
         <package name="blog-plymouth"/>
+        <package name="checkmedia"/>
+        <package name="dhcp-client"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
-        <package name="tar"/>
-        <package name="parted"/>
-        <package name="openssh"/>
+        <package name="grub2"/>
+        <package name="grub2-branding-SLE"/>
+        <package name="grub2-i386-pc"/>
+        <package name="grub2-x86_64-efi" arch="x86_64"/>
         <package name="iproute2"/>
-        <package name="less"/>
-        <package name="bash-completion"/>
-        <package name="dhcp-client"/>
-        <package name="which"/>
-        <package name="shim"/>
+        <package name="iputils"/>
         <package name="kernel-default"/>
+        <package name="less"/>
+        <package name="lvm2"/>
+        <package name="openssh"/>
+        <package name="parted"/>
+        <package name="patterns-base-base"/>
+        <package name="shim"/>
+        <package name="syslinux"/>
+        <package name="tar"/>
         <package name="timezone"/>
+        <package name="vim"/>
+        <package name="which"/>
     </packages>
-        <packages type="iso">
+    <packages type="iso">
         <package name="branding-SLE"/>
         <package name="dracut-kiwi-live"/>
     </packages>
     <packages type="oem">
         <package name="branding-SLE"/>
-        <package name="dracut-kiwi-oem-repart"/>
         <package name="dracut-kiwi-oem-dump"/>
+        <package name="dracut-kiwi-oem-repart"/>
     </packages>
     <packages type="bootstrap">
-        <package name="udev"/>
+        <package name="ca-certificates"/>
+        <package name="cracklib-dict-full"/>
         <package name="filesystem"/>
         <package name="glibc-locale"/>
-        <package name="cracklib-dict-full"/>
-        <package name="ca-certificates"/>
         <package name="sles-release"/>
+        <package name="udev"/>
     </packages>
 </image>
 <!--
