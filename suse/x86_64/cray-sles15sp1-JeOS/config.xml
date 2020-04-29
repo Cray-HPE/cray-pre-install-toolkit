@@ -89,6 +89,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="kernel-default"/>
         <package name="less"/>
         <package name="lvm2"/>
+        <package name="nmap"/>
+        <package name="open-lldp"/>
         <package name="openssh"/>
         <package name="parted"/>
         <package name="patterns-base-base"/>
@@ -96,7 +98,9 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="shim"/>
         <package name="syslinux"/>
         <package name="tar"/>
+        <package name="tcpdump"/>
         <package name="timezone"/>
+        <package name="traceroute"/>
         <package name="vim"/>
         <package name="which"/>
     </packages>
