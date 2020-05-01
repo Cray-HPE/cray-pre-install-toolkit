@@ -7,19 +7,12 @@
 
 pipeline {
 	environment {
-		DOCKER_IMAGE="dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest"
 		LATEST_NAME="cray-preinstall-toolkit-latest"
 
 		// Set product family
 		PRODUCT = "internal"
 		// Set the target for building
 		TARGET_OS = "sle15_sp1_ncn"
-		MASTER_BRANCH = "master"
-		PARENT_BRANCH = setParentBranch("${MASTER_BRANCH}")
-
-		// Use x.y.z version from .version and get build timestamp
-		IMG_VER  = sh(returnStdout: true, script: "cat .version").trim()
-		BUILD_TS = sh(returnStdout: true, script: "date --utc '+%Y%m%d%H%M%S'").trim()
 	}
 
 	agent {
@@ -36,46 +29,27 @@ pipeline {
 	}
 
 	stages {
-		stage('BUILD: Prep') {
-			steps {
-				// Remove any existing 'build' directory
-				sh "rm -rf ${WORKSPACE}/build"
-
-				// Create the 'build' directory
-				sh "mkdir -p ${WORKSPACE}/build/output"
-			}
-		}
-
 		stage('BUILD: Build Image') {
 			steps {
-				// If the image already exists on the node,
-				// remove it. If the image is in use by a
-				// running container it will only be untagged.
-				// The untagged container will eventually be
-				// deleted by pruning. The test for count
-				// of lines from docker image ls has to account
-				// for the always present header line.
-				sh "if [[ \$(docker image ls ${DOCKER_IMAGE} | wc -l) -gt 1 ]]; then docker rmi -f ${DOCKER_IMAGE}; fi"
-
-				sh "docker run -e PARENT_BRANCH -e IMG_VER -e BUILD_TS -v ${WORKSPACE}/build:/build -v ${WORKSPACE}/cray:/cray -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/build.sh"
+				// Run the build script. It will ensure
+				// any cached docker image is removed so
+				// the latest is pulled. The output of the
+				// build will be copied to the 'build.out'
+				// subdirectory.
+				sh "./build.sh ${WORKSPACE}"
 			}
 		}
 
 		stage('PUBLISH: Transfer Images') {
 			steps {
-				// Rename the files to match Cray versioning
-				sh "./img-rename.sh build/output/*.iso"
-				sh "./img-rename.sh build/output/*.packages"
-				sh "./img-rename.sh build/output/*.verified"
-
 				// Create a "latest" copy
-				sh "cp build/output/*.iso build/output/${LATEST_NAME}.iso"
-				sh "cp build/output/*.packages build/output/${LATEST_NAME}.packages"
-				sh "cp build/output/*.verified build/output/${LATEST_NAME}.verified"
+				sh "cp build.out/*.iso build.out/${LATEST_NAME}.iso"
+				sh "cp build.out/*.packages build.out/${LATEST_NAME}.packages"
+				sh "cp build.out/*.verified build.out/${LATEST_NAME}.verified"
 
-				transfer (artifactName:"build/output/*.iso")
-				transfer (artifactName:"build/output/*.packages")
-				transfer (artifactName:"build/output/*.verified")
+				transfer (artifactName:"build.out/*.iso")
+				transfer (artifactName:"build.out/*.packages")
+				transfer (artifactName:"build.out/*.verified")
 			}
 		}
 	}

@@ -1,21 +1,30 @@
-#!/bin/bash
-#
-# Jenkinsfile helper script.
-# Builds OS Image and copies rpms to well-known folder
-#
-# Copyright 2020 Cray Inc.
+#!/usr/bin/env bash
+if [[ $# -eq 0 ]]; then
+	WORKSPACE=$PWD
+else
+	WORKSPACE=$1
+fi
 
-set -ex
+DOCKER_IMAGE="dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest"
 
-DESC_DIR=suse/x86_64/cray-sles15sp1-JeOS
+# If the image already exists on the node,
+# remove it. If the image is in use by a
+# running container it will only be untagged.
+# The untagged container will eventually be
+# deleted by pruning. The test for count
+# of lines from docker image ls has to account
+# for the always present header line.
+if [[ $(docker image ls ${DOCKER_IMAGE} | wc -l) -gt 1 ]]; then
+	docker rmi -f ${DOCKER_IMAGE}
+	[[ $? -ne 0 ]] && echo "Failed: docker rmi command" && exit 1
+fi
 
-cd /base
+# The output of a build will be stored in
+# the container at /base/build.out. That
+# translates into ${WORKSPACE}/build.out
+# outside the container.
+docker run -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
+[[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
-# Build OS image tarball
-time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --target-dir /build/output
-
-ISO=$(basename /build/output/*.iso)
-PACKAGES=$(basename /build/output/*.packages)
-VERIFIED=$(basename /build/output/*.verified)
 
 exit 0
