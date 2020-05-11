@@ -10,16 +10,6 @@ echo "Configure image: [$kiwi_iname]..."
 baseSetupBuildDay
 
 #==========================================
-# remove unneded kernel files
-#------------------------------------------
-suseStripKernel
-
-#==========================================
-# remove unneeded files
-#------------------------------------------
-suseStripInitrd
-
-#==========================================
 # umount
 #------------------------------------------
 umount /proc >/dev/null 2>&1
