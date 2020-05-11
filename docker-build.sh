@@ -35,8 +35,4 @@ time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --
 # Copy build artifacts to external mounted directory
 cp /build/*.iso /build/*.packages /build/*.verified ./build.out
 
-# Rename the files to match Cray versioning
-./img-rename.sh build.out/*
-[[ $? -ne 0 ]] && echo "Failed: img-rename.sh" && exit 1
-
 exit 0
