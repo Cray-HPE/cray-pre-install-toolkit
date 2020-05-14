@@ -34,7 +34,7 @@ pipeline {
 				// Run the build script. It will ensure
 				// any cached docker image is removed so
 				// the latest is pulled. The output of the
-				// build will be copied to the 'build.out'
+				// build will be copied to the 'build_output'
 				// subdirectory.
 				sh "./build.sh ${WORKSPACE}"
 			}
@@ -43,13 +43,13 @@ pipeline {
 		stage('PUBLISH: Transfer Images') {
 			steps {
 				// Create a "latest" copy
-				sh "cp build.out/*.iso build.out/${LATEST_NAME}.iso"
-				sh "cp build.out/*.packages build.out/${LATEST_NAME}.packages"
-				sh "cp build.out/*.verified build.out/${LATEST_NAME}.verified"
+				sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
+				sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
+				sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-				transfer (artifactName:"build.out/*.iso")
-				transfer (artifactName:"build.out/*.packages")
-				transfer (artifactName:"build.out/*.verified")
+				transfer (artifactName:"build_output/*.iso")
+				transfer (artifactName:"build_output/*.packages")
+				transfer (artifactName:"build_output/*.verified")
 			}
 		}
 	}
@@ -72,6 +72,7 @@ pipeline {
 			script {
 				slackNotify(channel: "skern-build", credential: "", color: "danger", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\nDescription:\n\nBuild failed.\n")
 			}
+
 			// Delete the 'build' directory
 			dir('build') {
 				// the 'deleteDir' command recursively deletes the

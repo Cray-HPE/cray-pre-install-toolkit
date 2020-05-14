@@ -57,6 +57,14 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Development-Tools/"/>
     </repository>
 
+    <repository type="rpm-md" alias="SLES15_Module_Containers" priority="3" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Containers/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Containers_Updates" priority="3" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Containers/"/>
+    </repository>
+
     <repository type="rpm-md" alias="SLES15_Product_SLES" priority="3" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Product-SLES/"/>
     </repository>
@@ -70,6 +78,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="bash-completion"/>
         <package name="blog"/>
         <package name="blog-plymouth"/>
+        <package name="ca-certificates-mozilla"/>
         <package name="checkmedia"/>
         <package name="dhcp-client"/>
         <package name="fontconfig"/>
@@ -89,6 +98,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="parted"/>
         <package name="patterns-base-base"/>
         <package name="pciutils"/>
+        <package name="podman"/>
         <package name="shim"/>
         <package name="syslinux"/>
         <package name="tar"/>

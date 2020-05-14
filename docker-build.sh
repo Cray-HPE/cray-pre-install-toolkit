@@ -5,6 +5,17 @@
 #
 # Copyright 2020 Cray Inc.
 
+
+save_build_dir () {
+	if [[ -e /build && -e build_output ]]; then
+		cp -a /build/* build_output/
+	else
+		Echo "Failed before /build and ./build_output were created!"
+	fi
+}
+
+trap save_build_dir ERR
+
 set -ex
 
 DESC_DIR=suse/x86_64/cray-sles15sp1-JeOS
@@ -19,20 +30,18 @@ else
     mkdir -p /build
 fi
 
-# Clean the build.out directory if it exists,
+# Clean the build_output directory if it exists,
 # or create it if it doesn't.
-if [[ -e build.out ]]; then
-    rm -rf build.out/*
+if [[ -e build_output ]]; then
+    rm -rf build_output/*
 else
-    mkdir -p build.out
+    mkdir -p build_output
 fi
 
 # Build OS image tarball
 time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --target-dir /build
-# Copy image-root on failure.
-[[ $? -ne 0 ]] && echo "Failed: kiwi-ng system build" && cp -a /build/* ./build.out/ && exit 1
 
 # Copy build artifacts to external mounted directory
-cp /build/*.iso /build/*.packages /build/*.verified ./build.out
+cp /build/*.iso /build/*.packages /build/*.verified ./build_output
 
 exit 0

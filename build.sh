@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if [[ $# -eq 0 ]]; then
 	WORKSPACE=$PWD
 else
@@ -20,14 +21,14 @@ if [[ $(docker image ls ${DOCKER_IMAGE} | wc -l) -gt 1 ]]; then
 fi
 
 # The output of a build will be stored in
-# the container at /base/build.out. That
-# translates into ${WORKSPACE}/build.out
+# the container at /base/build_output. That
+# translates into ${WORKSPACE}/build_output
 # outside the container.
 docker run -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
 # Rename the files to match Cray versioning
-./img-rename.sh build.out/*
+./img-rename.sh build_output/*
 [[ $? -ne 0 ]] && echo "Failed: img-rename.sh" && exit 1
 
 
