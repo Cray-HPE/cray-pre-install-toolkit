@@ -34,6 +34,7 @@ suseSetupProduct
 #======================================
 # Activate services
 #--------------------------------------
+suseInsertService nexus
 suseInsertService sshd
 
 #======================================
