@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+function extra_setup {
+    local password=initial0
+    mkdir /etc/ansible && echo "$password" > /etc/ansible/.vault.txt
+    pushd / && tar -xzvf /wasp-demo-configs.tar.gz && popd
+}
+
+install-crayctl
+extra_setup()
+crayctl-init-ansible
+crayctl deploy stage1
+crayctl pxe-install
+crayctl deploy stage2
