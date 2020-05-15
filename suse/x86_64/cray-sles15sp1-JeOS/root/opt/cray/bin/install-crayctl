@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+repo_url=repository/shasta-master
+tar -czvf /root/.pre_cray_zypp_repos.d.tar.gz /etc/zypp/repos.d
+zypper ar -q --no-gpgcheck -n $(basename $repo_url) http://localhost/$repo_url/ $(basename $repo_url)
+echo 'Refreshing Zypper and installing cray-crayctl...'
+zypper in -q -y cray-crayctl
