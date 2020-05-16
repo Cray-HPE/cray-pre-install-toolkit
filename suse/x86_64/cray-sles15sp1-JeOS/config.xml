@@ -41,35 +41,35 @@ WARNING: Please consult the README.md file in the top level directory of
         <user password="$2y$12$zIitnBqEOgiB9FtnGIKjyO0wSuqutDKSeCwp8m9dEK4zaS/lnAk/W" home="/root" name="root" groups="root"/>
     </users>
 
-    <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="2" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Basesystem/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="2" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Basesystem/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Development_Tools" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Development-Tools/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Development-Tools/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Containers" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Containers" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Module-Containers/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Module_Containers_Updates" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Module_Containers_Updates" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Module-Containers/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Product_SLES" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Product_SLES" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Products/SLE-Product-SLES/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="3" imageinclude="true">
+    <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp1-all/Updates/SLE-Product-SLES/"/>
     </repository>
 
