@@ -2,8 +2,14 @@
 
 set -e
 
-repo_url=repository/shasta-master
-tar -czvf /root/.pre_cray_zypp_repos.d.tar.gz /etc/zypp/repos.d
-zypper ar -q --no-gpgcheck -n $(basename $repo_url) http://localhost/$repo_url/ $(basename $repo_url)
-echo 'Refreshing Zypper and installing cray-crayctl...'
-zypper in -q -y cray-crayctl
+repo_path=repository/shasta-master
+repo_name="$(basename $repo_path)"
+tar -czvf /root/.pre_cray_zypp_repos.d.tar.gz /etc/zypp/repos.d >/dev/null 2>&1
+if [[ ! -f "/etc/zypp/repos.d/$repo_name.repo" ]]; then
+    zypper ar -q --no-gpgcheck -n "$repo_name" "http://localhost/$repo_path/" "$repo_name)"
+fi
+echo 'Refreshing all repos; loading shasta-master.repo (NEXUS)...'
+zypper -q ref
+echo 'Installing crayctl...'
+zypper -q in -y cray-crayctl
+echo Ready!
