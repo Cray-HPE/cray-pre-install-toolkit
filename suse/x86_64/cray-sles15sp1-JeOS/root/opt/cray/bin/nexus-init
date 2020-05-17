@@ -15,6 +15,8 @@ NEXUS_VOLUME_MOUNT="/nexus-data:rw,exec"
 NEXUS_VOLUME_URL="https://packages.us.cray.com/artifactory/container-volumes/sonatype/nexus3%3A3.22.1/nexus-data/nexus-data-online-master-20200513.tar"
 
 set -x
+sed -i 's/NETCONFIG_DNS_STATIC_SERVERS=.*/NETCONFIG_DNS_STATIC_SERVERS="172.30.84.40 172.31.84.40"/' /etc/sysconfig/network/config
+netconfig update -f
 
 # Create Nexus volume if not already present
 if ! podman volume inspect "$NEXUS_VOLUME_NAME" ; then
