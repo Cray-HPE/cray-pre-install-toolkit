@@ -125,6 +125,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="timezone"/>
         <package name="traceroute"/>
         <package name="vim"/>
+        <package name="wget"/>
         <package name="which"/>
     </packages>
     <packages type="iso">
