@@ -104,9 +104,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="pciutils"/>
         <package name="podman"/>
         <package name="python"/>
-        <package name="python2-Jinja2"/>
-        <package name="python2-MarkupSafe"/>
-        <package name="python2-pexpect"/>
         <package name="python-urlgrabber"/>
         <package name="python-xml"/>
         <package name="python3-click"/>
