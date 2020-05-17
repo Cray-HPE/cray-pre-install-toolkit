@@ -55,6 +55,11 @@ cp /dev/null /var/log/zypper.log
 echo "cray-livecd" > /etc/hostname
 
 
+#======================================
+# Add ll alias to profile
+#--------------------------------------
+echo "alias ll='ls -l --color'" >> /root/.bashrc
+
 #==========================================
 # remove package docs
 #------------------------------------------
