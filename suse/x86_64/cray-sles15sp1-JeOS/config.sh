@@ -42,6 +42,19 @@ suseInsertService sshd
 #--------------------------------------
 baseSetRunlevel 3
 
+#======================================
+# Purge zypper repos, unused for shasta
+#--------------------------------------
+zypper --verbose clean --all
+rm -r /etc/zypp/repos.d/*
+cp /dev/null /var/log/zypper.log
+
+#======================================
+# Set hostname to cray-livecd
+#--------------------------------------
+echo "cray-livecd" > /etc/hostname
+
+
 #==========================================
 # remove package docs
 #------------------------------------------
