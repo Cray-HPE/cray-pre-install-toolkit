@@ -97,6 +97,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="kernel-default"/>
         <package name="less"/>
         <package name="lvm2"/>
+        <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
         <package name="openssh"/>
