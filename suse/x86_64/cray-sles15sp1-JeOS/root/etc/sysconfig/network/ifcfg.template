@@ -54,7 +54,7 @@ IFPLUGD_PRIORITY=
 # - none:        Do not set up the link or ip, a (bonding) master will do it.
 # If you use dhcp or autoip you may additionally specify static address(es).
 #
-BOOTPROTO=
+BOOTPROTO=dhcp4
 
 ## Type:    string
 ## Default: ""
