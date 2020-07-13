@@ -1,7 +1,2 @@
 This is the cray-preinstall-toolkit-sles15sp1 JeOS SUSE Linux System.
-To upgrade your system call:
 
-        zypper refresh
-        zypper up
-
-Have a lot of fun...
