@@ -176,7 +176,7 @@ DHCLIENT_HOSTNAME_OPTION="AUTO"
 # When multiple copies of dhcp client run, it would make sense that only
 # one of them does it. 
 #
-DHCLIENT_SET_DEFAULT_ROUTE="yes"
+DHCLIENT_SET_DEFAULT_ROUTE="no"
 
 ## Type:        integer
 ## Default:     "0"
@@ -290,7 +290,6 @@ DHCLIENT_TIMEOUT="0"
 
 ## Path:	Network/DHCP/DHCPv6 client
 ## Description:	Global DHCPv6 client configuration
-
 ## Type:        list(auto,managed,info)
 ## Default:     auto
 #
@@ -401,3 +400,26 @@ DHCLIENT6_WAIT_AT_BOOT="15"
 #
 DHCLIENT6_TIMEOUT="0"
 WRITE_HOSTNAME_TO_HOSTS="no"
+
+#
+# Type:		integer
+# Default:	""
+#
+# Permits to specify explicit prefix-length to use for the DHCPv6 address,
+# e.g. 64 to use address as 2001:db8::1/64 or 80 for 2001:db8::1/80.
+# When 0 or unspecified (default), prefix-length of the smallest on-link
+# prefix (highest /length number) in the IPv6 router advertisement matching
+# the address is used or 128 (see also rfc5942).
+#
+DHCLIENT6_ADDRESS_LENGTH=""
+
+#
+# Type:		string
+# Default:	""
+#
+# Permits to specify an explicit prefix-length (e.g. ::/56) or a specific
+# prefix with a length (e.g. 2001:db8::/48), that are sent to the DHCPv6
+# server as hint when prefix delegation request mode is enabled in the
+# DHCLIENT6_MODE variable.
+#
+DHCLIENT6_PREFIX_HINT=""

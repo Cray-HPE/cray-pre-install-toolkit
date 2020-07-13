@@ -179,7 +179,7 @@ NETCONFIG_DNS_FORWARDER_FALLBACK="yes"
 # List of DNS domain names used for host-name lookup.
 # It is written as search list into the /etc/resolv.conf file.
 #
-NETCONFIG_DNS_STATIC_SEARCHLIST="172.30.84.40 172.31.84.40"
+NETCONFIG_DNS_STATIC_SEARCHLIST=""
 
 ## Type:        string
 ## Default:     ""
