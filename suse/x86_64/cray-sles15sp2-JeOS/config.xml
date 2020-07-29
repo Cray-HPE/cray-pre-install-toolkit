@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+WARNING: Please consult the README.md file in the top level directory of
+     this repo for instructions on modifying this file.
+-->
+
+<image schemaversion="6.8" name="cray-preinstall-toolkit-sles15sp2">
+    <description type="system">
+        <author>Russell Bunch</author>
+        <contact>rustydb@hpe.com</contact>
+        <specification>
+            Cray Pre-install Toolkit, SLE 15 SP2 based
+        </specification>
+    </description>
+    <preferences>
+        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="payload=file://dev/sda3 edd=off splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
+        <version>CRAY.VERSION.HERE</version>
+        <packagemanager>zypper</packagemanager>
+        <locale>en_US</locale>
+        <keytable>us</keytable>
+        <timezone>America/Chicago</timezone>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <rpm-check-signatures>false</rpm-check-signatures>
+    </preferences>
+    <preferences>
+        <type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/>
+        <type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" bootloader="grub2" kernelcmdline="splash" firmware="efi">
+            <oemconfig>
+                <oem-systemsize>2048</oem-systemsize>
+                <oem-swap>true</oem-swap>
+                <oem-device-filter>/dev/ram</oem-device-filter>
+                <oem-multipath-scan>false</oem-multipath-scan>
+            </oemconfig>
+            <machine memory="512" guestOS="suse" HWversion="4">
+                <vmdisk id="0" controller="ide"/>
+                <vmnic driver="e1000" interface="0" mode="bridged"/>
+            </machine>
+        </type>
+    </preferences>
+<!-- FIXME: Need to remove this password. -->
+    <users>
+        <user password="$2y$12$zIitnBqEOgiB9FtnGIKjyO0wSuqutDKSeCwp8m9dEK4zaS/lnAk/W" home="/root" name="root" groups="root"/>
+    </users>
+
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Module-Basesystem/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Basesystem_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Basesystem/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Module-Development-Tools/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Development_Tools_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Development-Tools/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Containers" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Module-Containers/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Containers_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Containers/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Product_SLES" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Product-SLES/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Product-SLES/"/>
+    </repository>
+
+    <packages type="image">
+        <!-- Section: SUSE Packages -->
+        <package name="bash-completion"/>
+        <package name="biosdevname"/>
+        <package name="blog"/>
+        <package name="blog-plymouth"/>
+        <package name="ca-certificates-mozilla"/>
+        <package name="checkmedia"/>
+        <package name="createrepo_c"/>
+        <package name="dhcp-client"/>
+        <package name="ethtool"/>
+        <package name="fontconfig"/>
+        <package name="fonts-config"/>
+        <package name="grub2"/>
+        <package name="grub2-branding-SLE"/>
+        <package name="grub2-i386-pc"/>
+        <package name="grub2-x86_64-efi" arch="x86_64"/>
+        <package name="ipmitool"/>
+        <package name="iproute2"/>
+        <package name="iproute2-bash-completion"/>
+        <package name="iputils"/>
+        <package name="jq" />
+        <package name="kernel-default"/>
+        <package name="less"/>
+        <package name="lshw" />
+        <package name="lvm2"/>
+        <package name="minicom"/>
+        <package name="nmap"/>
+        <package name="open-lldp"/>
+        <package name="openssh"/>
+        <package name="parted"/>
+        <package name="patterns-base-base"/>
+        <package name="pciutils"/>
+        <package name="podman"/>
+        <package name="python"/>
+        <package name="python3-click"/>
+        <package name="python3-curses"/>
+        <package name="python3-ipaddr"/>
+        <package name="python3-Jinja2"/>
+        <package name="python3-lxml"/>
+        <package name="python3-MarkupSafe"/>
+        <package name="python3-netaddr"/>
+        <package name="python3-pexpect"/>
+        <package name="python3-requests"/>
+        <package name="python3-rpm"/>
+        <package name="python3-sip"/>
+        <package name="rsync"/>
+        <package name="screen"/>
+        <package name="shim"/>
+        <package name="syslinux"/>
+        <package name="systemd-bash-completion"/>
+        <package name="tar"/>
+        <package name="tcpdump"/>
+        <package name="timezone"/>
+        <package name="traceroute"/>
+        <package name="vim"/>
+        <package name="wget"/>
+        <package name="which"/>
+    </packages>
+    <packages type="iso">
+        <package name="branding-SLE"/>
+        <package name="dracut-kiwi-live"/>
+    </packages>
+    <packages type="oem">
+        <package name="branding-SLE"/>
+        <package name="dracut-kiwi-oem-dump"/>
+        <package name="dracut-kiwi-oem-repart"/>
+    </packages>
+    <packages type="bootstrap">
+        <package name="ca-certificates"/>
+        <package name="cracklib-dict-full"/>
+        <package name="filesystem"/>
+        <package name="glibc-locale"/>
+        <package name="sles-release"/>
+        <package name="udev"/>
+    </packages>
+</image>
+<!--
+vim: et sw=4 ts=4
+-->

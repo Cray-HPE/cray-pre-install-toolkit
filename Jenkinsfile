@@ -12,7 +12,7 @@ pipeline {
 		// Set product family
 		PRODUCT = "internal"
 		// Set the target for building
-		TARGET_OS = "sle15_sp1_ncn"
+		TARGET_OS = "sle15_sp2_ncn"
 	}
 
 	agent {

@@ -18,7 +18,7 @@ trap save_build_dir ERR
 
 set -ex
 
-DESC_DIR=suse/x86_64/cray-sles15sp1-JeOS
+DESC_DIR=suse/x86_64/cray-sles15sp2-JeOS
 
 cd /base
 

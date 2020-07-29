@@ -48,12 +48,18 @@ The repo is comprised of the following content:
       description, using SLE 15 SP1 as the base. This description is
       used to generate the JeOS image for the Live OS Media to boot an
       NCN for installation.
+      
+* suse/x86_64/cray-sles15sp2-JeOS
+    * Cray developed description, derived from the Leap 15.2
+      description, using SLE 15 SP2 as the base. This description is
+      used to generate the JeOS image for the Live OS Media to boot an
+      NCN for installation.
 
 
 ## Anatomy of a description
 
 The following files and directories are found in the
-`suse/x86_64/cray-sles15sp1-JeOS` description:
+`suse/x86_64/cray-sles15sp2-JeOS` description:
 
 * config.sh
     * Configuration shell script that runs after the target image
@@ -74,7 +80,7 @@ The following files and directories are found in the
 ## How to update the installation image description
 
 The description used to generate installation images for the NCN nodes
-is: `suse/x86_64/cray-sles15sp1-JeOS`. Modify the content within that
+is: `suse/x86_64/cray-sles15sp2-JeOS`. Modify the content within that
 subdirectory to add new packages to the image or change the image
 definition.
 
