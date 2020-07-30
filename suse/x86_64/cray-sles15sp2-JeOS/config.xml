@@ -13,7 +13,7 @@ WARNING: Please consult the README.md file in the top level directory of
         </specification>
     </description>
     <preferences>
-        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="payload=file://dev/sda3 edd=off splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
+        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
@@ -66,6 +66,14 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Containers/"/>
     </repository>
 
+    <repository type="rpm-md" alias="SLES15_Module_Server-Applications" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Module-Server-Applications/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_Server-Applications_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Server-Applications/"/>
+    </repository>
+
     <repository type="rpm-md" alias="SLES15_Product_SLES" priority="99" imageinclude="true">
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Product-SLES/"/>
     </repository>
@@ -76,7 +84,10 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <packages type="image">
         <!-- Section: SUSE Packages -->
+        <package name="apache2"/>
         <package name="bash-completion"/>
+        <package name="bind9"/>
+        <package name="binutils"/>
         <package name="biosdevname"/>
         <package name="blog"/>
         <package name="blog-plymouth"/>
@@ -84,9 +95,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="checkmedia"/>
         <package name="createrepo_c"/>
         <package name="dhcp-client"/>
+        <package name="dhcp-server"/>
         <package name="ethtool"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
+        <package name="git"/>
+        <package name="gcc"/>
         <package name="grub2"/>
         <package name="grub2-branding-SLE"/>
         <package name="grub2-i386-pc"/>
@@ -98,8 +112,10 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="jq" />
         <package name="kernel-default"/>
         <package name="less"/>
+        <package name="libgcc_s1"/>
         <package name="lshw" />
         <package name="lvm2"/>
+        <package name="make"/>
         <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
@@ -127,11 +143,13 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="systemd-bash-completion"/>
         <package name="tar"/>
         <package name="tcpdump"/>
+        <package name="tftp"/>
         <package name="timezone"/>
         <package name="traceroute"/>
         <package name="vim"/>
         <package name="wget"/>
         <package name="which"/>
+        <package name="xz-devel"/>
     </packages>
     <packages type="iso">
         <package name="branding-SLE"/>

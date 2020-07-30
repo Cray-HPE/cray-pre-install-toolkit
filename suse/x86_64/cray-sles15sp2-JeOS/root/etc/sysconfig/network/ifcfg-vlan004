@@ -1,0 +1,8 @@
+VLAN_PROTOCOL='ieee802-1Q'
+ETHERDEVICE='bridge1'
+ONBOOT='yes'
+STARTMODE='auto'
+BOOTPROTO='static'
+IPADDR='192.168.96.1/20'
+PREFIXLEN='20'
+NAME='Hardware Management'

@@ -192,7 +192,7 @@ NETCONFIG_DNS_STATIC_SEARCHLIST=""
 # nameservers causing the glibc to use the name server on the local
 # machine (the forwarder). See also netconfig(8) manual page.
 #
-NETCONFIG_DNS_STATIC_SERVERS=""
+NETCONFIG_DNS_STATIC_SERVERS="172.30.84.40 172.31.84.40"
 
 ## Type:        string
 ## Default:     "auto"
