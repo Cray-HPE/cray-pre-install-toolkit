@@ -3,15 +3,18 @@
 dhcp
 
 # Change this to any available URL.
-set base-url http://cray-livecd.local
+set base-url http://spit
 
 # If using a custom image or URL, modify this.
-set image-name ncn.squashfs
+set image-name filesystem.squashfs
 
 # Modify these, or the actual kernel line below, to customize boot params.
-set kernel-params ip=dhcp root=live:${base-url}/${image-name} rootfstype=squashfs modules=squashfs
+set kernel-params ip=dhcp root=${base-url}/${image-name}
+set ncn-params pcie_ports=native transparent_hugepage=never biosdevname=1 console=ttyS0,115200 nosplash iommu=pt
 
-kernel ${base-url}/linux ${kernel-params}
+# Symlinks are followed; linking the default names to the versioned artifacts you want
+# or moving the ${base_url} will avoid the need for modifying these strings.
+kernel ${base-url}/vmlinuz ${ncn-params} ${kernel-params}
 initrd ${base-url}/initrd
 
 boot

@@ -1,9 +1,0 @@
-BOOTPROTO='static'
-ONBOOT='yes'
-STARTMODE='auto'
-BRIDGE='yes'
-BRIDGE_PORTS='eth1 eth2'
-BRIDGE_STP='yes' # If there are no loops in your topology, disable this.
-IPADDR='192.168.64.1/20'
-PREFIX='20
-NAME='Internal Interface'

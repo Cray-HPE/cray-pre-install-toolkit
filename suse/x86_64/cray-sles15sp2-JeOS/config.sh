@@ -35,8 +35,7 @@ suseSetupProduct
 # Activate services
 #--------------------------------------
 suseInsertService sshd
-suseInsertService dhcpd
-suseInsertService tftp.socket
+suseInsertService dnsmasq
 suseInsertService apache2
 
 #======================================
@@ -52,26 +51,15 @@ rm -r /etc/zypp/repos.d/*
 cp /dev/null /var/log/zypper.log
 
 #======================================
-# Set hostname to cray-livecd
+# Set hostname to spit
 #--------------------------------------
-echo "cray-livecd" > /etc/hostname
+echo "spit" > /etc/hostname
+printf '% -15s % -65s\n' 10.1.1.1 'spit.local spit' >> /etc/hosts
 
 #======================================
 # Add ll alias to profile
 #--------------------------------------
 echo "alias ll='ls -l --color'" >> /root/.bashrc
-
-#==========================================
-# Ensure tftp.socket is enabled
-# FIXME: suseInsertService is not enabling.
-#------------------------------------------
-systemctl enable tftp.socket
-
-#==========================================
-# remove package docs
-#------------------------------------------
-rm -rf /usr/share/doc/packages/*
-rm -rf /usr/share/doc/manual/*
 
 #==========================================
 # setup iPXE
@@ -81,8 +69,18 @@ pushd ipxe/src
 cat > chainload.ipxe << EOF
 #!ipxe
 dhcp
-chain http://cray-livecd.local/script.ipxe
+chain http://spit/script.ipxe
 EOF
+# Compile ipxe and embed our script.
 make bin-x86_64-efi/ipxe.efi EMBED=chainload.ipxe
+mkdir /var/tftpboot/
 cp -pv bin-x86_64-efi/ipxe.efi /var/tftpboot/
+chown dnsmasq:tftp /var/tftpboot
 popd
+# Leave the ipxe clone incase someone wants to recompile with same source.
+
+#==========================================
+# remove package docs
+#------------------------------------------
+rm -rf /usr/share/doc/packages/*
+rm -rf /usr/share/doc/manual/*

@@ -1,0 +1,15 @@
+NAME='External Site-Link'
+
+# Select the NIC(s) for direct, external access.
+BRIDGE_PORTS='eth0'
+
+# Set static IP (becomes "preferred" if dhcp is enabled)
+BOOTPROTO='dhcp'
+IPADDR=''    # i.e. 10.100.10.1/24
+PREFIXLEN='' # i.e. 24
+
+# DO NOT CHANGE THESE:
+ONBOOT='yes'
+STARTMODE='auto'
+BRIDGE='yes'
+BRIDGE_STP='no'

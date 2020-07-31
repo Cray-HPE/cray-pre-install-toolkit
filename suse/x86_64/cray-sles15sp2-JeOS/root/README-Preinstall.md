@@ -14,29 +14,56 @@ This is the Preinstall Toolkit.
         - [Boot Artifacts](#boot-artifacts)
         - [Boot Parameters](#boot-parameters)
 
-# Environment
+# Usage
 
-### Networking
 
-There are two bridge devices that should be adjusted for the Preinstall's environment.
+#### Configure DNSMasq
 
-There are also two VLAN devices that resemble would-be NCN interfaces, these may/should also be 
-adjusted for the Preinstall's environment.
+You can modify `/etc/dnsmasq.conf` directly *or* use the utility scripts for quick changes:
 
-DHCPD is set to reload when interfaces are reconfigured. To change this, modify /etc/sysconfig/dhcpd:
+The first values (the router) must match the IPs given to `spit`'s interfaces. 
 
-> ##### Note:
-> By default, the Preinstall Toolkit uses the HPE approved network blocks to conform with HPE lab
-> standards.  This helps minimize risks to local labs/sites by avoiding serving clashing DNS/DHCP
->  and other services from infrastructure.
-NOTE 
+```shell script
+/root/bin/sicfg-pxe-lan0.sh 10.1.1.1 10.1.2.1 10.1.255.254 10m
+/root/bin/sicfg-pxe-vlan002.sh 10.252.1.1 10.252.2.1 10.252.127.254 10m
+/root/bin/sicfg-pxe-vlan002.sh 10.254.1.1 10.254.2.1 10.254.127.254 10m
+
+# Restart dnsmaq, and optionally follow the logs to ensure it's up.
+systemctl restart dnsmasq
+journalctl -xeu dnsmasq -f
+```
 
 The interfaces are as follows:
 
-#### bridge0 - External/Site
+#### lan0 - Internal/Cray (MGMT Network)
+    default interface: eth1, eth2
+    ifconfig location: /etc/sysconfig/network/ifcfg-lan0
+
+The lan0 interface is the inward facing interface, it is used for booting and bootstrapping the initial Shasta stack. This is a bridge instead of a bond as seen on a normal NCN because the PreinstallCD needs to anticipate being ran off any NCN. It can't be assumed a LACP LAGG can be formed, so a bridge is more compatible for bootstrapping.
+
+###### Setup
+
+Configure the BOND_SLAVE settings to match your systems NIC names if they are not
+eth1 and eth2.
+
+```shell script
+ip link show
+```
+
+The *member interfaces* do not need to be in a real LACP LAGG on their switch-ports.
+
+
+###### Edit and reload:
+```shell script
+wicked ifreload lan0 # Reloads configs if wicked detects deltas
+# or
+wicked ifup lan0 # Forces "up" and a full reload of configs
+```
+
+#### lan1 - External/Site (customer Network)
     default interface: eth0
     default IP source: dhcp
-    ifconfig location: /etc/sysconfig/network/ifcfg-bridge0
+    ifconfig location: /etc/sysconfig/network/ifcfg-lan1
 
 The bridge0 interface may or may not be used depending on if you are in an offline or online 
 environment. The interface itself resembles the NCNs actual external interface, which is 
@@ -45,33 +72,18 @@ To emulate an airgapped/offline environment, set this bridge's interfaces "down"
 
 ###### Edit and reload:
 ```shell script
-wicked ifreload bridge0 # Reloads configs if wicked detects deltas
+wicked ifreload lan1 # Reloads configs if wicked detects deltas
 # or
-wicked ifup bridge0 # Forces "up" and a full reload of configs
-```
-
-#### bond0 - Internal/Cray
-    default interface: eth1, eth2
-    default IP source: 192.168.64.1/20
-    ifconfig location: /etc/sysconfig/network/ifcfg-bond0
-
-The bridge1 interface is the inward facing interface, it is used for booting and bootstrapping the initial Shasta stack. This is a bridge instead of a bond as seen on a normal NCN because the PreinstallCD needs to anticipate being ran off any NCN. It can't be assumed a LACP LAGG can be formed, so a bridge is more compatible for bootstrapping.
-
-###### Edit and reload:
-```shell script
-wicked ifreload bond0 # Reloads configs if wicked detects deltas
-# or
-wicked ifup bond0 # Forces "up" and a full reload of configs
+wicked ifup lan1 # Forces "up" and a full reload of configs
 ```
 
 #### vlan002 - Node Management
-    default interface: bond0
-    default IP source: 192.168.80.1/20
+    default interface: lan0
     ifconfig location: /etc/sysconfig/network/ifcfg-vlan002
 
 This is the node management network, a network partition/broadcast-domain for node communications.
 
-The VLAN ID should be adjusted if your site requires so.
+The VLAN ID should be adjusted if your site or VM env. if it requires so.
 
 ###### Edit and reload:
 ```shell script
@@ -81,8 +93,7 @@ wicked ifup vlan002 # Forces "up" and a full reload of configs
 ```
 
 #### vlan004 - Hardware Management
-    default interface: bond0
-    default IP source: 192.168.96.1/20
+    default interface: lan0
     ifconfig location: /etc/sysconfig/network/ifcfg-vlan004
 
 This is the hardware management network, strictly for communicating with management devices. IPMI 
@@ -100,7 +111,6 @@ wicked ifup vlan004 # Forces "up" and a full reload of configs
 
 ### Partitioning
 
-The Preinstall
 
 #### Configs
 
@@ -118,7 +128,9 @@ Changes to the Preinstall toolkit's LiveOS will persist, assuming it is running 
 > This is a stub. This functionality is a work-in-progress.
 
 iPXE is compiled with a chainloading script pointing to:
-http://cray-livecd.local/script.ipxe
+http://spit/script.ipxe
+
+**The hostname is resolvable **
 
 You can edit this script at the local web-root, `/var/www/script.ipxe`
 
@@ -128,13 +140,23 @@ The kernel, initrd, and SquashFS images can be fetched through the `/var/www/htm
 loader. By default, it expects to find:
 
 - `/var/www/initrd`
-- `/var/www/linux`
-- `/var/www/ncn-image.squashfs`
+- `/var/www/vmlinuz`
+- `/var/www/filesystem.squashfs`
+
+#### Ephemeral
 
 Optionally, you can bring-up artifacts in `/var/www/ephemeral/` and access them directly. The idea
 behind the default script, is generic names go into the web-root and versioned items go into 
 ephemeral and then get linked.
 
+Mount, download, share your artifacts into `/var/www/ephemeral/` and run `/root/set-sqfs-links.sh`
+setup links that'll work with the default `/var/www/script.ipxe`.
+
 #### Boot Parameters
 
-> This is a stub.
+Boot parameters are set within `/var/www/script.ipxe`, for starters there's two variables:
+1. `kernel-params`: parameters for the SLES OS to boot
+2. `ncn-params`: parameters for NCNs
+
+These divisions of params are purely abstractions for dividing chunks of parameters, users should
+and could change these how they want.

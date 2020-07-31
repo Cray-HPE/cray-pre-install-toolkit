@@ -13,7 +13,16 @@ WARNING: Please consult the README.md file in the top level directory of
         </specification>
     </description>
     <preferences>
-        <type image="iso" primary="true" flags="overlay" hybrid="true" firmware="uefi" kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell" hybridpersistent_filesystem="ext4" hybridpersistent="true" mediacheck="true"/>
+        <type image="iso"
+              primary="true"
+              firmware="uefi"
+              flags="overlay"
+              hybrid="true"
+              hybridpersistent="true"
+              hybridpersistent_filesystem="ext4"
+              volid="CRAYLIVECD"
+              kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell"
+              mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
@@ -86,7 +95,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <!-- Section: SUSE Packages -->
         <package name="apache2"/>
         <package name="bash-completion"/>
-        <package name="bind9"/>
         <package name="binutils"/>
         <package name="biosdevname"/>
         <package name="blog"/>
@@ -95,12 +103,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="checkmedia"/>
         <package name="createrepo_c"/>
         <package name="dhcp-client"/>
-        <package name="dhcp-server"/>
+        <package name="dnsmasq"/>
         <package name="ethtool"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
-        <package name="git"/>
         <package name="gcc"/>
+        <package name="git"/>
         <package name="grub2"/>
         <package name="grub2-branding-SLE"/>
         <package name="grub2-i386-pc"/>
@@ -143,7 +151,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="systemd-bash-completion"/>
         <package name="tar"/>
         <package name="tcpdump"/>
-        <package name="tftp"/>
         <package name="timezone"/>
         <package name="traceroute"/>
         <package name="vim"/>
