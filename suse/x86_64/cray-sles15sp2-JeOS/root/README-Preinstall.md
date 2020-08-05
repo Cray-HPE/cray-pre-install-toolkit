@@ -55,9 +55,7 @@ The *member interfaces* do not need to be in a real LACP LAGG on their switch-po
 
 ###### Edit and reload:
 ```shell script
-wicked ifreload lan0 # Reloads configs if wicked detects deltas
-# or
-wicked ifup lan0 # Forces "up" and a full reload of configs
+/root/bin/sicfg-nic-lan0 10.1.1.1/16
 ```
 
 #### lan1 - External/Site (customer Network)
@@ -72,9 +70,7 @@ To emulate an airgapped/offline environment, set this bridge's interfaces "down"
 
 ###### Edit and reload:
 ```shell script
-wicked ifreload lan1 # Reloads configs if wicked detects deltas
-# or
-wicked ifup lan1 # Forces "up" and a full reload of configs
+/root/bin/sicfg-nic-lan1 172.29.16.5/20 172.29.16.1
 ```
 
 #### vlan002 - Node Management
@@ -87,9 +83,7 @@ The VLAN ID should be adjusted if your site or VM env. if it requires so.
 
 ###### Edit and reload:
 ```shell script
-wicked ifreload vlan002 # Reloads configs if wicked detects deltas
-# or
-wicked ifup vlan002 # Forces "up" and a full reload of configs
+/root/bin/sicfg-nic-vlan002 10.252.1.1/17
 ```
 
 #### vlan004 - Hardware Management
@@ -103,9 +97,7 @@ The VLAN ID should be adjusted if your site requires so.
 
 ###### Edit and reload:
 ```shell script
-wicked ifreload vlan004 # Reloads configs if wicked detects deltas
-# or
-wicked ifup vlan004 # Forces "up" and a full reload of configs
+/root/bin/sicfg-nic-vlan004 10.254.1.1/17
 ```
 
 

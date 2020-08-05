@@ -15,6 +15,6 @@ set ncn-params pcie_ports=native transparent_hugepage=never biosdevname=1 consol
 # Symlinks are followed; linking the default names to the versioned artifacts you want
 # or moving the ${base_url} will avoid the need for modifying these strings.
 kernel ${base-url}/vmlinuz ${ncn-params} ${kernel-params}
-initrd ${base-url}/initrd
+initrd ${base-url}/initrd.xz
 
 boot

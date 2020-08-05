@@ -54,7 +54,6 @@ cp /dev/null /var/log/zypper.log
 # Set hostname to spit
 #--------------------------------------
 echo "spit" > /etc/hostname
-printf '% -15s % -65s\n' 10.1.1.1 'spit.local spit' >> /etc/hosts
 
 #======================================
 # Add ll alias to profile
