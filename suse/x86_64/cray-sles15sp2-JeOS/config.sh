@@ -34,9 +34,10 @@ suseSetupProduct
 #======================================
 # Activate services
 #--------------------------------------
-suseInsertService sshd
-suseInsertService dnsmasq
 suseInsertService apache2
+suseInsertService basecamp
+suseInsertService dnsmasq
+suseInsertService sshd
 
 #======================================
 # Setup default target, multi-user
