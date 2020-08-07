@@ -8,13 +8,20 @@ set base-url http://spit
 # If using a custom image or URL, modify this.
 set image-name filesystem.squashfs
 
-# Modify these, or the actual kernel line below, to customize boot params.
-set kernel-params ip=dhcp root=${base-url}/${image-name}
+# Necessary Booting SquashFS Booting Parameters:
+set kernel-params ip=dhcp initrd=initrd.img.xz root=${base-url}/${image-name}
+
+# Matching NCN boot parameters:
 set ncn-params pcie_ports=native transparent_hugepage=never biosdevname=1 console=ttyS0,115200 nosplash iommu=pt
+
+# Custom parameters:
+# example for automation runs to replace on-the-fly:
+# set -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
+set custom-params append
 
 # Symlinks are followed; linking the default names to the versioned artifacts you want
 # or moving the ${base_url} will avoid the need for modifying these strings.
-kernel ${base-url}/vmlinuz ${ncn-params} ${kernel-params}
-initrd ${base-url}/initrd.xz
+kernel ${base-url}/vmlinuz ${ncn-params} ${kernel-params} ${custom-params}
+initrd ${base-url}/initrd.img.xz
 
 boot

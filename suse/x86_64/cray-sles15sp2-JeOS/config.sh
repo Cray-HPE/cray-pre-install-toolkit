@@ -64,8 +64,10 @@ echo "alias ll='ls -l --color'" >> /root/.bashrc
 #==========================================
 # setup iPXE
 #------------------------------------------
-git clone git://git.ipxe.org/ipxe.git
-pushd ipxe/src
+git clone git://git.ipxe.org/ipxe.git /root/ipxe-src
+pushd /root/ipxe-src
+# Enable VLAN commands.
+sed -i 's://#define VLAN_CMD:#define VLAN_CMD:' src/config/general.h
 cat > chainload.ipxe << EOF
 #!ipxe
 dhcp
@@ -75,7 +77,7 @@ EOF
 make bin-x86_64-efi/ipxe.efi EMBED=chainload.ipxe
 mkdir /var/tftpboot/
 cp -pv bin-x86_64-efi/ipxe.efi /var/tftpboot/
-chown dnsmasq:tftp /var/tftpboot
+chown -R dnsmasq:tftp /var/tftpboot
 popd
 # Leave the ipxe clone incase someone wants to recompile with same source.
 
