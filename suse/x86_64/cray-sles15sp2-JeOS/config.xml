@@ -4,12 +4,13 @@ WARNING: Please consult the README.md file in the top level directory of
      this repo for instructions on modifying this file.
 -->
 
-<image schemaversion="6.8" name="cray-preinstall-toolkit-sles15sp2">
+<image schemaversion="6.8" name="shasta-pre-install-toolkit-sles15sp2">
     <description type="system">
         <author>Russell Bunch</author>
         <contact>rustydb@hpe.com</contact>
         <specification>
-            Cray Pre-install Toolkit, SLE 15 SP2 based
+            Shasta Pre-install Toolkit, SLE 15 SP2 based, for installing a bare metal Shasta
+            system.
         </specification>
     </description>
     <preferences>
@@ -20,7 +21,7 @@ WARNING: Please consult the README.md file in the top level directory of
               hybrid="true"
               hybridpersistent="true"
               hybridpersistent_filesystem="ext4"
-              volid="CRAYLIVECD"
+              volid="SPITLIVE"
               kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell"
               mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>

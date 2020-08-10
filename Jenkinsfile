@@ -7,7 +7,7 @@
 
 pipeline {
 	environment {
-		LATEST_NAME="cray-preinstall-toolkit-latest"
+		LATEST_NAME="shasta-pre-install-toolkit-latest"
 
 		// Set product family
 		PRODUCT = "internal"

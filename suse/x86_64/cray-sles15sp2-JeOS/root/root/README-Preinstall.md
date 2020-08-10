@@ -4,24 +4,24 @@ This is the Preinstall Toolkit.
 
 ## Table of Contents
 
-- [Usage](#usage)
+* [Usage](#usage)
     * [Services](#services)
-        - [Apache2](#configure-apache2)
-           * [Bring Your Own Artifacts!](#bring-your-own-artifacts)
-        - [DHCP/TFPT/DNS (DNSMasq)](#configure-dnsmasq)
+      * [Apache2](#configure-apache2)
+        * [Bring Your Own Artifacts!](#bring-your-own-artifacts)
+      * [DHCP/TFPT/DNS (DNSMasq)](#configure-dnsmasq)
     * [Interfaces](#interfaces)
-        - [lan0](#lan0---internalcray-mgmt-network)
-        - [lan1](#lan1---externalsite-customer-network)
-        - [vlan002](#vlan002---node-management)
-        - [vlan004](#vlan002---node-management)
+      * [lan0](#lan0---internalcray-mgmt-network)
+      * [lan1](#lan1---externalsite-customer-network)
+      * [vlan002](#vlan002---node-management)
+      * [vlan004](#vlan002---node-management)
     * [Partitioning](#partitioning)
-        - [Persistence](#persistence)
-- [Extras](#extras)
-    * [PXE/iPXE Network Installing](#pxeipxe-network-installing)
-        - [Boot Parameters](#boot-parameters)
-        - [Customizing iPXE](#customizing-ipxe)
-          * [Binary](#binary)
-          * [Script](#script)
+      * [Persistence](#persistence)
+* [Extras](#extras)
+  * [PXE/iPXE Network Installing](#pxeipxe-network-installing)
+   * [Boot Parameters](#boot-parameters)
+   * [Customizing iPXE](#customizing-ipxe)
+     * [Binary](#binary)
+     * [Script](#script)
 
 # Usage
 
@@ -74,7 +74,7 @@ ip link show
 The *member interfaces* do not need to be in a real LACP LAGG on their switch-ports.
 
 
-###### Edit and reload:
+#### Edit and reload:
 ```shell script
 /root/bin/sicfg-nic-lan0 10.1.1.1/16
 ```
@@ -171,10 +171,16 @@ setup links that'll work with the default `/var/www/script.ipxe`.
 Boot parameters are set within `/var/www/script.ipxe`, for starters there's two variables:
 1. `kernel-params`: parameters for the SLES OS to boot
 2. `ncn-params`: parameters for NCNs
+3. `custom-params`: Extra parms users can add w/o modifying original params
 
 These divisions of params are purely abstractions for dividing chunks of parameters, users should
 and could change these how they want.
 
+You can automate the edit of `custom-params` (or anything for that matter) with this:
+
+```shell script
+set -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
+```
 
 ### Customizing iPXE
 
