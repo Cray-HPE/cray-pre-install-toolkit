@@ -29,19 +29,19 @@ set net-bond-params bond=lan0:mgmt0,mgmt1:mode=802.3ad,miimon=100,lacp_rate=fast
 
 # Networking parameters:
 # Note: Not using a VLAN? Switch the bootdev and disable vlan002 dhcp:
-# set -i '/bootdev=.*/bootdev=lan0' /var/www/script.ipxe
-# set -i '/ip=vlan002.*/ip=lan0' /var/www/script.ipxe
+# sed -i '/bootdev=.*/bootdev=lan0' /var/www/script.ipxe
+# sed -i '/ip=vlan002.*/ip=lan0' /var/www/script.ipxe
 set net-params ifname=lan1:${net0/mac} ifname=lan3:${net1/mac} ifname=mgmt0:${net2/mac} ifname=mgmt1:${net3/mac} vlan=vlan002:lan0 vlan=vlan004:lan0 ip=vlan002:dhcp ip=vlan004:dhcp bootdev=vlan002 rd.bootif=0 ${net-bond-params}
 
 # Parameters for CI/CD to ad-hoc replace (null by default):
 # Good for "always-on" params for automation.
-# set -i '/robot-params .*/robot-params parm1 param2 param3' /var/www/script.ipxe
+# sed -i '/robot-params .*/robot-params parm1 param2 param3' /var/www/script.ipxe
 set robot-params append
 
 # Custom parameters:
 # Good for one-off changes/tests.
 # example for a user or automation-toggle runs to replace on-the-fly:
-# set -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
+# sed -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
 set custom-params rd.shell rd.retry=10 nosplash quiet
 
 # Symlinks are followed; linking the default names to the versioned artifacts you want

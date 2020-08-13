@@ -179,7 +179,7 @@ and could change these how they want.
 You can automate the edit of `custom-params` (or anything for that matter) with this:
 
 ```shell script
-set -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
+sed -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
 ```
 
 ### Customizing iPXE
