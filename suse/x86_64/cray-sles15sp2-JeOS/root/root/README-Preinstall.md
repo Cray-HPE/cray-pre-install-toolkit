@@ -8,6 +8,7 @@ This is the Preinstall Toolkit.
     * [Services](#services)
       * [Apache2](#configure-apache2)
         * [Bring Your Own Artifacts!](#bring-your-own-artifacts)
+      * [Basecamp](#configure-basecamp)
       * [DHCP/TFPT/DNS (DNSMasq)](#configure-dnsmasq)
     * [Interfaces](#interfaces)
       * [lan0](#lan0---internalcray-mgmt-network)
@@ -35,6 +36,22 @@ The default configuration allows:
 - The web root is at `/var/www`
 
 You can configure apache2 like any other by way of the Apache2 manual.
+
+#### Configure Basecamp
+
+Basecamp is the cloud-init metadata server for our NCNs. It will serve
+by default over **`port 8080`** on **all** interfaces.
+
+```shell script
+# Add cloud-init files:
+touch /var/www/basecamp/config/config.yaml # fill this in
+touch /var/www/basecamp/config/data.json # fill this in
+
+# Add static files if needed (like yast file if wanted):
+touch /var/www/basecamp/static/something.xml
+```
+
+For more information, see [the Basecamp Repo](https://stash.us.cray.com/projects/MTL/repos/basecamp/browse).
 
 #### Configure DNSMasq
 
