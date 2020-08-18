@@ -3,10 +3,10 @@ Description=Basecamp cloud-init server
 Documentation=https://stash.us.cray.com/projects/MTL/repos/basecamp/browse
 Requires=network-online.target
 After=network-online.target
-
 [Service]
 Restart=on-failure
-ExecStartPre=/root/bin/basecamp-init.sh  %t/%n-pid %t/%n-cid basecamp
+Environment=GIN_MODE=release
+ExecStartPre=/root/bin/basecamp-init.sh %t/%n-pid %t/%n-cid basecamp
 ExecStart=/usr/bin/podman start basecamp
 ExecStop=/usr/bin/podman stop --ignore -t 10 basecamp
 PIDFile=%t/%n-pid

@@ -6,6 +6,9 @@ set base-url http://spit
 # If using a custom image or URL, modify this:
 set image-name filesystem.squashfs
 
+# Change this if your cloud-init server is elsewhere.
+set cloud-init ds=nocloud-net\;s=${base-url}:8080
+
 # Kernel Crash Helpers:
 set kernel-crash-params bad_page=panic crashkernel=320M hugepagelist=2m-2g
 
