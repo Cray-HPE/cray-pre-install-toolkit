@@ -1,12 +1,5 @@
 #!ipxe
 
-# Emulate real world, and boot over VLANs.
-# Note: This will also boot without VLAN, you'll be able to know by the IPs leased
-:retry
-dhcp || goto retry
-route
-ifstat
-
 # Change this to any available URL:
 set base-url http://spit
 
@@ -25,13 +18,13 @@ set ncn-params pcie_ports=native transparent_hugepage=never biosdevname=1 consol
 # Bond Parameters:
 # To disable, comment out and provide a `lan0` interface.
 # i.e. bridge:lan0:eth1:9238
-set net-bond-params bond=lan0:mgmt0,mgmt1:mode=802.3ad,miimon=100,lacp_rate=fast,xmit_hash_policy=layer2+3:9238 hwprobe=+200:*:*:bond0
+set net-bond-params bond=lan0:net0,net1:mode=802.3ad,miimon=100,lacp_rate=fast,xmit_hash_policy=layer2+3:9238 hwprobe=+200:*:*:bond0
 
 # Networking parameters:
 # Note: Not using a VLAN? Switch the bootdev and disable vlan002 dhcp:
 # sed -i '/bootdev=.*/bootdev=lan0' /var/www/script.ipxe
 # sed -i '/ip=vlan002.*/ip=lan0' /var/www/script.ipxe
-set net-params ifname=lan1:${net0/mac} ifname=lan3:${net1/mac} ifname=mgmt0:${net2/mac} ifname=mgmt1:${net3/mac} vlan=vlan002:lan0 vlan=vlan004:lan0 ip=vlan002:dhcp ip=vlan004:dhcp bootdev=vlan002 rd.bootif=0 ${net-bond-params}
+set net-params ifname=lan1:${net0/mac} ifname=lan3:${net1/mac} ifname=net0:${net2/mac} ifname=net1:${net3/mac} vlan=vlan002:lan0 vlan=vlan004:lan0 ip=vlan002:dhcp ip=vlan004:dhcp bootdev=vlan002 rd.bootif=0 ${net-bond-params}
 
 # Parameters for CI/CD to ad-hoc replace (null by default):
 # Good for "always-on" params for automation.
@@ -44,9 +37,20 @@ set robot-params append
 # sed -i '/custom-params .*/custom-params parm1 param2 param3' /var/www/script.ipxe
 set custom-params rd.shell rd.retry=10 nosplash quiet
 
+# Emulate real world, and boot over VLANs.
+# Note: This will also boot without VLAN, you'll be able to know by the IPs leased
+echo Calling home...
+:retry
+dhcp || goto retry
+echo Printing routing..
+route
+echo Priting neighbors..
+nstat
+ifstat
+
 # Symlinks are followed; linking the default names to the versioned artifacts you want
 # or moving the ${base_url} will avoid the need for modifying these strings.
-kernel --name kernel ${base-url}/kernel ${ncn-params} ${kernel-params} ${net-params} ${robot-params} ${custom-params}
+kernel --name kernel ${base-url}/kernel ${ncn-params} ${cloud-init} ${kernel-params} ${net-params} ${robot-params} ${custom-params}
 initrd ${base-url}/initrd.img.xz
 
 boot

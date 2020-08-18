@@ -66,8 +66,9 @@ echo "alias ll='ls -l --color'" >> /root/.bashrc
 #------------------------------------------
 git clone git://git.ipxe.org/ipxe.git /root/ipxe-src
 pushd /root/ipxe-src/src
-# Enable VLAN commands.
+# Enable VLAN and NEIGHBOR commands.
 sed -i 's://#define VLAN_CMD:#define VLAN_CMD:' config/general.h
+sed -i 's://#define NEIGHBOUR_CMD:#define NEIGHBOUR_CMD:' config/general.h
 cat > chainload.ipxe << EOF
 #!ipxe
 dhcp
