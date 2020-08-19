@@ -12,7 +12,7 @@ BASECAMP_CONTAINER_NAME="${3-basecamp}"
 BASECAMP_CONTAINER_IMAGE="dtr.dev.cray.com/metal/cloud-${BASECAMP_CONTAINER_NAME}"
 BASECAMP_VOLUME_NAME="${4:-${BASECAMP_CONTAINER_NAME}-configs}"
 
-BASECAMP_VOLUME_MOUNT_CONFIG="/var/www/basecamp/config:/app/config:rw,exec"
+BASECAMP_VOLUME_MOUNT_CONFIG="/var/www/basecamp/configs:/app/configs:rw,exec"
 BASECAMP_VOLUME_MOUNT_STATIC="/var/www/basecamp/static:/app/static:rw,exec"
 
 command -v podman >/dev/null 2>&1 || { echo >&2 "${0##*/}: command not found: podman"; exit 1; }
@@ -21,6 +21,27 @@ command -v podman >/dev/null 2>&1 || { echo >&2 "${0##*/}: command not found: po
 # always ensure pid file is fresh
 rm -f "$BASECAMP_PIDFILE"
 mkdir -pv "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)"
+mkdir -pv "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)"
+test -e "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)/data.json" ||\
+cat << EOF > "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)/data.json"
+{
+  [
+    // "mac": {metadata...}
+  ]
+}
+EOF
+# Set up a mutable, default file. Users reading this, can edit this or edit the
+# actual created file. Editing here is persistent on restart.
+test -e "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)/server.yaml" ||\
+cat << EOF > "$(echo ${BASECAMP_VOLUME_MOUNT_CONFIG} | cut -f 1 -d :)/server.yaml"
+# Basecamp Configuration
+bind: ":8888"
+local-mode: true
+local-data: "./config/data.json"
+serve-static: true
+static-dir: "./static/"
+EOF
+
 mkdir -pv "$(echo ${BASECAMP_VOLUME_MOUNT_STATIC} | cut -f 1 -d :)"
 # Create basecamp container
 if ! podman inspect "$BASECAMP_CONTAINER_NAME" ; then
@@ -32,7 +53,6 @@ if ! podman inspect "$BASECAMP_CONTAINER_NAME" ; then
         --cgroups=no-conmon \
         -d \
         --net host \
-        --volume "$BASECAMP_VOLUME_MOUNT_CONFIG" \
         --volume "$BASECAMP_VOLUME_MOUNT_STATIC" \
         --name "$BASECAMP_CONTAINER_NAME" \
         --env GIN_MODE="${GIN_MODOE:-release}" \

@@ -42,14 +42,19 @@ You can configure apache2 like any other by way of the Apache2 manual.
 Basecamp is the cloud-init metadata server for our NCNs. It will serve
 by default over **`port 8080`** on **all** interfaces.
 
-```shell script
-# Add cloud-init files:
-touch /var/www/basecamp/config/config.yaml # fill this in
-touch /var/www/basecamp/config/data.json # fill this in
+The nodes are told to use this datasource by the `cloud-init` variable value 
+in `/var/www/script.ipxe`.
 
-# Add static files if needed (like yast file if wanted):
-touch /var/www/basecamp/static/something.xml
+Basecamp serves files from two locations:
+
+```shell script
+# Dynamic files, such as templated metadata.
+touch /var/www/basecamp/configs/
+# Static files, things that everything should get as-is.
+touch /var/www/basecamp/static/
 ```
+
+There's an empty 
 
 For more information, see [the Basecamp Repo](https://stash.us.cray.com/projects/MTL/repos/basecamp/browse).
 
