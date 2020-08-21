@@ -20,3 +20,4 @@ sed -i 's/^BONDING_SLAVE1=.*/BONDING_SLAVE1="'"${dev2}"'"/g' /etc/sysconfig/netw
 # FIXME: template this, use the automation key and replace the whole line.
 printf '% -15s % -65s\n' "$addr" 'spit.local spit #${AUTOMATION}' >> /etc/hosts
 wicked ifreload lan0
+systemctl restart wickedd-nanny

@@ -23,4 +23,8 @@ dhcp-option=interface:lan0,option:ntp-server,${router}
 dhcp-option=interface:lan0,option:router,${router}
 dhcp-range=interface:lan0,${range_start},${range_end},${lease_ttl}
 EOF
+if [[ ! $(grep ${router} /etc/sysconfig/network/config | grep NETCONFIG_DNS_STATIC_SERVERS) ]]; then
+  sed -E -i 's/NETCONFIG_DNS_STATIC_SERVERS="(.*)"/NETCONFIG_DNS_STATIC_SERVERS='"$router"' \1"/' /etc/sysconfig/network/config
+  netconfig update -f
+fi
 systemctl restart dnsmasq

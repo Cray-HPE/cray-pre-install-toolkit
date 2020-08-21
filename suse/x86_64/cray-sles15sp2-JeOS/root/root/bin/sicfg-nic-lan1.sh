@@ -18,3 +18,4 @@ sed -i 's/^PREFIXLEN=.*/PREFIXLEN="'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-
 sed -i 's/^BRIDGE_PORTS=.*/BRIDGE_PORTS="'"$*"'"/g' /etc/sysconfig/network/ifcfg-lan1
 echo "default $gateway - -" >/etc/sysconfig/network/ifroute-lan1
 wicked ifreload lan1
+systemctl restart wickedd-nanny # Shake out daemon handling of new lan1 name.
