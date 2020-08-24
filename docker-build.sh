@@ -18,7 +18,7 @@ trap save_build_dir ERR
 
 set -ex
 
-DESC_DIR=suse/x86_64/cray-sles15sp2-JeOS
+DESC_DIR=suse/x86_64/shasta-pre-install-toolkit-sles15sp2
 
 cd /base
 

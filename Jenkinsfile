@@ -1,4 +1,4 @@
-// Jenkinsfile for building Shasta preinstall-toolkit LiveOS image
+// Jenkinsfile for building Shasta pre-install-toolkit LiveOS image
 // via kiwi-ng.
 
 // Jenkins Shared Libraries are implemented in our CI model (https://connect.us.cray.com/confluence/display/DST/Best+Practices+and+How-To%27s)

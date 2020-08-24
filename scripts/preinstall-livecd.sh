@@ -3,7 +3,7 @@
 #
 # Copyright 2020 Hewlett Packard Enterprise Development LP
 #
-# Create a bootable preinstall-toolkit LiveCD USB drive.
+# Create a bootable pre-install-toolkit LiveCD USB drive.
 #
 # Script writes a hyrid ISO file to USB drive, creating two partitions
 # during the write. After the ISO is written, Two additional partitions
@@ -34,7 +34,7 @@ cow_size=0
 dev_size=0
 
 # URL or path for ISO. Defaults to latest ISO build on master branch
-iso_uri="http://$car/artifactory/internal/SHASTA-OS/sle15_sp1_ncn/x86_64/dev/master/kernel-team/cray-preinstall-toolkit-latest.iso"
+iso_uri="http://$car/artifactory/internal/SHASTA-OS/sle15_sp1_ncn/x86_64/dev/master/kernel-team/shasta-pre-install-toolkit-latest.iso"
 
 # Initial empty values for usb device and iso file
 usb=""
@@ -47,7 +47,7 @@ usage () {
 Usage $name USB-DEVICE ISO-FILE [COW-SIZE]
 
 where:
-    USB-DEVICE  Raw device file of USB flash drive where cray-livecd
+    USB-DEVICE  Raw device file of USB flash drive where shasta-livecd
                 will be written.
 
     ISO-FILE    Pathname or URL of LiveCD ISO file to write to the usb
