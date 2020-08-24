@@ -27,4 +27,5 @@ if [[ ! $(grep ${router} /etc/sysconfig/network/config | grep NETCONFIG_DNS_STAT
   sed -E -i 's/NETCONFIG_DNS_STATIC_SERVERS="(.*)"/NETCONFIG_DNS_STATIC_SERVERS='"$router"' \1"/' /etc/sysconfig/network/config
   netconfig update -f
 fi
+sed -i 's/^set cloud-init .*/set cloud-init ds=nocloud-net\;s='"${router}"':8888' /var/www/ipxe.script
 systemctl restart dnsmasq
