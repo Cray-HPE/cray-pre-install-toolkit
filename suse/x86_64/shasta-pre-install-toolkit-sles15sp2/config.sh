@@ -37,9 +37,11 @@ suseSetupProduct
 zypper \
   --no-gpg-checks \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/x86_64/dev/master/ \
   in \
   -y \
-  cray-metal-basecamp
+  cray-metal-basecamp \
+  cray-metal-nexus
 
 #======================================
 # Activate services
@@ -47,6 +49,7 @@ zypper \
 suseInsertService apache2
 suseInsertService basecamp
 suseInsertService dnsmasq
+suseInsertService nexus
 suseInsertService sshd
 
 #======================================
