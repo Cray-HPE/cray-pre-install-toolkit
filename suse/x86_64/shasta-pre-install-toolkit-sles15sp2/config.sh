@@ -32,6 +32,16 @@ echo "Configure image: [$kiwi_iname]..."
 suseSetupProduct
 
 #======================================
+# Install Cray Specific RPMs
+#--------------------------------------
+zypper \
+  --no-gpg-checks \
+  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
+  in \
+  -y \
+  cray-metal-basecamp
+
+#======================================
 # Activate services
 #--------------------------------------
 suseInsertService apache2
