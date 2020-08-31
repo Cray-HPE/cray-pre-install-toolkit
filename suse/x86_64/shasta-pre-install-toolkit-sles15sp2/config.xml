@@ -96,7 +96,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <!-- Section: SUSE Packages -->
         <package name="apache2"/>
         <package name="bash-completion"/>
-        <package name="binutils"/>
         <package name="biosdevname"/>
         <package name="blog"/>
         <package name="blog-plymouth"/>
@@ -108,7 +107,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="ethtool"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
-        <package name="gcc"/>
         <package name="git"/>
         <package name="grub2"/>
         <package name="grub2-branding-SLE"/>
@@ -121,10 +119,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="jq" />
         <package name="kernel-default"/>
         <package name="less"/>
-        <package name="libgcc_s1"/>
         <package name="lshw" />
         <package name="lvm2"/>
-        <package name="make"/>
         <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
@@ -157,7 +153,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="vim"/>
         <package name="wget"/>
         <package name="which"/>
-        <package name="xz-devel"/>
     </packages>
     <packages type="iso">
         <package name="branding-SLE"/>

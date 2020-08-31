@@ -41,6 +41,7 @@ zypper \
   in \
   -y \
   cray-metal-basecamp \
+  cray-metal-ipxe \
   cray-metal-nexus
 
 #======================================
@@ -73,27 +74,6 @@ echo "spit" > /etc/hostname
 # Add ll alias to profile
 #--------------------------------------
 echo "alias ll='ls -l --color'" >> /root/.bashrc
-
-#==========================================
-# setup iPXE
-#------------------------------------------
-git clone git://git.ipxe.org/ipxe.git /root/ipxe-src
-pushd /root/ipxe-src/src
-# Enable VLAN and NEIGHBOR commands.
-sed -i 's://#define VLAN_CMD:#define VLAN_CMD:' config/general.h
-sed -i 's://#define NEIGHBOUR_CMD:#define NEIGHBOUR_CMD:' config/general.h
-cat > chainload.ipxe << EOF
-#!ipxe
-dhcp
-chain http://spit/script.ipxe
-EOF
-# Compile ipxe and embed our script.
-make bin-x86_64-efi/ipxe.efi EMBED=chainload.ipxe
-mkdir /var/tftpboot/
-cp -pv bin-x86_64-efi/ipxe.efi /var/tftpboot/
-chown -R dnsmasq:tftp /var/tftpboot
-popd
-# Leave the ipxe clone incase someone wants to recompile with same source.
 
 #==========================================
 # remove package docs
