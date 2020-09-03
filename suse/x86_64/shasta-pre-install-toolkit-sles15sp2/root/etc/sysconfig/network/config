@@ -161,7 +161,7 @@ NETCONFIG_DNS_POLICY="auto"
 # causes to write the name server IP addresses to /etc/resolv.conf
 # only (no forwarder). Empty string defaults to "resolver".
 #
-NETCONFIG_DNS_FORWARDER="resolver"
+NETCONFIG_DNS_FORWARDER="dnsmasq"
 
 ## Type:        yesno
 ## Default:     yes
@@ -179,7 +179,7 @@ NETCONFIG_DNS_FORWARDER_FALLBACK="yes"
 # List of DNS domain names used for host-name lookup.
 # It is written as search list into the /etc/resolv.conf file.
 #
-NETCONFIG_DNS_STATIC_SEARCHLIST=""
+NETCONFIG_DNS_STATIC_SEARCHLIST="mtl nmn hmn"
 
 ## Type:        string
 ## Default:     ""
@@ -192,7 +192,7 @@ NETCONFIG_DNS_STATIC_SEARCHLIST=""
 # nameservers causing the glibc to use the name server on the local
 # machine (the forwarder). See also netconfig(8) manual page.
 #
-NETCONFIG_DNS_STATIC_SERVERS="172.30.84.40 172.31.84.40"
+NETCONFIG_DNS_STATIC_SERVERS=""
 
 ## Type:        string
 ## Default:     "auto"

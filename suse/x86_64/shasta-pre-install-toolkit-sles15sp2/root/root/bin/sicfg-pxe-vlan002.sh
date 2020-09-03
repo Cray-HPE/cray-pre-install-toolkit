@@ -16,16 +16,10 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/nmn.conf
 # NMN:
-domain=/spit.nmn/
-interface=vlan002
+domain=nmn,${range_start},${range_end},local
 dhcp-option=interface:vlan002,option:dns-server,${router}
 dhcp-option=interface:vlan002,option:ntp-server,${router}
 dhcp-option=interface:vlan002,option:router,${router}
 dhcp-range=interface:vlan002,${range_start},${range_end},${lease_ttl}
 EOF
-if [[ ! $(grep ${router} /etc/sysconfig/network/config | grep NETCONFIG_DNS_STATIC_SERVERS) ]]; then
-  sed -E -i 's/NETCONFIG_DNS_STATIC_SERVERS="(.*)"/NETCONFIG_DNS_STATIC_SERVERS='"$router"' \1"/' /etc/sysconfig/network/config
-  netconfig update -f
-fi
-sed -i 's/^set cloud-init .*/set cloud-init ds=nocloud-net\;s='"${router}"':8888' /var/www/ipxe.script
 systemctl restart dnsmasq

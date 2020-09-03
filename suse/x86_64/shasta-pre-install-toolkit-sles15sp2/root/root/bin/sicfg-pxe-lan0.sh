@@ -14,17 +14,13 @@ range_start="$2"
 range_end="$3"
 lease_ttl="${4:-10m}"
 
-cat << EOF > /etc/dnsmasq.d/local.conf
+cat << EOF > /etc/dnsmasq.d/mtl.conf
 # MTL:
-domain=/spit.mtl/
+domain=mtl,${range_start},${range_end},local
 interface=lan0
 dhcp-option=interface:lan0,option:dns-server,${router}
 dhcp-option=interface:lan0,option:ntp-server,${router}
 dhcp-option=interface:lan0,option:router,${router}
 dhcp-range=interface:lan0,${range_start},${range_end},${lease_ttl}
 EOF
-if [[ ! $(grep ${router} /etc/sysconfig/network/config | grep NETCONFIG_DNS_STATIC_SERVERS) ]]; then
-  sed -E -i 's/NETCONFIG_DNS_STATIC_SERVERS="(.*)"/NETCONFIG_DNS_STATIC_SERVERS='"$router"' \1"/' /etc/sysconfig/network/config
-  netconfig update -f
-fi
 systemctl restart dnsmasq

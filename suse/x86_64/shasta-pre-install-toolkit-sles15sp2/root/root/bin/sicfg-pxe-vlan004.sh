@@ -16,15 +16,11 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/hmn.conf
 # HMN:
-local=/spit.hmn/
+domain=hmn,${range_start},${range_end},local
 interface=vlan004
 dhcp-option=interface:vlan004,option:dns-server,$router
 dhcp-option=interface:vlan004,option:ntp-server,$router
 dhcp-option=interface:vlan004,option:router,$router
 dhcp-range=interface:vlan004,${range_start},${range_end},${lease_ttl}
 EOF
-if [[ ! $(grep ${router} /etc/sysconfig/network/config | grep NETCONFIG_DNS_STATIC_SERVERS) ]]; then
-  sed -E -i 's/NETCONFIG_DNS_STATIC_SERVERS="(.*)"/NETCONFIG_DNS_STATIC_SERVERS='"$router"' \1"/' /etc/sysconfig/network/config
-  netconfig update -f
-fi
 systemctl restart dnsmasq
