@@ -11,6 +11,7 @@ pipeline {
         upstream(upstreamProjects: 'basecamp,ipxe', threshold: hudson.model.Result.SUCCESS)
         cron('@daily')
      }
+
 	environment {
 		LATEST_NAME="shasta-pre-install-toolkit-latest"
 
@@ -31,6 +32,10 @@ pipeline {
 
 		// Don't fill up the build server with unnecessary cruft
 		buildDiscarder(logRotator(numToKeepStr: '5'))
+
+		// Don't bog down the build pipeline; only build on push and manuals or other human intent.
+		disableConcurrentBuilds()
+		disableResume()
 	}
 
 	stages {
