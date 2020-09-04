@@ -6,7 +6,7 @@ else
 	WORKSPACE=$1
 fi
 
-DOCKER_IMAGE="dtr.dev.cray.com:443/cray/cray-preinstall-toolkit-builder:latest"
+DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-shasta-pre-install-toolkit:latest"
 
 # If the image already exists on the node,
 # remove it. If the image is in use by a
