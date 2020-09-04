@@ -6,6 +6,11 @@
 @Library('dst-shared@master') _
 
 pipeline {
+// FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
+    triggers {
+        upstream(upstreamProjects: 'basecamp,ipxe', threshold: hudson.model.Result.SUCCESS)
+        cron('@daily')
+     }
 	environment {
 		LATEST_NAME="shasta-pre-install-toolkit-latest"
 
