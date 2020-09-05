@@ -6,6 +6,12 @@
 @Library('dst-shared@master') _
 
 pipeline {
+// FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
+    triggers {
+        upstream(upstreamProjects: 'basecamp,ipxe', threshold: hudson.model.Result.SUCCESS)
+        cron('@daily')
+     }
+
 	environment {
 		LATEST_NAME="shasta-pre-install-toolkit-latest"
 
@@ -26,6 +32,10 @@ pipeline {
 
 		// Don't fill up the build server with unnecessary cruft
 		buildDiscarder(logRotator(numToKeepStr: '5'))
+
+		// Don't bog down the build pipeline; only build on push and manuals or other human intent.
+		disableConcurrentBuilds()
+		disableResume()
 	}
 
 	stages {
@@ -57,7 +67,7 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "skern-build", credential: "", color: "good", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\n}")
+				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\n}")
 			}
 
 			// Delete the 'build' directory
@@ -70,7 +80,7 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "skern-build", credential: "", color: "danger", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\nDescription:\n\nBuild failed.\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\nDescription:\n\nBuild failed.\n")
 			}
 
 			// Delete the 'build' directory
