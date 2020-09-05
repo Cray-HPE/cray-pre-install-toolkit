@@ -42,18 +42,17 @@ pipeline {
 	stages {
 		stage('BUILD: Build Image') {
 			steps {
-				// Run the build script. It will ensure
-				// any cached docker image is removed so
-				// the latest is pulled. The output of the
-				// build will be copied to the 'build_output'
-				// subdirectory.
-                env.PIT_VERSION = "$(cat .version)"
-                env.PIT_TIMESTAMP = "$(date -u '+%Y%m%d%H%M%S')"
-                env.PIT_HASH = "$(git log -n 1 --pretty=format:'%h')"
-                env.PIT_SLUG = "${PIT_VERSION}-${PIT_TIMESTAMP}-g${PIT_HASH}"
-				sh '''
-				    ./build.sh ${WORKSPACE}
-                '''
+			    script {
+                    // Run the build script. It will ensure
+                    // any cached docker image is removed so
+                    // the latest is pulled. The output of the
+                    // build will be copied to the 'build_output'
+                    // subdirectory.
+                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
+                    sh '''
+                        ./build.sh ${WORKSPACE}
+                    '''
+                }
 			}
 		}
 
@@ -74,7 +73,7 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "*${env.JOB_NAME}*: ${currentBuild.result}\n Version: $PIT_SLUG\nBuild URL:{$env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}* Version: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
@@ -87,7 +86,8 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "*${env.JOB_NAME}*: ${currentBuild.result}\n Version: $PIT_SLUG\nBuild URL:{$env.BUILD_URL}\n")
+                env.GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}* Version: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
