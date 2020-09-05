@@ -19,6 +19,8 @@ pipeline {
 		PRODUCT = "internal"
 		// Set the target for building
 		TARGET_OS = "sle15_sp2_ncn"
+        PIT_SLUG = ""
+
 	}
 
 	agent {
@@ -46,7 +48,13 @@ pipeline {
 				// the latest is pulled. The output of the
 				// build will be copied to the 'build_output'
 				// subdirectory.
-				sh "./build.sh ${WORKSPACE}"
+				sh '''
+                    export PIT_VERSION=$(cat .version)
+                    export PIT_TIMESTAMP=$(date -u '+%Y%m%d%H%M%S')
+                    export PIT_HASH=$(git log -n 1 --pretty=format:'%h')
+                    export PIT_SLUG="${PIT_VERSION}-${PIT_TIMESTAMP}-g${PIT_HASH}"
+				    ./build.sh ${WORKSPACE}
+                '''
 			}
 		}
 
@@ -67,7 +75,7 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\n}")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "*${env.JOB_NAME}*: ${currentBuild.result}\n Version: ${env.PIT_SLUG}\nBuild URL:{$env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
@@ -80,7 +88,7 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\nDescription:\n\nBuild failed.\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "*${env.JOB_NAME}*: ${currentBuild.result}\n Version: ${env.PIT_SLUG}\nBuild URL:{$env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
