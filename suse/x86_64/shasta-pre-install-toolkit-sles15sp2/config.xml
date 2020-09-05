@@ -102,8 +102,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="ca-certificates-mozilla"/>
         <package name="checkmedia"/>
         <package name="createrepo_c"/>
+        <package name="curl"/>
         <package name="dhcp-client"/>
-        <package name="dnsmasq"/>
         <package name="ethtool"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
@@ -130,17 +130,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="pciutils"/>
         <package name="podman"/>
         <package name="python"/>
-        <package name="python3-click"/>
-        <package name="python3-curses"/>
-        <package name="python3-ipaddr"/>
-        <package name="python3-Jinja2"/>
-        <package name="python3-lxml"/>
-        <package name="python3-MarkupSafe"/>
-        <package name="python3-netaddr"/>
-        <package name="python3-pexpect"/>
-        <package name="python3-requests"/>
-        <package name="python3-rpm"/>
-        <package name="python3-sip"/>
         <package name="rsync"/>
         <package name="screen"/>
         <package name="shim"/>
