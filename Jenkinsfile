@@ -73,7 +73,7 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}* Version: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}*\nVersion: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
@@ -87,7 +87,7 @@ pipeline {
 		failure {
 			script {
                 env.GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}* Version: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}*\nVersion: ${env.BUILD_ID}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
