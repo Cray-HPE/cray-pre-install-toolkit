@@ -7,6 +7,14 @@ else
 fi
 
 DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-shasta-pre-install-toolkit:latest"
+BUILD_OUTPUT=${WORKSPACE}/build_output
+
+# Get x.y.z version from .version file
+export PIT_VERSION=$(cat .version)
+# Get a timestamp for this build based on this rename operation
+export PIT_TIMESTAMP=$(date -u '+%Y%m%d%H%M%S')
+# Get HEAD commit ID for the branch used in build
+export PIT_HASH=$(git log -n 1 --pretty=format:'%h')
 
 # If the image already exists on the node,
 # remove it. If the image is in use by a
@@ -24,12 +32,16 @@ fi
 # the container at /base/build_output. That
 # translates into ${WORKSPACE}/build_output
 # outside the container.
-docker run -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
+docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH  -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
 # Rename the files to match Cray versioning
-./img-rename.sh build_output/*
-[[ $? -ne 0 ]] && echo "Failed: img-rename.sh" && exit 1
-
+for f in $BUILD_OUTPUT/*; do
+    new="${f/CRAY.VERSION.HERE/${PIT_VERSION}-${PIT_TIMESTAMP}-g${PIT_HASH}}"
+    if [[ "$f" != "$new" ]]; then
+        mv "$f" "$new"
+	[[ $? -ne 0 ]] && echo "Failed: rename of image $f to $new" && exit 1
+    fi
+done
 
 exit 0
