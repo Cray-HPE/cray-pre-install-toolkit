@@ -119,7 +119,7 @@ pipeline {
 		failure {
             notifyBuildResult(headline: "FAILED")
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
