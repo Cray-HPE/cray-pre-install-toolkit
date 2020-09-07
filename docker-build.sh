@@ -18,8 +18,11 @@ save_build_dir () {
 trap save_build_dir ERR
 
 set -ex
-
-DESC_DIR=suse/x86_64/shasta-pre-install-toolkit-sles15sp2
+# If TARGET_OS is defined, it's likely from automation and needs the underscores striped.
+if [[ -n $TARGET_OS ]]; then
+  TARGET_OS="$(echo $TARGET_OS | tr -d '_')"
+fi
+DESC_DIR=suse/${ARCH:-x86_64}/shasta-pre-install-toolkit-${TARGET_OS:-sle15sp2}
 RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base

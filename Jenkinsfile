@@ -14,12 +14,11 @@ pipeline {
 
 	environment {
 		LATEST_NAME="shasta-pre-install-toolkit-latest"
-
 		// Set product family
 		PRODUCT = "internal"
 		// Set the target for building
 		TARGET_OS = "sle15_sp2_ncn"
-
+		ARCH = "x86_64"
 	}
 
 	agent {
@@ -32,7 +31,7 @@ pipeline {
 		timeout(time: 240, unit: 'MINUTES')
 
 		// Don't fill up the build server with unnecessary cruft
-		buildDiscarder(logRotator(numToKeepStr: '5'))
+		buildDiscarder(logRotator(numToKeepStr: '20'))
 
 		// Don't bog down the build pipeline; only build on push and manuals or other human intent.
 		disableConcurrentBuilds()
@@ -40,6 +39,21 @@ pipeline {
 	}
 
 	stages {
+		stage('PREP: ISO NAME') {
+		    steps {
+		        script {
+		            // Define these vars here so they're mutable (vs. global).
+                    env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
+                    env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+                    env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
+                    env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
+                    echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
+                    slackNotify(channel: "metal-build", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `Starting`")
+                }
+            }
+        }
+
 		stage('BUILD: Build Image') {
 			steps {
 			    script {
@@ -48,12 +62,6 @@ pipeline {
                     // the latest is pulled. The output of the
                     // build will be copied to the 'build_output'
                     // subdirectory.
-                    env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
-                    env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
-                    env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
-                    env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
-                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
-                    echo "${env.GIT_REPO_NAME}-sles15sp2.x86_64-${env.PIT_SLUG}.iso"
                     sh '''
                         ./build.sh ${WORKSPACE}
                     '''
@@ -76,9 +84,14 @@ pipeline {
 	}
 
 	post('Post Run Conditions') {
+        always {
+            script {
+                currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
+            }
+        }
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
@@ -90,8 +103,9 @@ pipeline {
 		}
 
 		fixed {
+            notifyBuildResult(headline: "FIXED")
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
+				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
 			}
 
 			// Delete the 'build' directory
@@ -103,6 +117,7 @@ pipeline {
 		}
 
 		failure {
+            notifyBuildResult(headline: "FAILED")
 			script {
 				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}

@@ -4,7 +4,7 @@ WARNING: Please consult the README.md file in the top level directory of
      this repo for instructions on modifying this file.
 -->
 
-<image schemaversion="6.8" name="shasta-pre-install-toolkit-sles15sp2">
+<image schemaversion="6.8" name="shasta-pre-install-toolkit-sle15sp2">
     <description type="system">
         <author>Russell Bunch</author>
         <contact>rustydb@hpe.com</contact>
