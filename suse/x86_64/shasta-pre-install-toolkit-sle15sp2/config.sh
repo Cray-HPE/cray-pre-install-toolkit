@@ -47,6 +47,12 @@ zypper \
   shasta-instance-control
 
 #======================================
+# Cache docker images.
+#--------------------------------------
+podman pull sonatype/nexus
+podman pull dtr.dev.cray.com/metal/cloud-basecamp
+
+#======================================
 # Activate services
 #--------------------------------------
 suseInsertService apache2
