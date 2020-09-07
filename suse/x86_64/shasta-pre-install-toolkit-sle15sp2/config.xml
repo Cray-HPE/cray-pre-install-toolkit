@@ -94,7 +94,6 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <packages type="image">
         <!-- Section: SUSE Packages -->
-        <package name="apache2"/>
         <package name="bash-completion"/>
         <package name="biosdevname"/>
         <package name="blog"/>

@@ -47,7 +47,6 @@ zypper \
 #======================================
 # Activate services
 #--------------------------------------
-suseInsertService apache2
 suseInsertService basecamp
 suseInsertService dnsmasq
 suseInsertService nexus

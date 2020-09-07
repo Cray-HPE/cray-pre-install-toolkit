@@ -6,9 +6,8 @@ This is the Preinstall Toolkit.
 
 * [Usage](#usage)
     * [Services](#services)
-      * [Apache2](#configure-apache2)
-        * [Bring Your Own Artifacts!](#bring-your-own-artifacts)
       * [Basecamp](#configure-basecamp)
+        * [Bring Your Own Artifacts!](#bring-your-own-artifacts)
       * [DHCP/TFPT/DNS (DNSMasq)](#configure-dnsmasq)
     * [Interfaces](#interfaces)
       * [lan0](#lan0---internalcray-mgmt-network)
