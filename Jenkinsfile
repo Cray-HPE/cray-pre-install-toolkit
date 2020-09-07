@@ -8,7 +8,7 @@
 pipeline {
 // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
     triggers {
-        upstream(upstreamProjects: 'basecamp,ipxe', threshold: hudson.model.Result.SUCCESS)
+        upstream(upstreamProjects: 'basecamp,ipxe,shasta-pre-install-toolkit-builder', threshold: hudson.model.Result.SUCCESS)
         cron('@daily')
      }
 
@@ -19,6 +19,7 @@ pipeline {
 		PRODUCT = "internal"
 		// Set the target for building
 		TARGET_OS = "sle15_sp2_ncn"
+
 	}
 
 	agent {
@@ -41,12 +42,22 @@ pipeline {
 	stages {
 		stage('BUILD: Build Image') {
 			steps {
-				// Run the build script. It will ensure
-				// any cached docker image is removed so
-				// the latest is pulled. The output of the
-				// build will be copied to the 'build_output'
-				// subdirectory.
-				sh "./build.sh ${WORKSPACE}"
+			    script {
+                    // Run the build script. It will ensure
+                    // any cached docker image is removed so
+                    // the latest is pulled. The output of the
+                    // build will be copied to the 'build_output'
+                    // subdirectory.
+                    env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
+                    env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+                    env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+                    env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
+                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
+                    echo "${env.GIT_REPO_NAME}-sles15sp2.x86_64-${env.PIT_SLUG}.iso"
+                    sh '''
+                        ./build.sh ${WORKSPACE}
+                    '''
+                }
 			}
 		}
 
@@ -67,7 +78,20 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\n}")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
+			}
+
+			// Delete the 'build' directory
+			dir('build') {
+				// the 'deleteDir' command recursively deletes the
+				// current directory
+				deleteDir()
+			}
+		}
+
+		fixed {
+			script {
+				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
@@ -80,7 +104,7 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Results: ${env.JOB_NAME}\n${env.BUILD_URL}\nDescription:\n\nBuild failed.\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
