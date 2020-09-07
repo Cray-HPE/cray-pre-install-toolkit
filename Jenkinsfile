@@ -89,9 +89,14 @@ pipeline {
                 currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
             }
         }
-		success {
+
+		fixed {
+            notifyBuildResult(headline: "FIXED")
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
+                // Set to true so the 'success' post section is skipped when the build result is 'fixed'
+                // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
+                skipSuccess = true
 			}
 
 			// Delete the 'build' directory
@@ -102,13 +107,9 @@ pipeline {
 			}
 		}
 
-		fixed {
-            notifyBuildResult(headline: "FIXED")
+		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
-                // Set to true so the 'success' post section is skipped when the build result is 'fixed'
-                // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
-                skipSuccess = true
+				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
