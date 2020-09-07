@@ -48,6 +48,10 @@ pipeline {
                     // the latest is pulled. The output of the
                     // build will be copied to the 'build_output'
                     // subdirectory.
+                    env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
+                    env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+                    env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+                    env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
                     env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
                     echo "${env.GIT_REPO_NAME}-${env.PIT_SLUG}.iso"
                     sh '''
@@ -74,7 +78,20 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}*\nSlug: ${PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+			}
+
+			// Delete the 'build' directory
+			dir('build') {
+				// the 'deleteDir' command recursively deletes the
+				// current directory
+				deleteDir()
+			}
+		}
+
+		fixed {
+			script {
+				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
@@ -87,7 +104,7 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${GIT_BRANCH}*\nSlug: ${PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
 			}
 
 			// Delete the 'build' directory
