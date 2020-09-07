@@ -53,7 +53,7 @@ pipeline {
                     env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
                     env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
                     env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
-                    echo "${env.GIT_REPO_NAME}-${env.PIT_SLUG}.iso"
+                    echo "${env.GIT_REPO_NAME}-sles15sp2.x86_64-${env.PIT_SLUG}.iso"
                     sh '''
                         ./build.sh ${WORKSPACE}
                     '''
@@ -78,7 +78,7 @@ pipeline {
 	post('Post Run Conditions') {
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
@@ -91,7 +91,7 @@ pipeline {
 
 		fixed {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "warning", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n`Status: ${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
@@ -104,7 +104,7 @@ pipeline {
 
 		failure {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*: `${currentBuild.result}`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\n")
+				slackNotify(channel: "metal-build", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*`\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory
