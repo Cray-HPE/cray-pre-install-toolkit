@@ -5,6 +5,8 @@
 // Jenkins Global Variables are enabled in our CI mode
 @Library('dst-shared@master') _
 
+def skipSuccess = false
+
 pipeline {
 // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
     triggers {
@@ -109,7 +111,9 @@ pipeline {
 
 		success {
 			script {
-				slackNotify(channel: "metal-build", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+                if (skipSuccess != true) {
+                    slackNotify(channel: "metal-build", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+                }
 			}
 
 			// Delete the 'build' directory
