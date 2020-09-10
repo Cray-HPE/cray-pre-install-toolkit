@@ -3,8 +3,8 @@
 set -eu
 if [ $# -lt 1 ]; then
 cat << EOM >&2
-  usage: sicfg-nic-vlan004.sh CIDR|IP/MASQ
-  i.e.: sicfg-nic-vlan004.sh 10.254.1.1/17
+  usage: sic-setup-vlan004.sh CIDR|IP/MASQ
+  i.e.: sic-setup-vlan004.sh 10.254.1.1/17
 EOM
   exit 1
 fi

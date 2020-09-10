@@ -89,7 +89,11 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 
     <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="99" imageinclude="true">
-        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Product-SLES/"/>
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Product-HPC/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="cray-sles15-sp2-ncn" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/shasta-general/rpms/cray-sles15-sp2-ncn/"/>
     </repository>
 
     <packages type="image">
