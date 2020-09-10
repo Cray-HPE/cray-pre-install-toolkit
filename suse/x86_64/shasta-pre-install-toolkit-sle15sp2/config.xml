@@ -41,7 +41,10 @@ WARNING: Please consult the README.md file in the top level directory of
                 <oem-device-filter>/dev/ram</oem-device-filter>
                 <oem-multipath-scan>false</oem-multipath-scan>
             </oemconfig>
-            <machine memory="512" guestOS="suse" HWversion="4">
+            <machine guestOS="suse"
+                     HWversion="4"
+                     ncpus="2"
+                     memory="1024">
                 <vmdisk id="0" controller="ide"/>
                 <vmnic driver="e1000" interface="0" mode="bridged"/>
             </machine>
@@ -84,8 +87,16 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-Server-Applications/"/>
     </repository>
 
+    <repository type="rpm-md" alias="SLES15_Module_HPC" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Module-HPC/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="SLES15_Module_HPC_Updates" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Updates/SLE-Module-HPC/"/>
+    </repository>
+
     <repository type="rpm-md" alias="SLES15_Product_SLES" priority="99" imageinclude="true">
-        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Product-SLES/"/>
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/os/rpms/sles/15sp2-all/Products/SLE-Product-HPC/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLES15_Product_SLES_Updates" priority="99" imageinclude="true">
@@ -105,6 +116,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="ca-certificates-mozilla"/>
         <package name="checkmedia"/>
         <package name="createrepo_c"/>
+        <package name="conman"/>
         <package name="curl"/>
         <package name="dhcp-client"/>
         <package name="ethtool"/>
@@ -145,6 +157,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="vim"/>
         <package name="wget"/>
         <package name="which"/>
+        <package name="wireshark"/>
     </packages>
     <packages type="iso">
         <package name="branding-SLE"/>
@@ -160,7 +173,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="cracklib-dict-full"/>
         <package name="filesystem"/>
         <package name="glibc-locale"/>
-        <package name="sles-release"/>
+        <package name="SLE_HPC-release"/>
         <package name="udev"/>
     </packages>
 </image>
