@@ -133,6 +133,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="iputils"/>
         <package name="jq" />
         <package name="kernel-default"/>
+        <package name="kernel-firmware"/>
         <package name="less"/>
         <package name="lshw" />
         <package name="lvm2"/>
