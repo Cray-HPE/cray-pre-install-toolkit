@@ -16,6 +16,8 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/can.conf
 # CAN:
+server=/can/${router}
+address=/can/${router}
 local=/spit.can/
 interface=vlan007
 dhcp-option=interface:vlan007,option:router,$router
