@@ -43,6 +43,7 @@ zypper \
   cray-metal-basecamp \
   cray-metal-ipxe \
   cray-metal-nexus
+#  cray-metal-docs \
 
 #======================================
 # Activate services

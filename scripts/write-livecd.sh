@@ -34,7 +34,7 @@ cow_size=0
 dev_size=0
 
 # URL or path for ISO. Defaults to latest ISO build on master branch
-iso_uri="http://$car/artifactory/internal/SHASTA-OS/sle15_sp1_ncn/x86_64/dev/master/kernel-team/shasta-pre-install-toolkit-latest.iso"
+iso_uri="http://$car/artifactory/internal/MTL/sle15_sp2_ncn/x86_64/dev/master/metal-team/shasta-pre-install-toolkit-latest.iso"
 
 # Initial empty values for usb device and iso file
 usb=""
