@@ -19,6 +19,7 @@ cat << EOF > /etc/dnsmasq.d/mtl.conf
 server=/mtl/${router}
 address=/mtl/${router}
 domain=mtl,${range_start},${range_end},local
+dhcp-option=option:domain-search,mtl
 interface=bond0
 dhcp-option=interface:bond0,option:dns-server,${router}
 dhcp-option=interface:bond0,option:ntp-server,${router}
