@@ -42,14 +42,14 @@ zypper \
   -y \
   cray-metal-basecamp \
   cray-metal-ipxe \
+  cray-metal-docs \
   cray-metal-nexus
-#  cray-metal-docs \
-
 #======================================
 # Activate services
 #--------------------------------------
 suseInsertService apache2
 suseInsertService basecamp
+suseInsertService conman
 suseInsertService dnsmasq
 suseInsertService nexus
 suseInsertService sshd
