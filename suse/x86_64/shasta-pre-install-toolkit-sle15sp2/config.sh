@@ -48,10 +48,8 @@ zypper \
 # Activate services
 #--------------------------------------
 suseInsertService apache2
-suseInsertService basecamp
 suseInsertService conman
 suseInsertService dnsmasq
-suseInsertService nexus
 suseInsertService sshd
 
 #======================================
