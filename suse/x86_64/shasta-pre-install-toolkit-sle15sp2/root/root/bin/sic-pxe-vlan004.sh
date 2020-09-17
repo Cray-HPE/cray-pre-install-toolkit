@@ -19,6 +19,7 @@ cat << EOF > /etc/dnsmasq.d/hmn.conf
 server=/hmn/${router}
 address=/hmn/${router}
 domain=hmn,${range_start},${range_end},local
+dhcp-option=option:domain-search,hmn
 interface=vlan004
 dhcp-option=interface:vlan004,option:dns-server,$router
 dhcp-option=interface:vlan004,option:ntp-server,$router
