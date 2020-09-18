@@ -19,7 +19,7 @@ cat << EOF > /etc/dnsmasq.d/nmn.conf
 server=/nmn/${router}
 address=/nmn/${router}
 domain=nmn,${range_start},${range_end},local
-dhcp-option=option:domain-search,nmn
+dhcp-option=interface:vlan002,option:domain-search,nmn
 interface=vlan002
 dhcp-option=interface:vlan002,option:dns-server,${router}
 dhcp-option=interface:vlan002,option:ntp-server,${router}

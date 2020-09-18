@@ -18,7 +18,7 @@ cat << EOF > /etc/dnsmasq.d/can.conf
 # CAN:
 server=/can/${router}
 address=/can/${router}
-dhcp-option=option:domain-search,can
+dhcp-option=interface:vlan007,option:domain-search,can
 interface=vlan007
 dhcp-option=interface:vlan007,option:router,$router
 dhcp-range=interface:vlan007,${range_start},${range_end},${lease_ttl}
