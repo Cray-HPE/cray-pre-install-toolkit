@@ -18,7 +18,7 @@ sed -i 's/^IPADDR=.*/IPADDR="'"${addr}"'\/'"${mask}"'"/g' /etc/sysconfig/network
 sed -i 's/^PREFIXLEN=.*/PREFIXLEN="'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-lan0
 sed -i 's/^BRIDGE_PORTS=.*/BRIDGE_PORTS="'"$*"'"/g' /etc/sysconfig/network/ifcfg-lan0
 echo "default $gateway - -" >/etc/sysconfig/network/ifroute-lan0
-wicked ifreload lan0
 sed -i 's/NETCONFIG_DNS_STATIC_SERVERS=.*/NETCONFIG_DNS_STATIC_SERVERS="'"${dns:-9.9.9.9}"'"/' /etc/sysconfig/network/config
 netconfig update -f
+wicked ifreload lan0
 systemctl restart wickedd-nanny # Shake out daemon handling of new lan0 name.
