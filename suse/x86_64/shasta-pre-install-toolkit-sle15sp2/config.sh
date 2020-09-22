@@ -40,10 +40,12 @@ zypper \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/x86_64/dev/master/ \
   in \
   -y \
-  cray-metal-basecamp \
+  basecamp \
   cray-metal-ipxe \
   cray-metal-docs-ncn \
-  cray-metal-nexus
+  cray-metal-nexus \
+  shasta-instance-control
+
 #======================================
 # Activate services
 #--------------------------------------
