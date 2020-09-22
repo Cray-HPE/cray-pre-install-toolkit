@@ -37,13 +37,14 @@ suseSetupProduct
 zypper \
   --no-gpg-checks \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/noarch/dev/master/ \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/x86_64/dev/master/ \
   in \
   -y \
   basecamp \
-  cray-metal-ipxe \
-  cray-metal-docs-ncn \
+  metal-ipxe \
   cray-metal-nexus \
+  metal-docs-ncn \
   shasta-instance-control
 
 #======================================
