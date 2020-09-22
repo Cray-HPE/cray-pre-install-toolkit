@@ -15,4 +15,5 @@ sed -i 's/^IPADDR=.*/IPADDR="'"${addr}"'\/'"${mask}"'"/g' /etc/sysconfig/network
 sed -i 's/^PREFIXLEN=.*/PREFIXLEN="'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-vlan002
 # FIXME: template this, use the automation key and replace the whole line.
 printf '% -15s % -65s\n' "$addr" 'spit.nmn spit #${AUTOMATION}' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'packages.nmn packages #${AUTOMATION}' >> /etc/hosts
 wicked ifreload vlan002
