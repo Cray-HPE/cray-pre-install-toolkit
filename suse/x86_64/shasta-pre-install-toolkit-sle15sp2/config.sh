@@ -43,8 +43,8 @@ zypper \
   -y \
   basecamp \
   metal-ipxe \
-  cray-metal-nexus \
   metal-docs-ncn \
+  nexus \
   shasta-instance-control
 
 #======================================
