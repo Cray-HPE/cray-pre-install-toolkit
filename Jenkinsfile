@@ -10,7 +10,7 @@ def skipSuccess = false
 pipeline {
 // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
     triggers {
-        upstream(upstreamProjects: 'basecamp,ipxe,shasta-pre-install-toolkit-builder', threshold: hudson.model.Result.SUCCESS)
+        upstream(upstreamProjects: 'basecamp,ipxe,shasta-pre-install-toolkit-builder,shasta-instance-control,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
         cron('@daily')
      }
 
