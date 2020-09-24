@@ -50,9 +50,9 @@ WARNING: Please consult the README.md file in the top level directory of
             </machine>
         </type>
     </preferences>
-<!-- FIXME: Need to remove this password. -->
     <users>
-        <user password="$2y$12$zIitnBqEOgiB9FtnGIKjyO0wSuqutDKSeCwp8m9dEK4zaS/lnAk/W" home="/root" name="root" groups="root"/>
+        <!-- Set root user password to empty string. -->
+        <user pwdformat="plain" password="" home="/root" name="root" groups="root"/>
     </users>
 
     <repository type="rpm-md" alias="SLES15_Module_Basesystem" priority="99" imageinclude="true">

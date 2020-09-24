@@ -83,6 +83,12 @@ echo "spit" > /etc/hostname
 #--------------------------------------
 echo "alias ll='ls -l --color'" >> /root/.bashrc
 
+#======================================
+# Force root user to change password
+# at first login.
+#--------------------------------------
+chage -d 0 root
+
 #==========================================
 # remove package docs
 #------------------------------------------
