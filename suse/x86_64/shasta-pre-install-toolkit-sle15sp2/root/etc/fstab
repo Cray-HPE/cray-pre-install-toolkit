@@ -1,0 +1,1 @@
+LABEL=PITDATA     /var/www/ephemeral        ext4  noexec,noatime   0  2
