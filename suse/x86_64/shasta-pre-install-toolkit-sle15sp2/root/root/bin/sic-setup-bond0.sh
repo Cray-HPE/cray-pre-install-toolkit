@@ -18,6 +18,11 @@ sed -i 's/^PREFIXLEN=.*/PREFIXLEN="'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-
 sed -i 's/^BONDING_SLAVE0=.*/BONDING_SLAVE0="'"${dev1}"'"/g' /etc/sysconfig/network/ifcfg-bond0
 sed -i 's/^BONDING_SLAVE1=.*/BONDING_SLAVE1="'"${dev2}"'"/g' /etc/sysconfig/network/ifcfg-bond0
 # FIXME: template this, use the automation key and replace the whole line.
-printf '% -15s % -65s\n' "$addr" 'spit.local spit #${AUTOMATION}' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'spit.mtl spit #--AUTOMATION' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'packages.mtl packages #--AUTOMATION' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'registry.mtl registry #--AUTOMATION' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'spit.local spit #--AUTOMATION' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'packages.local packages #--AUTOMATION' >> /etc/hosts
+printf '% -15s % -65s\n' "$addr" 'registry.local registry #--AUTOMATION' >> /etc/hosts
 wicked ifreload bond0
 systemctl restart wickedd-nanny
