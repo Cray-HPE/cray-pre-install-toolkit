@@ -135,8 +135,10 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="kernel-default"/>
         <package name="kernel-firmware"/>
         <package name="less"/>
+        <package name="loftsman"/>
         <package name="lshw" />
         <package name="lvm2"/>
+        <package name="manifestgen"/>
         <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
