@@ -52,6 +52,7 @@ zypper \
 #--------------------------------------
 podman pull sonatype/nexus
 podman pull dtr.dev.cray.com/metal/cloud-basecamp
+podman pull dtr.dev.cray.com/cray/cray-nexus-setup
 
 #======================================
 # Activate services
