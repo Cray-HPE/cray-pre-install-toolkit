@@ -5,7 +5,7 @@ set +x
 if [ $# -lt 2 ]; then
 cat << EOM >&2
   usage: sic-setup-lan0.sh CIDR|IP/MASQ GATEWAY DEVICE DNS1 DNS2
-  i.e.: sic-setup-lan0.sh 172.29.16.5/20 172.29.16.1 172.38.84.40 em1 [em2]
+  i.e.: sic-setup-lan0.sh 172.29.16.5/20 172.29.16.1 172.30.84.40 em1 [em2]
 EOM
   exit 1
 fi
