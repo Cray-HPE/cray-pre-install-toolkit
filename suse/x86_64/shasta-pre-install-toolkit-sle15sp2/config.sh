@@ -38,7 +38,7 @@ zypper \
   --no-gpg-checks \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
   --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/noarch/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/x86_64/dev/master/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/noarch/dev/master/ \
   in \
   -y \
   basecamp \
