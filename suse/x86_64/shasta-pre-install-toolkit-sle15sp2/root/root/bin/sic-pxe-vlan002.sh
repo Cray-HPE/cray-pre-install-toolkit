@@ -16,8 +16,8 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/nmn.conf
 # NMN:
-server=/nmn/${router%/*}
-address=/nmn/${router%/*}
+server=/nmn/
+address=/nmn/
 domain=nmn,${range_start},${range_end},local
 dhcp-option=interface:vlan002,option:domain-search,nmn
 interface=vlan002

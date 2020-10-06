@@ -16,8 +16,8 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/hmn.conf
 # HMN:
-server=/hmn/${router%/*}
-address=/hmn/${router%/*}
+server=/hmn/
+address=/hmn/
 domain=hmn,${range_start},${range_end},local
 dhcp-option=interace:vlan004,option:domain-search,hmn
 interface=vlan004
