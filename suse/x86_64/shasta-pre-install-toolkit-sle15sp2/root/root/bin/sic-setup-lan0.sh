@@ -26,4 +26,3 @@ rDNS_FQDN=$(nslookup $addr - $(tail -n 1 /etc/resolv.conf | awk '{print $NF}') |
 rDNS=$(echo $rDNS_FQDN | cut -d '.' -f1)
 hostnamectl set-hostname ${rDNS}-spit
 echo
-printf '% -15s % -65s\n' "$addr" ${rDNS_FQDN} ${rDNS} ${rDNS}-spit #--AUTOMATION' >> /etc/hosts
