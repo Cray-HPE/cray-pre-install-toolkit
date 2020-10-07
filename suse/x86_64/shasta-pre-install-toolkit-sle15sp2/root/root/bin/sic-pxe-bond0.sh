@@ -16,8 +16,8 @@ lease_ttl="${4:-10m}"
 
 cat << EOF > /etc/dnsmasq.d/mtl.conf
 # MTL:
-server=/mtl/${router%/*}
-address=/mtl/${router%/*}
+server=/mtl/
+address=/mtl/
 domain=mtl,${range_start},${range_end},local
 dhcp-option=interface:bond0,option:domain-search,mtl
 interface=bond0
