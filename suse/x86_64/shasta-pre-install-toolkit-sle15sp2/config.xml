@@ -22,7 +22,7 @@ WARNING: Please consult the README.md file in the top level directory of
               hybridpersistent="true"
               hybridpersistent_filesystem="ext4"
               volid="SPITLIVE"
-              kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepages=never rd.shell"
+              kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell"
               mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>
