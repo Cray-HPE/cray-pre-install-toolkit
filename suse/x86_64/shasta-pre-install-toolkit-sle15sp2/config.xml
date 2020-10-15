@@ -137,6 +137,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="less"/>
         <package name="loftsman"/>
         <package name="lshw" />
+        <package name="lsof" />
         <package name="lvm2"/>
         <package name="manifestgen"/>
         <package name="minicom"/>
