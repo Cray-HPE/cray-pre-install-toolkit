@@ -19,8 +19,11 @@ cat << EOF > /etc/dnsmasq.d/hmn.conf
 server=/hmn/
 address=/hmn/
 domain=hmn,${range_start},${range_end},local
+interface-name=spit.hmn,vlan004
 dhcp-option=interace:vlan004,option:domain-search,hmn
 interface=vlan004
+cname=packages.hmn,spit.hmn
+cname=registry.hmn,spit.hmn
 dhcp-option=interface:vlan004,option:dns-server,${router%/*}
 dhcp-option=interface:vlan004,option:ntp-server,${router%/*}
 dhcp-option=interface:vlan004,option:router,${router%/*}

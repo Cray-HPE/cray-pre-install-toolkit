@@ -13,8 +13,4 @@ addr="$(echo $cidr | cut -d '/' -f 1)"
 mask="$(echo $cidr | cut -d '/' -f 2)"
 sed -i 's/^IPADDR=.*/IPADDR="'"${addr}"'\/'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-vlan004
 sed -i 's/^PREFIXLEN=.*/PREFIXLEN="'"${mask}"'"/g' /etc/sysconfig/network/ifcfg-vlan004
-# FIXME: template this, use the automation key and replace the whole line.
-printf '% -15s % -65s\n' "$addr" 'spit.hmn spit #--AUTOMATION' >> /etc/hosts
-printf '% -15s % -65s\n' "$addr" 'packages.hmn packages #--AUTOMATION' >> /etc/hosts
-printf '% -15s % -65s\n' "$addr" 'registry.hmn registry #--AUTOMATION' >> /etc/hosts
 wicked ifreload vlan004
