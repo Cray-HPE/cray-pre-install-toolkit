@@ -95,3 +95,10 @@ chage -d 0 root
 #------------------------------------------
 rm -rf /usr/share/doc/packages/*
 rm -rf /usr/share/doc/manual/*
+
+# Goss is used during packer builds, installs, and continuously to check
+# NCN health.
+goss_version="0.3.13"
+echo "Installing goss"
+curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
+chmod a+x /usr/bin/goss

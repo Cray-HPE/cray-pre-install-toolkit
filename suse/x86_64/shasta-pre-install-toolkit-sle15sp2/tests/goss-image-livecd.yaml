@@ -1,0 +1,16 @@
+service:
+  apache2:
+    enabled: true
+    running: false
+  basecamp:
+    enabled: true
+    running: false
+  dnsmasq:
+    enabled: true
+    running: false
+  nexus:
+    enabled: true
+    running: false
+  serial-getty:
+    enabled: true
+    running: false
