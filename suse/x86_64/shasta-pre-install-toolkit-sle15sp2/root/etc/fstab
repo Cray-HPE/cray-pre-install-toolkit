@@ -1,1 +1,2 @@
-LABEL=PITDATA     /var/www/ephemeral        ext4  noexec,noatime   0  2
+LABEL=PITDATA     /var/www/ephemeral           ext4   noexec,noatime              0  2
+tmpfs             /var/lib/containers/storage  tmpfs  auto,nodev,nosuid,size=64g  0  0
