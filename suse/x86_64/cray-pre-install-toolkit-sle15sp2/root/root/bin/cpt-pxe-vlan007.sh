@@ -4,8 +4,8 @@ set -eu
 
 if [ $# -lt 3 ]; then
 cat << EOM >&2
-  usage: sic-pxe-vlan007.sh ROUTER_IP DHCP_RANGE_START_IP DHCP_RANGE_END_IP [DHCP_LEASE_TTL]
-  i.e.: sic-pxe-vlan007.sh 10.102.9.111 10.102.9.4 10.102.9.109 10m
+  usage: csi-pxe-vlan007.sh ROUTER_IP DHCP_RANGE_START_IP DHCP_RANGE_END_IP [DHCP_LEASE_TTL]
+  i.e.: csi-pxe-vlan007.sh 10.102.9.111 10.102.9.4 10.102.9.109 10m
 EOM
   exit 1
 fi
@@ -19,10 +19,10 @@ cat << EOF > /etc/dnsmasq.d/can.conf
 server=/can/
 address=/can/
 dhcp-option=interface:vlan007,option:domain-search,can
-interface-name=spit.can,vlan007
+interface-name=init.can,vlan007
 interface=vlan007
-cname=packages.can,spit.can
-cname=registry.can,spit.can
+cname=packages.can,init.can
+cname=registry.can,init.can
 dhcp-option=interface:vlan007,option:router,${router%/*}
 dhcp-range=interface:vlan007,${range_start},${range_end},${lease_ttl}
 EOF

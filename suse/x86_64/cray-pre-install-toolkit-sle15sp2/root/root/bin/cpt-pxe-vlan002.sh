@@ -4,8 +4,8 @@ set -eu
 
 if [ $# -lt 3 ]; then
 cat << EOM >&2
-  usage: sic-pxe-vlan002.sh ROUTER_IP DHCP_RANGE_START_IP DHCP_RANGE_END_IP [DHCP_LEASE_TTL]
-  i.e.: sic-pxe-vlan002.sh 10.252.1.1 10.252.2.1 10.252.127.254 10m
+  usage: csi-pxe-vlan002.sh ROUTER_IP DHCP_RANGE_START_IP DHCP_RANGE_END_IP [DHCP_LEASE_TTL]
+  i.e.: csi-pxe-vlan002.sh 10.252.1.1 10.252.2.1 10.252.127.254 10m
 EOM
   exit 1
 fi
@@ -18,12 +18,12 @@ cat << EOF > /etc/dnsmasq.d/nmn.conf
 # NMN:
 server=/nmn/
 address=/nmn/
-interface-name=spit.nmn,vlan002
+interface-name=init.nmn,vlan002
 domain=nmn,${range_start},${range_end},local
 dhcp-option=interface:vlan002,option:domain-search,nmn
 interface=vlan002
-cname=packages.nmn,spit.nmn
-cname=registry.nmn,spit.nmn
+cname=packages.nmn,init.nmn
+cname=registry.nmn,init.nmn
 dhcp-option=interface:vlan002,option:dns-server,${router%/*}
 dhcp-option=interface:vlan002,option:ntp-server,${router%/*}
 dhcp-option=interface:vlan002,option:router,${router%/*}

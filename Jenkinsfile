@@ -1,4 +1,4 @@
-// Jenkinsfile for building Shasta pre-install-toolkit LiveOS image
+// Jenkinsfile for building the CRAY Pre-install Toolkit LiveOS image
 // via kiwi-ng.
 
 // Jenkins Shared Libraries are implemented in our CI model (https://connect.us.cray.com/confluence/display/DST/Best+Practices+and+How-To%27s)
@@ -10,12 +10,12 @@ def skipSuccess = false
 pipeline {
 // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
     triggers {
-        upstream(upstreamProjects: 'basecamp,ipxe,shasta-pre-install-toolkit-builder,shasta-instance-control,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
+        upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
         cron('@daily')
      }
 
 	environment {
-		LATEST_NAME="shasta-pre-install-toolkit-latest"
+		LATEST_NAME="cray-pre-install-toolkit-latest"
 		// Set product family
 		PRODUCT = "internal"
 		// Set the target for building
