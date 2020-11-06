@@ -96,8 +96,7 @@ chage -d 0 root
 rm -rf /usr/share/doc/packages/*
 rm -rf /usr/share/doc/manual/*
 
-# Goss is used during packer builds, installs, and continuously to check
-# NCN health.
+# Goss is used to validate LiveCD health at builds, installs and runtime.
 goss_version="0.3.13"
 echo "Installing goss"
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
