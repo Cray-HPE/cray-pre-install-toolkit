@@ -18,12 +18,12 @@ cat << EOF > /etc/dnsmasq.d/nmn.conf
 # NMN:
 server=/nmn/
 address=/nmn/
-interface-name=init.nmn,vlan002
+interface-name=pit.nmn,vlan002
 domain=nmn,${range_start},${range_end},local
 dhcp-option=interface:vlan002,option:domain-search,nmn
 interface=vlan002
-cname=packages.nmn,init.nmn
-cname=registry.nmn,init.nmn
+cname=packages.nmn,pit.nmn
+cname=registry.nmn,pit.nmn
 dhcp-option=interface:vlan002,option:dns-server,${router%/*}
 dhcp-option=interface:vlan002,option:ntp-server,${router%/*}
 dhcp-option=interface:vlan002,option:router,${router%/*}

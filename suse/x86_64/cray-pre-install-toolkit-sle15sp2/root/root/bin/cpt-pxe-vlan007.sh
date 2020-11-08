@@ -19,10 +19,10 @@ cat << EOF > /etc/dnsmasq.d/can.conf
 server=/can/
 address=/can/
 dhcp-option=interface:vlan007,option:domain-search,can
-interface-name=init.can,vlan007
+interface-name=pit.can,vlan007
 interface=vlan007
-cname=packages.can,init.can
-cname=registry.can,init.can
+cname=packages.can,pit.can
+cname=registry.can,pit.can
 dhcp-option=interface:vlan007,option:router,${router%/*}
 dhcp-range=interface:vlan007,${range_start},${range_end},${lease_ttl}
 EOF
