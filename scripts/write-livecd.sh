@@ -34,7 +34,7 @@ cow_size=0
 dev_size=0
 
 # URL or path for ISO. Defaults to latest ISO build on master branch
-iso_uri="http://$car/artifactory/internal/MTL/sle15_sp2_ncn/x86_64/dev/master/metal-team/shasta-pre-install-toolkit-latest.iso"
+iso_uri="http://$car/artifactory/internal/MTL/sle15_sp2_ncn/x86_64/dev/master/metal-team/cray-pre-install-toolkit-latest.iso"
 
 # Initial empty values for usb device and iso file
 usb=""
@@ -47,7 +47,7 @@ usage () {
 Usage $name USB-DEVICE ISO-FILE [COW-SIZE]
 
 where:
-    USB-DEVICE  Raw device file of USB flash drive where shasta-livecd
+    USB-DEVICE  Raw device file of USB flash drive where the CRAY-pre-install-toolkit (LiveCD)
                 will be written.
 
     ISO-FILE    Pathname or URL of LiveCD ISO file to write to the usb

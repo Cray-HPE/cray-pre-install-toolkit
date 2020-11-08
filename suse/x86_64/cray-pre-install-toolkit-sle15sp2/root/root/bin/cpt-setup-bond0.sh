@@ -3,8 +3,8 @@
 set -eu
 if [ $# -lt 3 ]; then
 cat << EOM >&2
-    usage: sic-setup-bond0.sh CIDR|IP/MASQ FIRST_BOND_MEMBER SECOND_BOND_MEMBER
-    i.e.: sic-setup-bond0.sh 10.1.1.1/16 p801p1 p801p2
+    usage: csi-setup-bond0.sh CIDR|IP/MASQ FIRST_BOND_MEMBER SECOND_BOND_MEMBER
+    i.e.: csi-setup-bond0.sh 10.1.1.1/16 p801p1 p801p2
 EOM
   exit 1
 fi

@@ -4,8 +4,8 @@ set -eu
 set +x
 if [ $# -lt 2 ]; then
 cat << EOM >&2
-  usage: sic-setup-lan0.sh CIDR|IP/MASQ GATEWAY DEVICE DNS1 DNS2
-  i.e.: sic-setup-lan0.sh 172.29.16.5/20 172.29.16.1 172.30.84.40 em1 [em2]
+  usage: csi-setup-lan0.sh CIDR|IP/MASQ GATEWAY DEVICE DNS1 DNS2
+  i.e.: csi-setup-lan0.sh 172.29.16.5/20 172.29.16.1 172.30.84.40 em1 [em2]
 EOM
   exit 1
 fi
@@ -24,5 +24,5 @@ wicked ifreload lan0
 systemctl restart wickedd-nanny # Shake out daemon handling of new lan0 name.
 rDNS_FQDN=$(nslookup $addr - $(tail -n 1 /etc/resolv.conf | awk '{print $NF}') | awk '{print $NF}')
 rDNS=$(echo $rDNS_FQDN | cut -d '.' -f1)
-hostnamectl set-hostname ${rDNS}-spit
+hostnamectl set-hostname ${rDNS}-init
 echo

@@ -32,7 +32,7 @@ echo "Configure image: [$kiwi_iname]..."
 suseSetupProduct
 
 #======================================
-# Install Cray Specific RPMs
+# Install CRAY Specific RPMs
 #--------------------------------------
 zypper \
   --no-gpg-checks \
@@ -42,10 +42,10 @@ zypper \
   in \
   -y \
   basecamp \
+  cray-site-init \
   metal-ipxe \
   metal-docs-ncn \
-  nexus \
-  shasta-instance-control
+  nexus
 
 #======================================
 # Cache docker images.
@@ -68,16 +68,16 @@ suseInsertService sshd
 baseSetRunlevel 3
 
 #======================================
-# Purge zypper repos, unused for shasta
+# Purge zypper repos, users must BYOR.
 #--------------------------------------
 zypper --verbose clean --all
 rm -r /etc/zypp/repos.d/*
 cp /dev/null /var/log/zypper.log
 
 #======================================
-# Set hostname to spit
+# Set hostname to pit
 #--------------------------------------
-echo "spit" > /etc/hostname
+echo "pit" > /etc/hostname
 
 #======================================
 # Add ll alias to profile
