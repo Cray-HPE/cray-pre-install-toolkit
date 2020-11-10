@@ -101,3 +101,8 @@ goss_version="0.3.13"
 echo "Installing goss"
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
 chmod a+x /usr/bin/goss
+
+# install kubectl on LiveCD
+curl -L "https://storage.googleapis.com/kubernetes-release/release/v1.18.6/bin/linux/amd64/kubectl"
+mv ./kubectl /usr/local/bin
+chmod a+x /usr/local/bin/kubectl
