@@ -1,0 +1,21 @@
+command:
+  check_interface_bond0:
+    exit-status: 0
+    exec: /etc/goss/scripts/check-interface.sh bond0
+    timeout: 10000
+    skip: false
+  check_interface_vlan002:
+    exit-status: 0
+    exec: /etc/goss/scripts/check-interface.sh vlan004
+    timeout: 10000
+    skip: false
+  check_interface_vlan004:
+    exit-status: 0
+    exec: /etc/goss/scripts/check-interface.sh vlan004
+    timeout: 10000
+    skip: false
+  check_interface_vlan007:
+    exit-status: 0
+    exec: /etc/goss/scripts/check-interface.sh vlan004
+    timeout: 10000
+    skip: false
