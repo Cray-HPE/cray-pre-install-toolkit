@@ -1,21 +1,21 @@
 command:
   check_interface_bond0:
     exit-status: 0
-    exec: scripts/check-interface.sh bond0
+    exec: scripts/check-network-interface.sh bond0
     timeout: 10000
     skip: false
   check_interface_vlan002:
     exit-status: 0
-    exec: scripts/check-interface.sh vlan004
+    exec: scripts/check-network-interface.sh vlan004
     timeout: 10000
     skip: false
   check_interface_vlan004:
     exit-status: 0
-    exec: scripts/check-interface.sh vlan004
+    exec: scripts/check-network-interface.sh vlan004
     timeout: 10000
     skip: false
   check_interface_vlan007:
     exit-status: 0
-    exec: scripts/check-interface.sh vlan004
+    exec: scripts/check-network-interface.sh vlan004
     timeout: 10000
     skip: false
