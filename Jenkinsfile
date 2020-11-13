@@ -17,7 +17,7 @@ pipeline {
 	environment {
 		LATEST_NAME="cray-pre-install-toolkit-latest"
 		// Set product family
-		PRODUCT = "internal"
+		PRODUCT = "csm"
 		// Set the target for building
 		TARGET_OS = "sle15_sp2_ncn"
 		ARCH = "x86_64"
