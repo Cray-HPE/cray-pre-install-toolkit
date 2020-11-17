@@ -103,6 +103,7 @@ curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/go
 chmod a+x /usr/bin/goss
 
 # install kubectl on LiveCD
-curl -L "https://storage.googleapis.com/kubernetes-release/release/v1.18.6/bin/linux/amd64/kubectl"
-mv ./kubectl /usr/local/bin
+kubectl_version="1.18.6"
+echo "Installing kubectl"
+curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod a+x /usr/local/bin/kubectl
