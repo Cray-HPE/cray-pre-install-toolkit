@@ -43,6 +43,7 @@ zypper \
   -y \
   basecamp \
   cray-site-init \
+  csm-testing \
   metal-ipxe \
   metal-docs-ncn \
   nexus
