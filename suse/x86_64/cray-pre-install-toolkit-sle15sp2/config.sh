@@ -43,6 +43,7 @@ zypper \
   -y \
   basecamp \
   cray-site-init \
+  craycli-wrapper \
   csm-testing \
   metal-ipxe \
   metal-docs-ncn \
@@ -54,6 +55,7 @@ zypper \
 podman pull sonatype/nexus
 podman pull dtr.dev.cray.com/metal/cloud-basecamp
 podman pull dtr.dev.cray.com/cray/cray-nexus-setup
+podman pull dtr.dev.cray.com/cray/craycli
 
 #======================================
 # Activate services
