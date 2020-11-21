@@ -83,9 +83,13 @@ cp /dev/null /var/log/zypper.log
 echo "pit" > /etc/hostname
 
 #======================================
-# Add ll alias to profile
+# Add custom aliases
 #--------------------------------------
-echo "alias ll='ls -l --color'" >> /root/.bashrc
+cat << EOF >> /root/.bashrc
+alias ip='ip -c'
+alias ll='ls -l --color'
+alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
+EOF
 
 #======================================
 # Force root user to change password
