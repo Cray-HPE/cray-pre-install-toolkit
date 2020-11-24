@@ -108,7 +108,19 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/shasta-general/rpms/cray-sles15-sp2-ncn/"/>
     </repository>
 
+    <repository type="rpm-md" alias="csm-sles15-sp2-ncn" priority="99" imageinclude="true">
+        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/csm/rpms/cray-sles15-sp2-ncn/"/>
+    </repository>
+
     <packages type="image">
+        <!-- Section: CSM Packages -->
+        <package name="basecamp"/>
+        <package name="cray-site-init"/>
+        <package name="craycli-wrapper"/>
+        <package name="docs-csm-install"/>
+        <package name="csm-testing"/>
+        <package name="metal-ipxe"/>
+        <package name="nexus"/>
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="biosdevname"/>
