@@ -32,28 +32,10 @@ echo "Configure image: [$kiwi_iname]..."
 suseSetupProduct
 
 #======================================
-# Install CRAY Specific RPMs
-#--------------------------------------
-zypper \
-  --no-gpg-checks \
-  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/MTL/sle15_sp2_ncn/noarch/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/shasta-premium/SPET/sle15_sp2_ncn/noarch/dev/master/ \
-  in \
-  -y \
-  basecamp \
-  cray-site-init \
-  craycli-wrapper \
-  csm-testing \
-  metal-ipxe \
-  docs-csm-install \
-  nexus
-
-#======================================
 # Cache docker images.
 #--------------------------------------
 podman pull sonatype/nexus
-podman pull dtr.dev.cray.com/metal/cloud-basecamp
+podman pull dtr.dev.cray.com/metal/cloud-basecamp:$(rpm -q --queryformat '%{VERSION}' basecamp)
 podman pull dtr.dev.cray.com/cray/cray-nexus-setup
 podman pull dtr.dev.cray.com/cray/craycli
 
@@ -89,6 +71,17 @@ cat << EOF >> /root/.bashrc
 alias ip='ip -c'
 alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
+alias refme='zypper \
+  --no-gpg-checks \
+  --plus-repo=http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/csm/rpms/cray-sles15-sp2-ncn/ \
+  up \
+  basecamp \
+  cray-site-init \
+  craycli-wrapper \
+  csm-testing \
+  docs-csm-install \
+  metal-ipxe \
+  nexus'
 EOF
 
 #======================================
