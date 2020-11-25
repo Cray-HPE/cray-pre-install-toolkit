@@ -81,7 +81,7 @@ alias refme='zypper \
   csm-testing \
   docs-csm-install \
   metal-ipxe \
-  nexus
+  nexus'
 EOF
 
 #======================================
