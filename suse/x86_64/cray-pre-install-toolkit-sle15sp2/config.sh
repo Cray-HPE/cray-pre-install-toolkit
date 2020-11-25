@@ -46,7 +46,7 @@ zypper \
   craycli-wrapper \
   csm-testing \
   metal-ipxe \
-  metal-docs-ncn \
+  docs-csm-install \
   nexus
 
 #======================================
