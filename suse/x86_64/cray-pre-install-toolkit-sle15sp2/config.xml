@@ -128,6 +128,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="blog-plymouth"/>
         <package name="ca-certificates-mozilla"/>
         <package name="checkmedia"/>
+        <package name="chrony"/>
         <package name="createrepo_c"/>
         <package name="conman"/>
         <package name="curl"/>
