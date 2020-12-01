@@ -43,6 +43,7 @@ podman pull dtr.dev.cray.com/cray/craycli
 # Activate services
 #--------------------------------------
 suseInsertService apache2
+suseInsertService chronyd
 suseInsertService conman
 suseInsertService dnsmasq
 suseInsertService sshd
