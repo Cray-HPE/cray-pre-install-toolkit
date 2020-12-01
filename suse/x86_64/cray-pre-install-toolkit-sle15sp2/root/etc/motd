@@ -1,2 +1,3 @@
 Welcome to the CRAY Prenstall Toolkit (LiveOS)
 
+Offline CSM documentation can be found at /usr/share/doc/metal (version: rpm -q docs-csm-install)
