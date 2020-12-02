@@ -91,19 +91,19 @@ EOF
 #--------------------------------------
 chage -d 0 root
 
-#==========================================
-# remove package docs
-#------------------------------------------
-rm -rf /usr/share/doc/packages/*
-rm -rf /usr/share/doc/manual/*
-
+#======================================
 # Goss is used to validate LiveCD health at builds, installs and runtime.
+#
+#--------------------------------------
 goss_version="0.3.13"
 echo "Installing goss"
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
 chmod a+x /usr/bin/goss
 
+#======================================
 # install kubectl on LiveCD
+#
+#--------------------------------------
 kubectl_version="1.18.6"
 echo "Installing kubectl"
 curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
