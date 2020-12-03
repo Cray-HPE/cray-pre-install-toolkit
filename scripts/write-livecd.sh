@@ -114,6 +114,7 @@ create_partition () {
         ((tries--))
         [[ $tries -eq 0 ]] && error "Failed to access partition ${dev_part}." && exit 1
         info "Waiting on ${dev_part} creation to complete"
+        sleep 1
     done
 
     info "Making ext4 filesystem on partition ${dev_part}"
