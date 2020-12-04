@@ -68,6 +68,9 @@ done
 
 set -- "${UNKNOWN[@]}" # restore positional parameters
 
+if [[ -f /etc/chrony.d/pool.conf ]]; then
+  rm -f /etc/chrony.d/pool.conf
+fi
 create_chrony_config
 systemctl enable chronyd
 systemctl restart chronyd
