@@ -3,7 +3,7 @@
 
 // Jenkins Shared Libraries are implemented in our CI model (https://connect.us.cray.com/confluence/display/DST/Best+Practices+and+How-To%27s)
 // Jenkins Global Variables are enabled in our CI mode
-@Library('dst-shared@master') _
+@Library("dst-shared@release/shasta-1.4") _
 
 def skipSuccess = false
 
