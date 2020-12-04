@@ -35,9 +35,9 @@ suseSetupProduct
 # Cache docker images.
 #--------------------------------------
 podman pull sonatype/nexus
-podman pull dtr.dev.cray.com/metal/cloud-basecamp:$(rpm -q --queryformat '%{VERSION}' basecamp)-$(rpm -q --queryformat '%{RELEASE}' basecamp | cut -d '_' -f2)
 podman pull dtr.dev.cray.com/cray/cray-nexus-setup
-podman pull dtr.dev.cray.com/cray/craycli
+podman pull dtr.dev.cray.com/metal/cloud-basecamp:$(rpm -q --queryformat '%{VERSION}' basecamp)-$(rpm -q --queryformat '%{RELEASE}' basecamp | cut -d '_' -f2)
+podman pull dtr.dev.cray.com/cray/craycli:$(rpm -q --queryformat '%{VERSION}' craycli)-$(rpm -q --queryformat '%{RELEASE}' craycli | cut -d '_' -f2)
 
 #======================================
 # Activate services
