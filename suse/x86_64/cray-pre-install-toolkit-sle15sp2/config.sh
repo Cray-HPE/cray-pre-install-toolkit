@@ -98,6 +98,7 @@ chage -d 0 root
 #--------------------------------------
 goss_version="0.3.13"
 echo "Installing goss"
+export GOSS_BASE=/opt/cray/tests/install/livecd
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
 chmod a+x /usr/bin/goss
 
