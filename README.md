@@ -1,8 +1,8 @@
-# Shasta Pre-Install Toolkit
+# CRAY Pre-Install Toolkit
 
 This repo contains the pre-install toolkit source, a kiwi description
 for building a JeOS ISO that can be used to boot an NCN for installation
-of the Shasta software stack.
+of the CRAY HPCaaS stack.
 
 
 ## Overview of repo contents
