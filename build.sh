@@ -6,7 +6,7 @@ else
 	WORKSPACE=$1
 fi
 
-DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-cray-pre-install-toolkit:latest"
+DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-cray-pre-install-toolkit:1.0.1"
 BUILD_OUTPUT=${WORKSPACE}/build_output
 
 if [[ -n $PIT_SLUG ]]; then
