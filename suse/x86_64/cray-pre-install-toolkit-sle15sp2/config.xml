@@ -109,7 +109,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 
     <repository type="rpm-md" alias="csm-sles15-sp2" priority="99" imageinclude="true">
-        <source path="http://dst.us.cray.com/dstrepo/shasta-cd-repo/bloblets/csm/rpms/csm-sle-15sp2/"/>
+        <source path="http://dst.us.cray.com/dstrepo/bloblets/csm/dev/master/rpm/csm-sle-15sp2/"/>
     </repository>
 
     <packages type="image">
