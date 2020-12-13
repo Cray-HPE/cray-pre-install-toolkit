@@ -74,8 +74,8 @@ alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
 alias refme='zypper \
   --no-gpg-checks \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/release/shasta-1.4/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/release/shasta-14/ \
   up \
   basecamp \
   cray-site-init \
