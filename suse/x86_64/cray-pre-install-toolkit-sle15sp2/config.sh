@@ -44,7 +44,6 @@ podman pull dtr.dev.cray.com/cray/craycli:$(rpm -q --queryformat '%{VERSION}' cr
 #--------------------------------------
 suseInsertService apache2
 suseInsertService chronyd
-suseInsertService conman
 suseInsertService dnsmasq
 suseInsertService sshd
 
