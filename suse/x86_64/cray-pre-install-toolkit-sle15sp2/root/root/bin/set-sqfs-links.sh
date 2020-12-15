@@ -8,12 +8,25 @@ storage="$(ls -1tr $WEB_ROOT/ephemeral/data/ceph/*.squashfs | head -n 1)"
 # FIXME: MTL-1204 Remove this hardcode when this script is ported into Shasta-Instance-Control.
 ln -vnsf .${initrd///var\/www} initrd.img.xz
 ln -vnsf .${kernel///var\/www} kernel
-for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
+ncns=$(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u)
+if [[ -z $ncns ]]; then
+  echo "dnsmasq may not be working, k8s image links cannot be setup"
+  exit 1
+else
+  for ncn in $ncns; do
     ln -vsnf .${k8s///var\/www} ${ncn}.squashfs
-done
-for ncn in $(grep -Eo 'ncn-s\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
+  done
+fi
+
+ncns2=$(grep -Eo 'ncn-s\w+' /var/lib/misc/dnsmasq.leases | sort -u)
+if [[ -z $ncns2 ]]; then
+  echo "dnsmasq may not be working, storage image links cannot be setup"
+  exit 2
+else
+  for ncn in $ncns2; do
     ln -vsnf .${storage///var\/www} ${ncn}.squashfs
-done
+  done
+fi
 
 if ! [ $(pwd) = $WEB_ROOT ]; then
     mv ncn-* $WEB_ROOT
