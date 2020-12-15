@@ -258,7 +258,7 @@ for i in ${!parted_line[@]}; do
 done
 
 # Create cow partition for liveCD
-create_partition $part_num "pITCOW" $usb $start_num $cow_size
+create_partition $part_num "PITCOW" $usb $start_num $cow_size
 
 # Create the install data partition for configuration data using
 # remaining space
