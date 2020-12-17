@@ -24,7 +24,7 @@ create_chrony_config() {
   if [[ -z $UPSTREAM_NTP_SERVER ]]; then
     :
   else
-    echo "server $UPSTREAM_NTP_SERVER iburst maxsources 3" >>"$CHRONY_CONF"
+    echo "server $UPSTREAM_NTP_SERVER iburst trust maxsources 3" >>"$CHRONY_CONF"
   fi
 
   for net in ${NTP_LOCAL_NETS}
