@@ -14,6 +14,11 @@ if [[ "$(basename ${k8s_kernel})" != "$(basename ${ceph_kernel})" ]]; then
     echo 'Mismatching kernels! The discovered artifacts will deploy an undesirable stack.' >&2
 fi
 
+# Set default links incase hostname fails to set during DHCP exchange. The k8s image and initrd are safe to start with, if a ceph node boots them by mistake it can wipe and reboot.
+ln -vsnf .${k8s_kernel///var\/www} /var/www/kernel
+ln -vsnf .${k8s_initrd///var\/www} /var/www/initrd.img.xz
+ln -vsnf .${k8s_squashfs///var\/www} /var/www/filesystem.squashfs
+
 for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
     ln -vsnf ..${k8s_kernel///var\/www} kernel
