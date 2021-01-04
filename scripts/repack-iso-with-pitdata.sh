@@ -91,11 +91,17 @@ rm -rf $iso_mount_dir
 info "Copying $pitdata_dir to ${iso_extracted_dir}/LiveOS/PITDATA"
 cp -R $pitdata_dir ${iso_extracted_dir}/LiveOS/PITDATA
 
-# Create the new iso
-info "Creating iso at $iso_extracted_dir with mkisofs"
-mkisofs -o $output_iso_file \
-  -b boot/x86_64/loader/eltorito.img -no-emul-boot -boot-load-size 4 -boot-info-table \
-  -l -J -R -V "CRAYLIVE" $iso_extracted_dir
+# Pull isohdpfx from current iso
+info "Extracting isohdfpx from $iso_file"
+isohdpfx_tmp_file=$(mktemp  -p ${dir}/.cache)
+dd if=$iso_file bs=512 count=1 of=$isohdpfx_tmp_file
+
+info "Creating new efi bootable iso with xorriso"
+xorriso -as mkisofs -isohybrid-mbr $isohdpfx_tmp_file \
+  --boot-catalog-hide -b /boot/x86_64/loader/eltorito.img -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -eltorito-alt-boot -e boot/x86_64/efi -no-emul-boot -isohybrid-gpt-basdat \
+  -volid 'CRAYLIVE' \
+  -o $output_iso_file $iso_extracted_dir
 
 info "Adding digest with tagmedia"
 if ! command -v tagmedia &> /dev/null
@@ -108,6 +114,7 @@ else
 fi
 
 # Cleanup
+rm $isohdpfx_tmp_file
 rm -rf $iso_extracted_dir
 
 printf "\n\nOnce booted link PITDATA to correct directory with \'ln -sf /run/initramfs/live/LiveOS/PITDATA /var/www/ephemeral\'"
