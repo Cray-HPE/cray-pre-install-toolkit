@@ -5,7 +5,12 @@
 #
 # Create a bootable pre-install-toolkit LiveCD USB drive.
 #
-# TODO DESCRIPTION
+# Script takes an existing PIT ISO and a PITDATA directory and embeds
+# the configs into a new ISO while ensuring the ISO remains bootable.
+#
+# This allows for booting directly to the new ISO using the BMC's virtual
+# media capabilities so that there is no reliance on a physical USB drive
+# being inserted into the machine
 
 set -e
 
@@ -23,7 +28,13 @@ usage () {
 Usage $name ISO-FILE PITDATA-DIR OUTPUT-ISO-FILE
 
 where:
-    TODO
+    ISO-FILE         Pathname or URL of LiveCD ISO file to write to the usb
+                     flash drive.
+
+    PITDATA-DIR      Directory where existing PITDATA configs are located. Directory will be embedded into
+                     the new ISO
+
+    OUTPUT-ISO-FILE  Location where the new ISO will be written to
 EOF
 }
 
@@ -57,9 +68,9 @@ output_iso_file=$1
 shift 1
 
 
-info "ISO-FILE:   $iso_file"
-info "PITDATA-DIR:   ${pitdata_dir}MB"
-info "OUTPUT-ISO-FILE:   $output_iso_file"
+info "ISO-FILE:        $iso_file"
+info "PITDATA-DIR:     ${pitdata_dir}MB"
+info "OUTPUT-ISO-FILE: $output_iso_file"
 
 # check to ensure the ISO file exists
 if [[ ! -r "$iso_file" ]]; then
@@ -67,9 +78,10 @@ if [[ ! -r "$iso_file" ]]; then
     exit 1
 fi
 
-# TODO check that pitdata-dir is a directory
-
-# TODO check that mksquashfs, mkisofs, and tagmedia/checkmedia is installed
+[[ ! command -v xorriso ]]; then
+    error "xorriso does not exist or is not on path."
+    exit 1
+fi
 
 # Create a cache directory to unpack in
 mkdir -p ${dir}/.cache
