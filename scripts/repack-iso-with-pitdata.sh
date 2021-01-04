@@ -3,7 +3,7 @@
 #
 # Copyright 2020 Hewlett Packard Enterprise Development LP
 #
-# Create a bootable pre-install-toolkit LiveCD USB drive.
+# Create a bootable ISO with PITDATA embedded into the image.
 #
 # Script takes an existing PIT ISO and a PITDATA directory and embeds
 # the configs into a new ISO while ensuring the ISO remains bootable.
