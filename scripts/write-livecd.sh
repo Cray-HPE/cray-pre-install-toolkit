@@ -24,7 +24,6 @@
 #       3       COW partition (ext4 filesystem, 'PITCOW' label)
 #       4       Install Data partition (ext4 filesystem, 'PITDATA' label)
 #----------------------------------------------------------------------------
-
 name=$(basename $0)
 
 # Size in MB to use for cow partition
@@ -133,24 +132,8 @@ unmount_partitions () {
         for i in ${!mount_list[@]}; do
             echo "    ${mount_list[$i]}"
         done
-        while true; do
-            read -p "Unmount and continue [y/n]? " choice
-            case $choice in
-                [Yy]* )
-                    for i in ${!mount_list[@]}; do
-                        device=${mount_list[$i]%% *}
-                        umount ${device}
-                        [[ $? != 0 ]] && error "Failed to unmount ${device}" \
-                            && exit 1
-                    done
-                    break
-                    ;;
-
-                [Nn]*)
-                    exit 0
-                    ;;
-            esac
-        done
+        error "Please unmount before attempting to run this format script again."
+        exit 5
     fi
 }
 
@@ -205,9 +188,15 @@ unmount_partitions $usb
 
 # Check the downloaded ISO to ensure it is valid. Better
 # to know now vs. when it fails the checkmedia during boot.
-info "Validating ISO via checkmedia"
-checkmedia $iso_file
-[[ $? -ne 0 ]] && error "Failed checkmedia verification of $iso_file" && exit 1
+# Emit a warning if the command is not there
+if ! eval command -v checkmedia; then
+  error "Unable to validate ISO.  Please install checkmedia and try again."
+  exit 4
+else
+  info "Validating ISO via checkmedia"
+  checkmedia $iso_file
+  [[ $? -ne 0 ]] && error "Failed checkmedia verification of $iso_file" && exit 1
+fi
 
 # Write new partition table
 info "Writing new GUID partition table to ${usb}"
