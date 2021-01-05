@@ -26,7 +26,7 @@ case "${t}" in
 esac
 
 stream=unstable
-if [[ "$id" =~ [0-9]\.[0-9]\.[0-9]$ ]]; then
+if [[ "$id" =~ [0-9]*\.[0-9]*\.[0-9]*$ ]]; then
     stream=stable
 fi
 
