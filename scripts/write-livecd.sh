@@ -21,7 +21,7 @@
 #   ---------   -----------
 #       1       CDROM partition with iso9660 filesystem
 #       2       EFI partition
-#       3       COW partition (ext4 filesystem, 'PITCOW' label)
+#       3       COW partition (ext4 filesystem, 'cow' label)
 #       4       Install Data partition (ext4 filesystem, 'PITDATA' label)
 #----------------------------------------------------------------------------
 name=$(basename $0)
@@ -247,7 +247,7 @@ for i in ${!parted_line[@]}; do
 done
 
 # Create cow partition for liveCD
-create_partition $part_num "PITCOW" $usb $start_num $cow_size
+create_partition $part_num "cow" $usb $start_num $cow_size
 
 # Create the install data partition for configuration data using
 # remaining space
