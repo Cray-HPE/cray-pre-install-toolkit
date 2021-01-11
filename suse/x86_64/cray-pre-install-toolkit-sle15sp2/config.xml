@@ -21,7 +21,9 @@ WARNING: Please consult the README.md file in the top level directory of
               flags="overlay"
               hybrid="true"
               hybridpersistent="true"
-              hybridpersistent_filesystem="ext4"
+              hybridpersistent_filesystem="xfs"
+              devicepersistency="by-label"
+              publisher="CRAY METAL"
               volid="CRAYLIVE"
               kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell"
               mediacheck="true"/>
@@ -35,7 +37,15 @@ WARNING: Please consult the README.md file in the top level directory of
     </preferences>
     <preferences>
         <type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/>
-        <type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" bootloader="grub2" kernelcmdline="splash" firmware="efi">
+        <type image="oem"
+              filesystem="ext4"
+              initrd_system="dracut"
+              installiso="true"
+              bootloader="grub2"
+              kernelcmdline="splash"
+              firmware="efi"
+              installprovidefailsafe="true"
+              gpt_hybrid_mbr="true">
             <oemconfig>
                 <oem-systemsize>2048</oem-systemsize>
                 <oem-swap>true</oem-swap>
@@ -95,28 +105,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Module-HPC/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE15_Module-Legacy" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Products/SLE-Module-Legacy/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE15_Module-Legacy_Updates" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Module-Legacy/"/>
-    </repository>
-
     <repository type="rpm-md" alias="SLE15_Module-Public-Cloud" priority="99" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Products/SLE-Module-Public-Cloud/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE15_Module-Public-Cloud_Updates" priority="99" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Module-Public-Cloud/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE15_Module-Python2" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Products/SLE-Module-Python2/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE15_Module-Python2_Updates" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Module-Python2/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE15_Module-Server-Applications" priority="99" imageinclude="true">
@@ -149,14 +143,6 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <repository type="rpm-md" alias="SLE15_Product-SLES_Updates" priority="99" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Product-SLES/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE15_Product-WE" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Products/SLE-Product-WE/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE15_Product-WE_Updates" priority="99" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/mirror-sles15sp2/Updates/SLE-Product-WE/"/>
     </repository>
 
     <repository type="rpm-md" alias="csm-cloud-sles15-sp2-x86_64" priority="89" imageinclude="true">
@@ -238,6 +224,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="rsync"/>
         <package name="screen"/>
         <package name="shim"/>
+        <package name="squashfs"/>
         <package name="syslinux"/>
         <package name="systemd-bash-completion"/>
         <package name="tar"/>
