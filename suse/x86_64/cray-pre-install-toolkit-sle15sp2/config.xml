@@ -173,7 +173,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <!-- Section: CSM Packages -->
         <package name="basecamp"/>
         <package name="cray-site-init"/>
-        <package name="craycli-wrapper"/>
+        <package name="craycli"/>
         <package name="docs-csm-install"/>
         <package name="csm-testing"/>
         <package name="metal-ipxe"/>
