@@ -92,17 +92,20 @@ chage -d 0 root
 #======================================
 # Goss is used to validate LiveCD health
 # at builds, installs and runtime.
-#
 #--------------------------------------
 goss_version="0.3.13"
 echo "Installing goss"
 export GOSS_BASE=/opt/cray/tests/install/livecd
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
 chmod a+x /usr/bin/goss
+# Create symlinks for automated preflight checks
+ln -s $GOSS_BASE/automated/livecd-preflight-checks /usr/bin/livecd-preflight-checks
+ln -s $GOSS_BASE/automated/ncn-preflight-checks /usr/bin/ncn-preflight-checks
+ln -s $GOSS_BASE/automated/ncn-kubernetes-checks /usr/bin/ncn-kubernetes-checks
+ln -s $GOSS_BASE/automated/ncn-storage-checks /usr/bin/ncn-storage-checks
 
 #======================================
 # Install kubectl on LiveCD
-#
 #--------------------------------------
 kubectl_version="1.18.6"
 echo "Installing kubectl"
