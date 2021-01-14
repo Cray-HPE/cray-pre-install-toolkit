@@ -272,6 +272,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </packages>
     <packages type="bootstrap">
         <package name="ca-certificates"/>
+        <package name="ca-certificates-mozilla"/>
         <package name="cracklib-dict-full"/>
         <package name="filesystem"/>
         <package name="glibc-locale"/>
