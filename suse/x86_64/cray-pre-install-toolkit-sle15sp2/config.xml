@@ -208,6 +208,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="biosdevname"/>
+        <package name="ca-certificates"/>
         <package name="ca-certificates-mozilla"/>
         <package name="checkmedia"/>
         <package name="chrony"/>
