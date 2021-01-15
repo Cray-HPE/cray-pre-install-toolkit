@@ -65,7 +65,8 @@ cp /dev/null /var/log/zypper.log
 echo "pit" > /etc/hostname
 
 #======================================
-# Add custom aliases
+# Add custom aliases and environment
+# variables
 #--------------------------------------
 cat << EOF >> /root/.bashrc
 alias ip='ip -c'
@@ -81,6 +82,7 @@ alias refme='zypper \
   craycli-wrapper \
   csm-testing \
   nexus'
+export GOSS_BASE=/opt/cray/tests/install/livecd
 EOF
 
 #======================================
