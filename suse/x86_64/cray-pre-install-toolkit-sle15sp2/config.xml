@@ -170,8 +170,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="biosdevname"/>
         <package name="checkmedia"/>
         <package name="chrony"/>
-        <package name="createrepo_c"/>
         <package name="conman"/>
+        <package name="createrepo_c"/>
         <package name="curl"/>
         <package name="dhcp-client"/>
         <package name="ethtool"/>
@@ -189,14 +189,14 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="jq" />
         <package name="kernel-default"/>
         <package name="kernel-firmware"/>
+        <package name="kernel-mft-mlnx-kmp-default"/>
         <package name="less"/>
         <package name="lshw" />
         <package name="lsof" />
         <package name="lsscsi"/>
         <package name="lvm2"/>
-        <package name="minicom"/>
         <package name="mft"/>
-        <package name="kernel-mft-mlnx-kmp-default"/>
+        <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
         <package name="openssh"/>
