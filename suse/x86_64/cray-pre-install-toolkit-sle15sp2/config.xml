@@ -130,14 +130,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE-Product-WE15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Product-WE/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Product-WE15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-WE/15-SP2/x86_64/update/"/>
-    </repository>
-
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
     </repository>
