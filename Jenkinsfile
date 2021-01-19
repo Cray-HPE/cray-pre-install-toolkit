@@ -51,7 +51,7 @@ pipeline {
                     env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
                     env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
                     echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
-                    slackNotify(channel: "metal-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
+                    slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
                 }
             }
         }
@@ -95,7 +95,7 @@ pipeline {
 		fixed {
             notifyBuildResult(headline: "FIXED")
 			script {
-				slackNotify(channel: "metal-ci-alerts", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
+				slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
                 // Set to true so the 'success' post section is skipped when the build result is 'fixed'
                 // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
                 skipSuccess = true
@@ -112,7 +112,7 @@ pipeline {
 		success {
 			script {
                 if (skipSuccess != true) {
-                    slackNotify(channel: "metal-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+                    slackNotify(channel: "livecd-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
                 }
 			}
 
@@ -127,7 +127,7 @@ pipeline {
 		failure {
             notifyBuildResult(headline: "FAILED")
 			script {
-				slackNotify(channel: "metal-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+				slackNotify(channel: "livecd-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
 			}
 
 			// Delete the 'build' directory

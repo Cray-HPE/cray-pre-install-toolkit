@@ -82,14 +82,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Containers/15-SP2/x86_64/update/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE-Module-Desktop-Applications15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Desktop-Applications/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Desktop-Applications15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Desktop-Applications/15-SP2/x86_64/update/"/>
-    </repository>
-
     <repository type="rpm-md" alias="SLE-Module-DevTools15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Development-Tools/15-SP2/x86_64/product/"/>
     </repository>
@@ -106,14 +98,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-HPC/15-SP2/x86_64/update/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE-Module-Legacy15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Legacy/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Legacy15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Legacy/15-SP2/x86_64/update/"/>
-    </repository>
-
     <repository type="rpm-md" alias="SLE-Module-Public-Cloud15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Public-Cloud/15-SP2/x86_64/product/"/>
     </repository>
@@ -122,28 +106,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Public-Cloud/15-SP2/x86_64/update/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE-Module-Python2-15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Python2/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Python2-15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Python2/15-SP2/x86_64/update/"/>
-    </repository>
-
     <repository type="rpm-md" alias="SLE-Module-Server-Applications15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Server-Applications/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-Server-Applications15-SP2-Updates" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Server-Applications/15-SP2/x86_64/update/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Web-Scripting15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Web-Scripting/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Web-Scripting15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Web-Scripting/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Product-HPC15-SP2-Pool" priority="99" imageinclude="true">
@@ -160,14 +128,6 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <repository type="rpm-md" alias="SLE-Product-SLES15-SP2-Updates" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Product-WE15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Product-WE/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Product-WE15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-WE/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
@@ -210,8 +170,8 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="biosdevname"/>
         <package name="checkmedia"/>
         <package name="chrony"/>
-        <package name="createrepo_c"/>
         <package name="conman"/>
+        <package name="createrepo_c"/>
         <package name="curl"/>
         <package name="dhcp-client"/>
         <package name="ethtool"/>
@@ -229,14 +189,14 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="jq" />
         <package name="kernel-default"/>
         <package name="kernel-firmware"/>
+        <package name="kernel-mft-mlnx-kmp-default"/>
         <package name="less"/>
         <package name="lshw" />
         <package name="lsof" />
         <package name="lsscsi"/>
         <package name="lvm2"/>
-        <package name="minicom"/>
         <package name="mft"/>
-        <package name="kernel-mft-mlnx-kmp-default"/>
+        <package name="minicom"/>
         <package name="nmap"/>
         <package name="open-lldp"/>
         <package name="openssh"/>
@@ -253,16 +213,19 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="screen"/>
         <package name="shim"/>
         <package name="squashfs"/>
+        <package name="strace"/>
         <package name="syslinux"/>
         <package name="systemd-bash-completion"/>
         <package name="tar"/>
         <package name="tcpdump"/>
         <package name="timezone"/>
         <package name="traceroute"/>
+        <package name="usbutils"/>
         <package name="vim"/>
         <package name="wget"/>
         <package name="which"/>
         <package name="wireshark"/>
+        <package name="wol"/>
     </packages>
     <packages type="iso">
         <package name="branding-SLE"/>
