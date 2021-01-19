@@ -213,12 +213,14 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="screen"/>
         <package name="shim"/>
         <package name="squashfs"/>
+        <package name="strace"/>
         <package name="syslinux"/>
         <package name="systemd-bash-completion"/>
         <package name="tar"/>
         <package name="tcpdump"/>
         <package name="timezone"/>
         <package name="traceroute"/>
+        <package name="usbutils"/>
         <package name="vim"/>
         <package name="wget"/>
         <package name="which"/>
