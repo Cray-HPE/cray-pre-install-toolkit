@@ -7,6 +7,8 @@
 # https-server vrf mgmt
 # https-server rest access-mode read-write
 
+#Copyright 2014-2021 Hewlett Packard Enterprise Development LP    
+
 import yaml
 import requests
 import urllib3

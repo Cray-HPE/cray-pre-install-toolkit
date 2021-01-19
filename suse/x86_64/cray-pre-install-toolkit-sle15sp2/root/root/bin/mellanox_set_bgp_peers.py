@@ -6,6 +6,7 @@
 # https://community.mellanox.com/s/article/getting-started-with-json-api-for-mellanox-switches
 # JSON LOGIN:  https://docs.mellanox.com/display/ONYXv382110/Network+Management+Interfaces
 
+#Copyright 2014-2021 Hewlett Packard Enterprise Development LP    
 
 import yaml
 import requests
