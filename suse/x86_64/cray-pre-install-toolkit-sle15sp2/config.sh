@@ -115,7 +115,8 @@ curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_ver
 chmod a+x /usr/local/bin/kubectl
 
 #======================================
-# Upload management network firmware to the LiveCD
+# Upload management network firmware 
+# to the LiveCD
 #--------------------------------------
 mkdir -pv /var/www/network/firmware
 cd /var/www/network/firmware
