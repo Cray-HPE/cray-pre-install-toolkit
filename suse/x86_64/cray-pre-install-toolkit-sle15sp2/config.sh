@@ -114,3 +114,9 @@ echo "Installing kubectl"
 curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod a+x /usr/local/bin/kubectl
 
+#======================================
+# Upload management network firmware to the LiveCD
+#--------------------------------------
+mkdir -pv /var/www/network/firmware
+cd /var/www/network/firmware
+wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/artifactory/list/integration-firmware
