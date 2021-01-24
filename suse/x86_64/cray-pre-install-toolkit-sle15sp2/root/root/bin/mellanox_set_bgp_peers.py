@@ -6,7 +6,6 @@
 # https://community.mellanox.com/s/article/getting-started-with-json-api-for-mellanox-switches
 # JSON LOGIN:  https://docs.mellanox.com/display/ONYXv382110/Network+Management+Interfaces
 
-#Copyright 2014-2021 Hewlett Packard Enterprise Development LP    
 
 import yaml
 import requests
@@ -16,39 +15,69 @@ import sys
 import json
 import getpass
 import logging 
+import os
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+usage_message = """This script updates the BGP neighbors on the management switches to match the IPs of what CSI generated.
+
+USAGE: - <IP of switch 1> <IP of Switch 2> <Path to CSI generated network files>
+
+       - The IPs used should be Node Management Network IPs (NMN), these IPs will be what's used for the BGP Router-ID.
+
+       - The path must include CAN.yaml', 'HMN.yaml', 'HMNLB.yaml', 'NMNLB.yaml', 'NMN.yaml
+
+Example: ./mellanox_set_bgp_peers.py 10.252.0.2 10.252.0.3 /var/www/ephemeral/prep/redbull/networks
+"""
+
+# take in switch IP and path as arguments
 try:
-    path = sys.argv[1]
+    switch1 = sys.argv[1]
+    switch2 = sys.argv[2]
+    path = os.path.join(sys.argv[3])
+    if os.path.exists(path) == False:
+        print('Path provided not valid')
+        print('')
+        print(usage_message)
+        sys.exit()
 except IndexError:
-    print('')
-    print("Missing Argument.  Please add the Directory to folder containing CSI networks .yaml files (CAN.yaml, HMN.yaml, NMN.yaml, HMNLB.yaml, NMNLB.yaml) example directory /var/www/ephemeral/prep/redbull/networks/")
-    print('Example....')
-    print('./mellanox_set_bgp_peers.py /var/www/ephemeral/prep/redbull/networks/')
-    print('')
+    print(usage_message)
     raise (SystemExit)
 
-username = 'admin'
-password = getpass.getpass("Password: ")
+net_file_list = ['CAN.yaml', 'HMN.yaml', 'HMNLB.yaml', 'NMNLB.yaml', 'NMN.yaml']
+net_directory =  os.listdir(path)
 
-with open(path + 'NMN.yaml', 'r') as f:
+missing_files = []
+for entry in net_file_list:
+    if entry not in net_directory:
+        missing_files.append(entry)
+
+if len(missing_files) > 0:
+        print('Missing {} in directory, please verify {} are all located inside the directory'.format(', '.join(missing_files), ', '.join(net_file_list)))
+        sys.exit()
+
+switch_ips = [switch1, switch2]
+
+username = 'admin'
+password = getpass.getpass("Switch Password: ")
+
+with open(path + '/NMN.yaml', 'r') as f:
     NMN = yaml.full_load(f)
 
-with open(path + 'CAN.yaml', 'r') as f:
+with open(path + '/CAN.yaml', 'r') as f:
     CAN = yaml.full_load(f)
 
-with open(path + 'HMN.yaml', 'r') as f:
+with open(path + '/HMN.yaml', 'r') as f:
     HMN = yaml.full_load(f)
 
-with open(path + 'HMNLB.yaml', 'r') as f:
+with open(path + '/HMNLB.yaml', 'r') as f:
     HMNLB = yaml.full_load(f)
 
-with open(path + 'NMNLB.yaml', 'r') as f:
+with open(path + '/NMNLB.yaml', 'r') as f:
     NMNLB = yaml.full_load(f)
 
 #switch IPs
-with open(path + 'HMN.yaml', 'r') as f:
+with open(path + '/HMN.yaml', 'r') as f:
     HMN = yaml.full_load(f)
 
 CAN_prefix=(CAN['cidr'])
@@ -60,7 +89,6 @@ asn=65533
 url = 'fhttps://{ips}/rest/v10.04/system/'
 
 ncn_nmn_ips = []
-switch_ips = []
 ncn_names = []
 ncn_can_ips = []
 ncn_hmn_ips = []
@@ -100,13 +128,13 @@ for i in range(len(HMN['subnets'][1]['ip_reservations'])):
 print('ncn hmn ips:' ,' '.join(ncn_hmn_ips))
 
 #get switch IPs
-for i in range(len(NMN['subnets'][0]['ip_reservations'])):
-    switches = NMN['subnets'][0]['ip_reservations'][i]['name']
-    if 'spine' in switches:
-            ips = (NMN['subnets'][0]['ip_reservations'][i]['ip_address'])
-            switch_ips.append(ips)
+# for i in range(len(NMN['subnets'][0]['ip_reservations'])):
+#     switches = NMN['subnets'][0]['ip_reservations'][i]['name']
+#     if 'spine' in switches:
+#             ips = (NMN['subnets'][0]['ip_reservations'][i]['ip_address'])
+#             switch_ips.append(ips)
 print('switch ips' ,' '.join(switch_ips))
-print('==========================================')
+print('===============================================')
 
 
 login_body = {"username": "admin", "password": password } # JSON object
@@ -222,13 +250,13 @@ for spine in switch_ips:
     switch_response = json.loads(response.text)
     pprint.pprint(switch_response)
 
+    write_mem = { "cmd": "write memory" } 
+    response = session.post(url = login_url + action, json = write_mem, verify = False)
+    switch_response = json.loads(response.text)
+    pprint.pprint(switch_response)
+
 print('')
 print('')
-print('BGP configuration updated, please log into the switches and verify the configuration.')
-
-
-        
-
-
-
-
+print('BGP configuration updated on {}, please log into the switches and verify the configuration.'.format(', '.join(switch_ips)))
+print('')
+print('The BGP process may need to be restarted on the switches for all of them to become ESTABLISHED.')
