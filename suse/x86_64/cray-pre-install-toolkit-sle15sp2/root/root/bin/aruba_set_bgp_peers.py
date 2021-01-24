@@ -7,8 +7,6 @@
 # https-server vrf mgmt
 # https-server rest access-mode read-write
 
-#Copyright 2014-2021 Hewlett Packard Enterprise Development LP    
-
 import yaml
 import requests
 import urllib3
@@ -17,21 +15,51 @@ import sys
 import json
 import getpass
 import logging
+import os
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+usage_message = """This script updates the BGP neighbors on the management switches to match the IPs of what CSI generated.
+
+USAGE: - <IP of switch 1> <IP of Switch 2> <Path to CSI generated network files>
+
+       - The IPs used should be Node Management Network IPs (NMN), these IPs will be what's used for the BGP Router-ID.
+
+       - The path must include CAN.yaml', 'HMN.yaml', 'HMNLB.yaml', 'NMNLB.yaml', 'NMN.yaml
+
+Example: ./aruba_set_bgp_peers.py 10.252.0.2 10.252.0.3 /var/www/ephemeral/prep/redbull/networks
+"""
+
+# take in switch IP and path as arguments
 try:
-    path = sys.argv[1]
+    switch1 = sys.argv[1]
+    switch2 = sys.argv[2]
+    path = os.path.join(sys.argv[3])
+    if os.path.exists(path) == False:
+        print('Path provided not valid')
+        print('')
+        print(usage_message)
+        sys.exit()
 except IndexError:
-    print('')
-    print("Missing Argument.  Please add the Directory to folder containing CSI networks .yaml files (CAN.yaml, HMN.yaml, NMN.yaml, HMNLB.yaml, NMNLB.yaml) example directory /var/www/ephemeral/prep/redbull/networks/")
-    print('Example....')
-    print('./aruba_set_bgp_peers.py /var/www/ephemeral/prep/redbull/networks/')
-    print('')
+    print(usage_message)
     raise (SystemExit)
 
+net_file_list = ['CAN.yaml', 'HMN.yaml', 'HMNLB.yaml', 'NMNLB.yaml', 'NMN.yaml']
+net_directory =  os.listdir(path)
+
+missing_files = []
+for entry in net_file_list:
+    if entry not in net_directory:
+        missing_files.append(entry)
+
+if len(missing_files) > 0:
+        print('Missing {} in directory, please verify {} are all located inside the directory'.format(', '.join(missing_files), ', '.join(net_file_list)))
+        sys.exit()
+        
+switch_ips = [switch1, switch2]
+
 username = 'admin'
-password = getpass.getpass("Password: ")
+password = getpass.getpass("Switch Password: ")
 
 def _response_ok(response, call_type):
     """
@@ -76,23 +104,32 @@ def remote_post(remote_url, data=None):
         logging.info("SUCCESS")
     return response
 
-with open(path + 'NMN.yaml', 'r') as f:
+def remote_put(remote_url, data=None):
+    response = session.put(remote_url, json=data, verify=False)
+    if not _response_ok(response, "PUT"):
+        logging.warning("FAIL")
+        return False
+    else:
+        logging.info("SUCCESS")
+    return response
+
+with open(path + '/NMN.yaml', 'r') as f:
     NMN = yaml.full_load(f)
 
-with open(path + 'CAN.yaml', 'r') as f:
+with open(path + '/CAN.yaml', 'r') as f:
     CAN = yaml.full_load(f)
 
-with open(path + 'HMN.yaml', 'r') as f:
+with open(path + '/HMN.yaml', 'r') as f:
     HMN = yaml.full_load(f)
 
-with open(path + 'HMNLB.yaml', 'r') as f:
+with open(path + '/HMNLB.yaml', 'r') as f:
     HMNLB = yaml.full_load(f)
 
-with open(path + 'NMNLB.yaml', 'r') as f:
+with open(path + '/NMNLB.yaml', 'r') as f:
     NMNLB = yaml.full_load(f)
 
 #switch IPs
-with open(path + 'HMN.yaml', 'r') as f:
+with open(path + '/HMN.yaml', 'r') as f:
     HMN = yaml.full_load(f)
 
 CAN_prefix=(CAN['cidr'])
@@ -102,7 +139,6 @@ NMN_prefix=(NMNLB['cidr'])
 asn=65533
 
 ncn_nmn_ips = []
-switch_ips = []
 ncn_names = []
 ncn_can_ips = []
 ncn_hmn_ips = []
@@ -145,9 +181,9 @@ for i in range(len(NMN['subnets'][0]['ip_reservations'])):
     switches = NMN['subnets'][0]['ip_reservations'][i]['name']
     if 'spine' in switches:
             ips = (NMN['subnets'][0]['ip_reservations'][i]['ip_address'])
-            switch_ips.append(ips)
+#            switch_ips.append(ips)
 print('switch ips' ,' '.join(switch_ips))
-print('==========================================')
+print('===============================================')
 
 #json payload
 bgp_data = {
@@ -331,16 +367,16 @@ for ips in switch_ips:
             vsx_neighbor['ip_or_group_name'] = x
             del vsx_neighbor['route_maps']
             response = remote_post(bgp_neighbor_url, vsx_neighbor)
-    logout = session.post(f'https://{ips}/rest/v10.04/logout')
+    #copy running config to startup config
+    write_mem_url = base_url + 'fullconfigs/startup-config?from=%2Frest%2Fv10.04%2Ffullconfigs%2Frunning-config'
+    response = remote_put(write_mem_url)
+    if response.status_code == 200:
+        print('Configuration saved on {}'.format(ips))
+
+    logout = session.post(f'https://{ips}/rest/v10.04/logout') #logout of switch
 
 print('')
 print('')
-print('BGP configuration updated, please log into the switches and verify the configuration.')
-
-
-
-
-
-
-
-
+print('BGP configuration updated on {}, please log into the switches and verify the configuration.'.format(', '.join(switch_ips)))
+print('')
+print('The BGP process may need to be restarted on the switches for all of them to become ESTABLISHED.')
