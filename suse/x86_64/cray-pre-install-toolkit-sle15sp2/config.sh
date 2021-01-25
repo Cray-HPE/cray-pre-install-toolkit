@@ -118,8 +118,8 @@ chmod a+x /usr/local/bin/kubectl
 # Upload management network firmware 
 # to the LiveCD
 #--------------------------------------
-mkdir -pv /var/www/network/firmware
-cd /var/www/network/firmware
+mkdir -pv /var/www/ephemeral/data/network_images
+cd /var/www/ephemeral/data/network_images
 wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/artifactory/list/integration-firmware
 
 
