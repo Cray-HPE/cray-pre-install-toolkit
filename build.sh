@@ -9,7 +9,7 @@ fi
 DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-cray-pre-install-toolkit:1.0.1"
 BUILD_OUTPUT=${WORKSPACE}/build_output
 
-if [[ -n $PIT_SLUG ]]; then
+if [[ -z $PIT_SLUG ]]; then
   # Get x.y.z version from .version file
   export PIT_VERSION=$(cat .version)
   # Get a timestamp for this build based on this rename operation
