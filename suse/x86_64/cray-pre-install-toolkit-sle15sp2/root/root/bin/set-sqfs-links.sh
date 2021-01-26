@@ -27,6 +27,7 @@ else
 fi
 for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
+    cp -pv /var/www/boot/script.ipxe .
     ln -vsnf ..${k8s_kernel///var\/www} kernel
     ln -vsnf ..${k8s_initrd///var\/www} initrd.img.xz
     ln -vsnf ..${k8s_squashfs///var\/www} filesystem.squashfs
@@ -34,6 +35,7 @@ for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
 done
 for ncn in $(grep -Eo 'ncn-s\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
+    cp -pv /var/www/boot/script.ipxe .
     ln -vsnf ..${ceph_kernel///var\/www} kernel
     ln -vsnf ..${ceph_initrd///var\/www} initrd.img.xz
     ln -vsnf ..${ceph_squashfs///var\/www} filesystem.squashfs
