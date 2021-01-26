@@ -23,7 +23,7 @@ WARNING: Please consult the README.md file in the top level directory of
               hybridpersistent="true"
               hybridpersistent_filesystem="xfs"
               devicepersistency="by-label"
-              publisher="CRAY METAL"
+              publisher="CRAY-HPE"
               volid="CRAYLIVE"
               kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=1 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell"
               mediacheck="true"/>
@@ -66,6 +66,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <user pwdformat="plain" password="" home="/root" name="root" groups="root"/>
     </users>
 
+<!--SLES REPOS:-->
     <repository type="rpm-md" alias="SLE-Module-Basesystem15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Basesystem/15-SP2/x86_64/product/"/>
     </repository>
@@ -98,22 +99,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-HPC/15-SP2/x86_64/update/"/>
     </repository>
 
-    <repository type="rpm-md" alias="SLE-Module-Public-Cloud15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Public-Cloud/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Public-Cloud15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Public-Cloud/15-SP2/x86_64/update/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Server-Applications15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Server-Applications/15-SP2/x86_64/product/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="SLE-Module-Server-Applications15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Server-Applications/15-SP2/x86_64/update/"/>
-    </repository>
-
     <repository type="rpm-md" alias="SLE-Product-HPC15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Product-HPC/15-SP2/x86_64/product/"/>
     </repository>
@@ -129,7 +114,7 @@ WARNING: Please consult the README.md file in the top level directory of
     <repository type="rpm-md" alias="SLE-Product-SLES15-SP2-Updates" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
     </repository>
-
+<!--TEAM REPOS:-->
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
     </repository>
@@ -174,6 +159,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="createrepo_c"/>
         <package name="curl"/>
         <package name="dhcp-client"/>
+        <package name="docker-bash-completion"/>
         <package name="ethtool"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
