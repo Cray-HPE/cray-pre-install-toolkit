@@ -153,6 +153,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="biosdevname"/>
+        <package name="bsdtar"/>
         <package name="checkmedia"/>
         <package name="chrony"/>
         <package name="conman"/>
@@ -188,6 +189,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="parted"/>
         <package name="patterns-base-base"/>
         <package name="pciutils"/>
+        <package name="pdsh"/>
         <package name="podman"/>
         <package name="podman-cni-config"/>
         <package name="python"/>
