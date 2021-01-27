@@ -191,18 +191,32 @@ bgp_data = {
     'router_id': ''
 }
 
-bgp_neighbor = {
-  'ip_or_group_name': '',
-  'remote_as': asn,
-  'route_maps': {
-      'ipv4-unicast': {
-          'in': ''
-      }
-  },
-  'shutdown': False,
-  'activate': {
-      'ipv4-unicast': True
-  } 
+bgp_neighbor10_05 = {
+	"ip_or_group_name": "",
+	"remote_as": asn,
+	"route_maps": {
+		"ipv4-unicast": {
+			"in": ""
+		}
+	},
+	"shutdown": False,
+	"activate": {
+		"ipv4-unicast": True
+	}
+}
+
+bgp_neighbor10_06 = {
+	"ip_or_ifname_or_group_name": "",
+	"remote_as": asn,
+	"route_maps": {
+		"ipv4-unicast": {
+			"in": ""
+		}
+	},
+	"shutdown": False,
+	"activate": {
+		"ipv4-unicast": True
+	}
 }
 
 prefix = ['pl-can', 'pl-hmn', 'pl-nmn']
@@ -353,21 +367,39 @@ for ips in switch_ips:
     response = remote_post(bgp_router_id_url, bgp_data)
     print('adding BGP configuration to {0}'.format(ips))
 
-    #add BGP neighbors
-    for ncn, names in zip(ncn_nmn_ips, ncn_names):
-        bgp_neighbor['ip_or_group_name'] = ncn 
-        bgp_neighbor_url = base_url + 'system/vrfs/default/bgp_routers/65533/bgp_neighbors'
-        bgp_neighbor['route_maps']['ipv4-unicast']['in'] = '/rest/v10.04/system/route_maps/' + names
-        response = remote_post(bgp_neighbor_url, bgp_neighbor)
+    #get switch firmware
+    firmware_url = base_url + 'firmware'
+    response = remote_get(firmware_url)
+    firmware = response.json()
 
-    #add other switch as bgp neighbor
-    for x in switch_ips:
-        if x != ips:
-            vsx_neighbor = dict(bgp_neighbor)
-            vsx_neighbor['ip_or_group_name'] = x
-            del vsx_neighbor['route_maps']
-            response = remote_post(bgp_neighbor_url, vsx_neighbor)
-    #copy running config to startup config
+    #update BGP neighbors on firmware of 10.06
+    if '10.06' in firmware['current_version']:
+        for ncn, names in zip(ncn_nmn_ips, ncn_names):
+            bgp_neighbor10_06['ip_or_ifname_or_group_name'] = ncn 
+            bgp_neighbor_url = base_url + 'system/vrfs/default/bgp_routers/65533/bgp_neighbors'
+            bgp_neighbor10_06['route_maps']['ipv4-unicast']['in'] = '/rest/v10.04/system/route_maps/' + names
+            response = remote_post(bgp_neighbor_url, bgp_neighbor10_06)
+        for x in switch_ips:
+            if x != ips:
+                vsx_neighbor = dict(bgp_neighbor10_06)
+                vsx_neighbor['ip_or_ifname_or_group_name'] = x
+                del vsx_neighbor['route_maps']
+                response = remote_post(bgp_neighbor_url, vsx_neighbor)
+
+    #update BGP neighbors on firmware of 10.06
+    if '10.05' in firmware['current_version']:
+        for ncn, names in zip(ncn_nmn_ips, ncn_names):
+            bgp_neighbor10_05['ip_or_group_name'] = ncn 
+            bgp_neighbor_url = base_url + 'system/vrfs/default/bgp_routers/65533/bgp_neighbors'
+            bgp_neighbor10_05['route_maps']['ipv4-unicast']['in'] = '/rest/v10.04/system/route_maps/' + names
+            response = remote_post(bgp_neighbor_url, bgp_neighbor10_05)
+        for x in switch_ips:
+            if x != ips:
+                vsx_neighbor = dict(bgp_neighbor10_05)
+                vsx_neighbor['ip_or_group_name'] = x
+                del vsx_neighbor['route_maps']
+                response = remote_post(bgp_neighbor_url, vsx_neighbor)
+
     write_mem_url = base_url + 'fullconfigs/startup-config?from=%2Frest%2Fv10.04%2Ffullconfigs%2Frunning-config'
     response = remote_put(write_mem_url)
     if response.status_code == 200:
