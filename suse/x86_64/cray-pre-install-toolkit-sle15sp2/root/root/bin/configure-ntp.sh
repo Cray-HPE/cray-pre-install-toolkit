@@ -11,9 +11,10 @@ usage() {
 # Show usage when --help is passed
 expr "$*" : ".*--help" > /dev/null && usage && exit 0
 
-UPSTREAM_NTP_SERVER=$(curl -s http://localhost:8888/meta-data | jq | awk -F '"' '/upstream_ntp_server/ {print $4}' || echo -n '' )
-NTP_PEERS=$(curl -s http://localhost:8888/meta-data | jq | awk -F '"' '/ntp_peers/ {print $4}' || echo -n '' )
-NTP_LOCAL_NETS=$(curl -s http://localhost:8888/meta-data | jq | awk -F '"' '/ntp_local_nets/ {print $4}' || echo -n '' )
+# parse info from data.json until this can be templated in csi
+UPSTREAM_NTP_SERVER=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/upstream_ntp_server/ {print $4}' || echo -n '' )
+NTP_PEERS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_peers/ {print $4}' || echo -n '' )
+NTP_LOCAL_NETS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_local_nets/ {print $4}' || echo -n '' )
 CHRONY_CONF=/etc/chrony.d/cray.conf
 
 
