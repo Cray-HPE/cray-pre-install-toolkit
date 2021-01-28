@@ -149,6 +149,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="loftsman"/>
         <package name="manifestgen"/>
         <package name="metal-ipxe"/>
+        <package name="metal-net-scripts"/>
         <package name="nexus"/>
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
@@ -191,9 +192,6 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="podman"/>
         <package name="podman-cni-config"/>
         <package name="python"/>
-        <package name="python3-PyYAML"/>
-        <package name="python3-requests"/>
-        <package name="python3-urllib3"/>
         <package name="rsync"/>
         <package name="screen"/>
         <package name="shim"/>
