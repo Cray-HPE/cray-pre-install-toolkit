@@ -158,6 +158,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="craycli"/>
         <package name="docs-csm-install"/>
         <package name="csm-testing"/>
+        <package name="hpe-csm-scripts"/>
         <package name="loftsman"/>
         <package name="manifestgen"/>
         <package name="metal-ipxe"/>
