@@ -75,12 +75,13 @@ alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do print
 alias refme='zypper \
   --no-gpg-checks \
   --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/release/shasta-1.4/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/release/shasta-14/ \
+  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/release/shasta-1.4/ \
   up \
   basecamp \
   cray-site-init \
   craycli-wrapper \
   csm-testing \
+  metal-net-scripts \
   nexus'
 export GOSS_BASE=/opt/cray/tests/install/livecd
 EOF
