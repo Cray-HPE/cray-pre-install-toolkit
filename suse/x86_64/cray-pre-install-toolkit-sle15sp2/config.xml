@@ -118,7 +118,7 @@ WARNING: Please consult the README.md file in the top level directory of
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
     </repository>
-  
+
     <repository type="rpm-md" alias="cray-csm-CSM-sles-15sp2-noarch" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
@@ -135,6 +135,10 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
 
+    <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-x86_64" priority="89" imageinclude="true">
+        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
+    </repository>
+
     <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
@@ -145,16 +149,17 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <packages type="image">
         <!-- Section: CSM Packages -->
-        <package name="basecamp"/>
+        <package name="cray-metal-basecamp"/>
+        <package name="cray-nexus"/>
         <package name="cray-site-init"/>
         <package name="craycli"/>
-        <package name="docs-csm-install"/>
         <package name="csm-testing"/>
+        <package name="docs-csm-install"/>
+        <package name="hpe-csm-scripts"/>
         <package name="loftsman"/>
         <package name="manifestgen"/>
         <package name="metal-ipxe"/>
         <package name="metal-net-scripts"/>
-        <package name="nexus"/>
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="biosdevname"/>
