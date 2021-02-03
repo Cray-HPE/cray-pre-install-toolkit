@@ -24,7 +24,7 @@ pipeline {
 	}
 
 	agent {
-		node { label 'dstbuild' }
+		node { label 'node-image-builder' }
 	}
 
 	// Configuration options applicable to the entire job
