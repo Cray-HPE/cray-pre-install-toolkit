@@ -24,7 +24,7 @@ pipeline {
 	}
 
 	agent {
-		node { label 'node-image-builder' }
+		node { label 'metal-gcp-builder' }
 	}
 
 	// Configuration options applicable to the entire job
