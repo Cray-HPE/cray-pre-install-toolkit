@@ -32,14 +32,6 @@ echo "Configure image: [$kiwi_iname]..."
 suseSetupProduct
 
 #======================================
-# Cache docker images.
-#--------------------------------------
-podman pull sonatype/nexus
-podman pull dtr.dev.cray.com/cray/cray-nexus-setup
-podman pull dtr.dev.cray.com/metal/cloud-basecamp:$(rpm -q --queryformat '%{VERSION}' basecamp)-$(rpm -q --queryformat '%{RELEASE}' basecamp | cut -d '_' -f2)
-podman pull dtr.dev.cray.com/cray/craycli:$(rpm -q --queryformat '%{VERSION}' craycli)-$(rpm -q --queryformat '%{RELEASE}' craycli | cut -d '_' -f2)
-
-#======================================
 # Activate services
 #--------------------------------------
 suseInsertService apache2
@@ -72,19 +64,6 @@ cat << EOF >> /root/.bashrc
 alias ip='ip -c'
 alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
-alias refme='zypper \
-  --no-gpg-checks \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/predev/main/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/predev/main/ \
-  up \
-  basecamp \
-  cray-site-init \
-  craycli-wrapper \
-  csm-testing \
-  metal-net-scripts \
-  nexus'
 export GOSS_BASE=/opt/cray/tests/install/livecd
 EOF
 
