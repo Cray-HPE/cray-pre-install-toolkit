@@ -42,6 +42,9 @@ fi
 docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH  -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
+# Chown the files created in docker so jenkins user can mv them
+sudo chown -R $(whoami):$(whoami) build_output
+
 # Rename the files to match Cray versioning
 for f in $BUILD_OUTPUT/*; do
     new="${f/CRAY.VERSION.HERE/${PIT_SLUG}}"
