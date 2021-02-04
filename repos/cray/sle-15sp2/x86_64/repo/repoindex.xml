@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!-- Schema at https://github.com/openSUSE/libzypp/blob/master/zypp/parser/schema/repoindex.rnc -->
+<repoindex>
+    <repo alias="cray-csm-CLOUD-sles-15sp2-x86_64"
+        url="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-CSM-sles-15sp2-noarch"
+        url="http://car.dev.cray.com/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-MTL-sle-1sp2-noarch"
+        url="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-MTL-sle-15sp2-noarch-main"
+        url="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/predev/main/"
+        distro_target="sle-15-x86_64"
+        priority="88" />
+
+    <repo alias="cray-csm-MTL-sle-15sp2-x86_64"
+        url="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-MTL-sle-15sp2-x86_64-main"
+        url="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/predev/main/"
+        distro_target="sle-15-x86_64"
+        priority="88" />
+
+    <repo alias="cray-csm-SPET-sle-15sp2-noarch"
+        url="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-SPET-sle-15sp2-x86_64"
+        url="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/x86_64/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch"
+        url="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+
+    <repo alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-x86_64"
+        url="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/x86_64/dev/master/"
+        distro_target="sle-15-x86_64"
+        priority="89" />
+</repoindex>
