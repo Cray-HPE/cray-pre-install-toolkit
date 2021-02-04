@@ -8,11 +8,11 @@
 def skipSuccess = false
 
 pipeline {
-// FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
-    triggers {
-        upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
-        cron(env.BRANCH_NAME =~ '(release/.*|master)' ? '@daily' : '')
-     }
+  // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
+  triggers {
+    upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
+    cron(env.BRANCH_NAME =~ '(release/.*|master)' ? '@daily' : '')
+  }
 
   environment {
     LATEST_NAME="cray-pre-install-toolkit-latest"
@@ -42,32 +42,32 @@ pipeline {
 
   stages {
     stage('PREP: ISO NAME') {
-        steps {
-            script {
-                // Define these vars here so they're mutable (vs. global).
-                    env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
-                    env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
-                    env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
-                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-g${env.GIT_TAG}"
-                    env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
-                    echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
-                    slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
-                }
-            }
+      steps {
+        script {
+          // Define these vars here so they're mutable (vs. global).
+          env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
+          env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+          env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+          env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-g${env.GIT_TAG}"
+          env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
+          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
+          slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
         }
+      }
+    }
 
     stage('BUILD: Build Image') {
       steps {
-          script {
-                    // Run the build script. It will ensure
-                    // any cached docker image is removed so
-                    // the latest is pulled. The output of the
-                    // build will be copied to the 'build_output'
-                    // subdirectory.
-                    sh '''
-                        ./build.sh ${WORKSPACE}
-                    '''
-                }
+        script {
+          // Run the build script. It will ensure
+          // any cached docker image is removed so
+          // the latest is pulled. The output of the
+          // build will be copied to the 'build_output'
+          // subdirectory.
+          sh '''
+              ./build.sh ${WORKSPACE}
+          '''
+        }
       }
     }
 
@@ -86,21 +86,21 @@ pipeline {
   }
 
   post('Post Run Conditions') {
-        always {
-            script {
-                currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
-                // Own the build_output directory so jenkins can cleanup root files created from docker
-                sh "sudo chown -R $(whoami):$(whoami) build_output"
-            }
-        }
+    always {
+      script {
+        currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
+        // Own the build_output directory so jenkins can cleanup root files created from docker
+        sh "sudo chown -R $(whoami):$(whoami) build_output"
+      }
+    }
 
     fixed {
-            notifyBuildResult(headline: "FIXED")
+      notifyBuildResult(headline: "FIXED")
       script {
         slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
-                // Set to true so the 'success' post section is skipped when the build result is 'fixed'
-                // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
-                skipSuccess = true
+          // Set to true so the 'success' post section is skipped when the build result is 'fixed'
+          // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
+          skipSuccess = true
       }
 
       // Delete the 'build' directory
@@ -113,9 +113,9 @@ pipeline {
 
     success {
       script {
-                if (skipSuccess != true) {
-                    slackNotify(channel: "livecd-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
-                }
+        if (skipSuccess != true) {
+            slackNotify(channel: "livecd-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+        }
       }
 
       // Delete the 'build' directory
@@ -127,7 +127,7 @@ pipeline {
     }
 
     failure {
-            notifyBuildResult(headline: "FAILED")
+      notifyBuildResult(headline: "FAILED")
       script {
         slackNotify(channel: "livecd-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
       }
