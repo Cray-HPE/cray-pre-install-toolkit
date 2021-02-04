@@ -14,37 +14,37 @@ pipeline {
         cron(env.BRANCH_NAME =~ '(release/.*|master)' ? '@daily' : '')
      }
 
-	environment {
-		LATEST_NAME="cray-pre-install-toolkit-latest"
-		// Set product family
-		PRODUCT = "csm"
-		// Set the target for building
-		TARGET_OS = "sle15_sp2_ncn"
-		ARCH = "x86_64"
-	}
+  environment {
+    LATEST_NAME="cray-pre-install-toolkit-latest"
+    // Set product family
+    PRODUCT = "csm"
+    // Set the target for building
+    TARGET_OS = "sle15_sp2_ncn"
+    ARCH = "x86_64"
+  }
 
-	agent {
-		node { label 'metal-gcp-builder' }
-	}
+  agent {
+    node { label 'metal-gcp-builder' }
+  }
 
-	// Configuration options applicable to the entire job
-	options {
-		// This build should not take long, fail the build if it appears stuck
-		timeout(time: 240, unit: 'MINUTES')
+  // Configuration options applicable to the entire job
+  options {
+    // This build should not take long, fail the build if it appears stuck
+    timeout(time: 240, unit: 'MINUTES')
 
-		// Don't fill up the build server with unnecessary cruft
-		buildDiscarder(logRotator(numToKeepStr: '20'))
+    // Don't fill up the build server with unnecessary cruft
+    buildDiscarder(logRotator(numToKeepStr: '20'))
 
-		// Don't bog down the build pipeline; only build on push and manuals or other human intent.
-		disableConcurrentBuilds()
-		disableResume()
-	}
+    // Don't bog down the build pipeline; only build on push and manuals or other human intent.
+    disableConcurrentBuilds()
+    disableResume()
+  }
 
-	stages {
-		stage('PREP: ISO NAME') {
-		    steps {
-		        script {
-		            // Define these vars here so they're mutable (vs. global).
+  stages {
+    stage('PREP: ISO NAME') {
+        steps {
+            script {
+                // Define these vars here so they're mutable (vs. global).
                     env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
                     env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
                     env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
@@ -56,9 +56,9 @@ pipeline {
             }
         }
 
-		stage('BUILD: Build Image') {
-			steps {
-			    script {
+    stage('BUILD: Build Image') {
+      steps {
+          script {
                     // Run the build script. It will ensure
                     // any cached docker image is removed so
                     // the latest is pulled. The output of the
@@ -68,24 +68,24 @@ pipeline {
                         ./build.sh ${WORKSPACE}
                     '''
                 }
-			}
-		}
+      }
+    }
 
-		stage('PUBLISH: Transfer Images') {
-			steps {
-				// Create a "latest" copy
-				sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
-				sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
-				sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
+    stage('PUBLISH: Transfer Images') {
+      steps {
+        // Create a "latest" copy
+        sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
+        sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
+        sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-				transfer (artifactName:"build_output/*.iso")
-				transfer (artifactName:"build_output/*.packages")
-				transfer (artifactName:"build_output/*.verified")
-			}
-		}
-	}
+        transfer (artifactName:"build_output/*.iso")
+        transfer (artifactName:"build_output/*.packages")
+        transfer (artifactName:"build_output/*.verified")
+      }
+    }
+  }
 
-	post('Post Run Conditions') {
+  post('Post Run Conditions') {
         always {
             script {
                 currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
@@ -94,50 +94,50 @@ pipeline {
             }
         }
 
-		fixed {
+    fixed {
             notifyBuildResult(headline: "FIXED")
-			script {
-				slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
+      script {
+        slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#1d9bd1", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `FIXED`")
                 // Set to true so the 'success' post section is skipped when the build result is 'fixed'
                 // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
                 skipSuccess = true
-			}
+      }
 
-			// Delete the 'build' directory
-			dir('build') {
-				// the 'deleteDir' command recursively deletes the
-				// current directory
-				deleteDir()
-			}
-		}
+      // Delete the 'build' directory
+      dir('build') {
+        // the 'deleteDir' command recursively deletes the
+        // current directory
+        deleteDir()
+      }
+    }
 
-		success {
-			script {
+    success {
+      script {
                 if (skipSuccess != true) {
                     slackNotify(channel: "livecd-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
                 }
-			}
+      }
 
-			// Delete the 'build' directory
-			dir('build') {
-				// the 'deleteDir' command recursively deletes the
-				// current directory
-				deleteDir()
-			}
-		}
+      // Delete the 'build' directory
+      dir('build') {
+        // the 'deleteDir' command recursively deletes the
+        // current directory
+        deleteDir()
+      }
+    }
 
-		failure {
+    failure {
             notifyBuildResult(headline: "FAILED")
-			script {
-				slackNotify(channel: "livecd-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
-			}
+      script {
+        slackNotify(channel: "livecd-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
+      }
 
-			// Delete the 'build' directory
-			dir('build') {
-				// the 'deleteDir' command recursively deletes the
-				// current directory
-				deleteDir()
-			}
-		}
-	}
+      // Delete the 'build' directory
+      dir('build') {
+        // the 'deleteDir' command recursively deletes the
+        // current directory
+        deleteDir()
+      }
+    }
+  }
 }
