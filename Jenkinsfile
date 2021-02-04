@@ -89,8 +89,8 @@ pipeline {
     always {
       script {
         currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
-        // Own the build_output directory so jenkins can cleanup root files created from docker
-        sh 'sudo chown -R $(whoami):$(whoami) build_output'
+        // Forcefully cleanup leftover files from docker owned by root so next run wont error out
+        sh 'sudo rm -rf build_output'
       }
     }
 
@@ -102,13 +102,6 @@ pipeline {
           // Otherwise both 'fixed' and 'success' sections will execute due to Jenkins behavior
           skipSuccess = true
       }
-
-      // Delete the 'build' directory
-      dir('build') {
-        // the 'deleteDir' command recursively deletes the
-        // current directory
-        deleteDir()
-      }
     }
 
     success {
@@ -117,26 +110,12 @@ pipeline {
             slackNotify(channel: "livecd-ci-alerts", credential: "", color: "good", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
         }
       }
-
-      // Delete the 'build' directory
-      dir('build') {
-        // the 'deleteDir' command recursively deletes the
-        // current directory
-        deleteDir()
-      }
     }
 
     failure {
       notifyBuildResult(headline: "FAILED")
       script {
         slackNotify(channel: "livecd-ci-alerts", credential: "", color: "danger", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `${currentBuild.result}`")
-      }
-
-      // Delete the 'build' directory
-      dir('build') {
-        // the 'deleteDir' command recursively deletes the
-        // current directory
-        deleteDir()
       }
     }
   }
