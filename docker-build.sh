@@ -52,7 +52,7 @@ EOF
 
 
 # Build OS image tarball
-time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --target-dir /build || (echo "TAYLOR TEST" && sleep 1800)
+time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --target-dir /build
 
 # Delete the pre-install-toolkit version file for build from root overlay
 rm $RELEASE_FILE

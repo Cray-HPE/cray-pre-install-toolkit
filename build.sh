@@ -39,7 +39,9 @@ fi
 # the container at /base/build_output. That
 # translates into ${WORKSPACE}/build_output
 # outside the container.
-docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH  -v ${WORKSPACE}:/base --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
+# Map /dev to /dev so loop devices will work
+# the first time they are created after boot
+docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH  -v ${WORKSPACE}:/base -v /dev:/dev --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
 # Chown the files created in docker so jenkins user can mv them
