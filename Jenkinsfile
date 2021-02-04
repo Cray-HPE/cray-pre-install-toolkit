@@ -90,7 +90,7 @@ pipeline {
       script {
         currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
         // Own the build_output directory so jenkins can cleanup root files created from docker
-        sh "sudo chown -R $(whoami):$(whoami) build_output"
+        sh 'sudo chown -R $(whoami):$(whoami) build_output'
       }
     }
 
