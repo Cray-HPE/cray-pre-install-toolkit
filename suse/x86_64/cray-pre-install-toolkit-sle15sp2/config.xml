@@ -116,7 +116,11 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 <!--TEAM REPOS:-->
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
+        <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="cray-csm-CSM-sles-15sp2-noarch" priority="89" imageinclude="true">
+        <source path="http://car.dev.cray.com/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-CSM-sles-15sp2-noarch" priority="89" imageinclude="true">
@@ -124,7 +128,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-1sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-noarch-main" priority="88" imageinclude="true">
@@ -132,7 +136,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"/>
+        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64-main" priority="88" imageinclude="true">
@@ -140,11 +144,19 @@ WARNING: Please consult the README.md file in the top level directory of
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-x86_64" priority="89" imageinclude="true">
+        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/x86_64/dev/master/"/>
+    </repository>
+
+    <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch" priority="89" imageinclude="true">
+        <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch" priority="89" imageinclude="true">
