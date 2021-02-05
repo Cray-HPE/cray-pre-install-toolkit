@@ -68,87 +68,87 @@ WARNING: Please consult the README.md file in the top level directory of
 
 <!--SLES REPOS:-->
     <repository type="rpm-md" alias="SLE-Module-Basesystem15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Basesystem/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Module-Basesystem/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-Basesystem15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Basesystem/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Module-Basesystem/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-Containers15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Containers/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Module-Containers/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-Containers15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Containers/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Module-Containers/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-DevTools15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Development-Tools/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Module-Development-Tools/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-DevTools15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-Development-Tools/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Module-Development-Tools/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-HPC15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-HPC/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Module-HPC/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Module-HPC15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Module-HPC/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Module-HPC/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Product-HPC15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Product-HPC/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Product-HPC/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Product-HPC15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-HPC/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Product-HPC/15-SP2/x86_64/update/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Product-SLES15-SP2-Pool" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Product-SLES/15-SP2/x86_64/product/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Products/SLE-Product-SLES/15-SP2/x86_64/product/"/>
     </repository>
 
     <repository type="rpm-md" alias="SLE-Product-SLES15-SP2-Updates" priority="99" imageinclude="true">
-        <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
+        <source path="https://arti.algol60.net/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
     </repository>
 <!--TEAM REPOS:-->
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
     </repository>
-  
+
     <repository type="rpm-md" alias="cray-csm-CSM-sles-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-1sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-noarch-main" priority="88" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/predev/main/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/predev/main/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64-master" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64-main" priority="88" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/predev/main/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/predev/main/"/>
     </repository>
-                      
+
     <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/x86_64/dev/master/"/>
+        <source path="https://arti.algol60.net/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/x86_64/dev/master/"/>
    </repository>
 
     <packages type="image">
