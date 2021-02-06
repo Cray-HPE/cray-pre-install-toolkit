@@ -32,14 +32,6 @@ echo "Configure image: [$kiwi_iname]..."
 suseSetupProduct
 
 #======================================
-# Cache docker images.
-#--------------------------------------
-podman pull sonatype/nexus
-podman pull dtr.dev.cray.com/cray/cray-nexus-setup
-podman pull dtr.dev.cray.com/metal/cloud-basecamp:$(rpm -q --queryformat '%{VERSION}' basecamp)-$(rpm -q --queryformat '%{RELEASE}' basecamp | cut -d '_' -f2)
-podman pull dtr.dev.cray.com/cray/craycli:$(rpm -q --queryformat '%{VERSION}' craycli)-$(rpm -q --queryformat '%{RELEASE}' craycli | cut -d '_' -f2)
-
-#======================================
 # Activate services
 #--------------------------------------
 suseInsertService apache2
@@ -72,16 +64,6 @@ cat << EOF >> /root/.bashrc
 alias ip='ip -c'
 alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
-alias refme='zypper \
-  --no-gpg-checks \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/ \
-  --plus-repo=http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/ \
-  up \
-  basecamp \
-  cray-site-init \
-  craycli-wrapper \
-  csm-testing \
-  nexus'
 export GOSS_BASE=/opt/cray/tests/install/livecd
 EOF
 
@@ -113,6 +95,14 @@ kubectl_version="1.18.6"
 echo "Installing kubectl"
 curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod a+x /usr/local/bin/kubectl
+
+#======================================
+# Upload management network firmware 
+# to the LiveCD
+#--------------------------------------
+mkdir -pv /var/www/fw/network
+cd /var/www/fw/network
+wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/artifactory/list/integration-firmware
 
 #==============================================================================
 # Download and extract River BIOS, BMC, and CMC.

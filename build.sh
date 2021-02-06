@@ -9,7 +9,7 @@ fi
 DOCKER_IMAGE="dtr.dev.cray.com:443/metal/build-cray-pre-install-toolkit:1.0.1"
 BUILD_OUTPUT=${WORKSPACE}/build_output
 
-if [[ -n $PIT_SLUG ]]; then
+if [[ -z $PIT_SLUG ]]; then
   # Get x.y.z version from .version file
   export PIT_VERSION=$(cat .version)
   # Get a timestamp for this build based on this rename operation
@@ -17,6 +17,10 @@ if [[ -n $PIT_SLUG ]]; then
   # Get HEAD commit ID for the branch used in build
   export PIT_HASH=$(git log -n 1 --pretty=format:'%h')
   export PIT_SLUG="${PIT_VERSION}-${PIT_TIMESTAMP}-g${PIT_HASH}"
+else
+  export PIT_VERSION=$(echo $PIT_SLUG | cut -d '-' -f1)
+  export PIT_TIMESTAMP=$(echo $PIT_SLUG | cut -d '-' -f2)
+  export PIT_HASH=$(echo $PIT_SLUG | cut -d '-' -f3)
 fi
 
 # If the image already exists on the node,

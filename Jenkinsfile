@@ -3,7 +3,7 @@
 
 // Jenkins Shared Libraries are implemented in our CI model (https://connect.us.cray.com/confluence/display/DST/Best+Practices+and+How-To%27s)
 // Jenkins Global Variables are enabled in our CI mode
-@Library('dst-shared@master') _
+@Library("dst-shared@release/shasta-1.4") _
 
 def skipSuccess = false
 
@@ -11,7 +11,7 @@ pipeline {
 // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
     triggers {
         upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
-        cron('@daily')
+        cron(env.BRANCH_NAME =~ '(release/.*|master)' ? '@daily' : '')
      }
 
 	environment {
@@ -48,7 +48,7 @@ pipeline {
                     env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
                     env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
                     env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
-                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-${env.GIT_TAG}"
+                    env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-g${env.GIT_TAG}"
                     env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
                     echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
                     slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")

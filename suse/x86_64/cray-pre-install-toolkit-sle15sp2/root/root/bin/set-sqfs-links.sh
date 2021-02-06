@@ -10,7 +10,7 @@ ceph_kernel="$(find ${WEB_ROOT}/ephemeral/data/ceph -name *.kernel -printf '%T@ 
 ceph_squashfs="$(find ${WEB_ROOT}/ephemeral/data/ceph -name *.squashfs -printf '%T@ %p\n' | sort -n | tail -1 |  cut -f2- -d" ")"
 
 # RULE! The kernels MUST match; the initrds may be different.
-if [[ "$(basename ${k8s_kernel})" != "$(basename ${ceph_kernel})" ]]; then
+if [[ "$(basename ${k8s_kernel} | cut -d '-' -f1,2)" != "$(basename ${ceph_kernel} | cut -d '-' -f1,2)" ]]; then
     echo 'Mismatching kernels! The discovered artifacts will deploy an undesirable stack.' >&2
 fi
 
@@ -27,6 +27,7 @@ else
 fi
 for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
+    cp -pv /var/www/boot/script.ipxe .
     ln -vsnf ..${k8s_kernel///var\/www} kernel
     ln -vsnf ..${k8s_initrd///var\/www} initrd.img.xz
     ln -vsnf ..${k8s_squashfs///var\/www} filesystem.squashfs
@@ -34,6 +35,7 @@ for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
 done
 for ncn in $(grep -Eo 'ncn-s\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
+    cp -pv /var/www/boot/script.ipxe .
     ln -vsnf ..${ceph_kernel///var\/www} kernel
     ln -vsnf ..${ceph_initrd///var\/www} initrd.img.xz
     ln -vsnf ..${ceph_squashfs///var\/www} filesystem.squashfs
