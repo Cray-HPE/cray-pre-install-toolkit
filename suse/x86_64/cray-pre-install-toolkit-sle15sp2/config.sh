@@ -114,22 +114,30 @@ echo "Installing kubectl"
 curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod a+x /usr/local/bin/kubectl
 
-#======================================
-# Download River BIOS and BMC
+#==============================================================================
+# Download and extract River BIOS, BMC, and CMC.
 #   The fw images will be available at
-#   http://vlan004-ip-address/ephemeral/data/fw
-#--------------------------------------
-#declare -r BIOS_RVR_BASE_URL=https://stash.us.cray.com/projects/BIOSRVR/repos/bios-rvr/browse
-declare -r BIOS_RVR_BASE_URL=https://stash.us.cray.com/projects/BIOSRVR/repos/bios-rvr/raw/sh-svr-1264up-bios
+#   http://ncn-m001.vlan004.ip.address/ephemeral/data/fw/{128409,628402,MZ32,MZ62,MZ92}*
+#------------------------------------------------------------------------------
+declare -r BIOS_RVR_BASE_URL=https://stash.us.cray.com/projects/BIOSRVR/repos/bios-rvr/raw
 declare ephemeralDataDir=${EPH_DATA_DIR:-/var/www/ephemeral/data/fw} \
-        branch=refs%2Fheads%2Frelease%2Fshasta-1.4
-        shSvrScriptsUrl=${BIOS_RVR_BASE_URL}/sh-svr-scripts
-        biosUrl=${BIOS_RVR_BASE_URL}/BIOS/MZ32-AR0-YF_C20_F01.zip \
-        bmcUrl=${BIOS_RVR_BASE_URL}/BMC/128409.zip
+        branch=refs%2Fheads%2Frelease%2Fshasta-1.4 \
+        shSvrScriptsUrl=${BIOS_RVR_BASE_URL}/sh-svr-scripts \
+        biosUrls="${BIOS_RVR_BASE_URL}/sh-svr-1264up-bios/BIOS/MZ32-AR0-YF_C20_F01.zip ${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BIOS/MZ62-HD0-YF_C20_F01b.zip ${BIOS_RVR_BASE_URL}/sh-svr-5264-gpu-bios/BIOS/MZ92-FS0-YF_C20_F01.zip" \
+        bmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BMC/128409.zip \
+        cmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/CMC/628402.zip \
+        curUrl=
 mkdir -p ${ephemeralDataDir}/${shSvrScriptsUrl##*/}
-printf -- "Downloading NCN BIOS and BMC ... "
-curl -sL ${biosUrl}?at=${branch} -o ${ephemeralDataDir}/${biosUrl##*/} &
-curl -sL ${bmcUrl}?at=${branch} -o ${ephemeralDataDir}/${bmcUrl##*/} &
+printf -- "Downloading River BIOS, BMC, and CMC ... "
+for curUrl in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
+  curl -sL ${curUrl}?at=${branch} -o ${ephemeralDataDir}/${curUrl##*/} &
+done #}
 (for f in `/usr/bin/curl -s ${shSvrScriptsUrl}?at=${branch} | awk '{print $NF}'`; do /usr/bin/curl -s ${shSvrScriptsUrl}/${f}?at=${branch} >${ephemeralDataDir}/${shSvrScriptsUrl##*/}/${f} & done )
 wait
 printf -- "DONE\n"
+printf -- "Removing unused files & directories.\n"
+find ${ephemeralDataDir}/1* -maxdepth 1 ! -name fw | tail -n+2 | xargs rm -rf
+find ${ephemeralDataDir}/6* -maxdepth 1 ! -name fw | tail -n+2 | xargs rm -rf
+find ${ephemeralDataDir}/MZ3* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
+find ${ephemeralDataDir}/MZ6* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
+find ${ephemeralDataDir}/MZ9* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
