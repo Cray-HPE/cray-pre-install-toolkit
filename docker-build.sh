@@ -27,7 +27,7 @@ RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base
 
-# Clean the build directory if it exists, or 
+# Clean the build directory if it exists, or
 # create it if it doesn't.
 if [[ -e /build ]]; then
     rm -rf /build/*
