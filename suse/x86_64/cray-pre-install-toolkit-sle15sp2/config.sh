@@ -64,7 +64,7 @@ cat << EOF >> /root/.bashrc
 alias ip='ip -c'
 alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
-export GOSS_BASE=/opt/cray/tests/install/livecd
+source <(kubectl completion bash) 2>/dev/null
 EOF
 
 #======================================
@@ -79,7 +79,6 @@ chage -d 0 root
 #--------------------------------------
 goss_version="0.3.13"
 echo "Installing goss"
-export GOSS_BASE=/opt/cray/tests/install/livecd
 curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
 chmod a+x /usr/bin/goss
 # Create symlinks for automated preflight checks
