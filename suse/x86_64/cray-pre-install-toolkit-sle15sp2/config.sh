@@ -115,8 +115,17 @@ declare dataDir=${DATA_DIR:-/var/www/fw/river} \
         biosUrls="${BIOS_RVR_BASE_URL}/sh-svr-1264up-bios/BIOS/MZ32-AR0-YF_C20_F01.zip ${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BIOS/MZ62-HD0-YF_C20_F01b.zip ${BIOS_RVR_BASE_URL}/sh-svr-5264-gpu-bios/BIOS/MZ92-FS0-YF_C20_F01.zip" \
         bmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BMC/128409.zip \
         cmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/CMC/628402.zip \
-        curUrl=
+        line= fileName= curUrl=
 mkdir -p ${dataDir}/${shSvrScriptsUrl##*/}
+printf -- "Downloading sh-svr-scripts ... "
+while read line; do #{
+  set ${line} >/dev/null 2>&1
+  [ ${#} -eq 4 ] || continue
+  fileName=${4}
+  curl -sL ${shSvrScriptsUrl}/${fileName}?at=${branch} -o ${dataDir}/${shSvrScriptsUrl##*/}/${fileName} &
+done< <(curl -sk ${shSvrScriptsUrl}?at=${branch}) #}
+wait
+printf -- "DONE\n"
 printf -- "Downloading River BIOS, BMC, and CMC ... "
 for curUrl in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
   curl -sL ${curUrl}?at=${branch} -o ${dataDir}/${curUrl##*/} &
