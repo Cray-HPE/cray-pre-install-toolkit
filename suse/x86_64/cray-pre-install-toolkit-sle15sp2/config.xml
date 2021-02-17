@@ -168,6 +168,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="manifestgen"/>
         <package name="metal-ipxe"/>
         <package name="metal-net-scripts"/>
+        <package name="csm-install-workarounds"/>
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="bc"/>
