@@ -114,6 +114,10 @@ WARNING: Please consult the README.md file in the top level directory of
     <repository type="rpm-md" alias="SLE-Product-SLES15-SP2-Updates" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Updates/SLE-Product-SLES/15-SP2/x86_64/update/"/>
     </repository>
+
+    <repository type="rpm-md" alias="Cray-HPE-SPP" priority="99" imageinclude="true">
+        <source path="https://arti.dev.cray.com/artifactory/mirror-HPE-SPP/SUSE_LINUX/SLES15-SP2/x86_64/current/"/>
+    </repository>
 <!--TEAM REPOS:-->
     <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
@@ -153,6 +157,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="cray-nexus"/>
         <package name="cray-site-init"/>
         <package name="craycli"/>
+        <package name="csm-install-workarounds"/>
         <package name="csm-testing"/>
         <package name="docs-csm-install"/>
         <package name="hpe-csm-scripts"/>
@@ -160,7 +165,11 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="manifestgen"/>
         <package name="metal-ipxe"/>
         <package name="metal-net-scripts"/>
-        <package name="csm-install-workarounds"/>
+        <!-- Section: Airgap/Firmware Packages -->
+        <package name="firmware-ilo5"/><!-- DL325 Gen10+ -->
+        <package name="firmware-system-a41"/><!-- DL325 Gen10 -->
+        <package name="firmware-system-a42"/><!-- DL385 Gen10+ -->
+        <package name="firmware-system-a43"/><!-- DL325 Gen10+ -->
         <!-- Section: SUSE Packages -->
         <package name="bash-completion"/>
         <package name="bc"/>
