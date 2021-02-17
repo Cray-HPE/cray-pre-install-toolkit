@@ -96,7 +96,15 @@ curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_ver
 chmod a+x /usr/local/bin/kubectl
 
 #======================================
-# Upload management network firmware 
+# Setup Server Firmware Files into the
+# webroot.
+#--------------------------------------
+mkdir -pv /var/www/fw/river/hpe
+find /usr/lib/x86_64-linux-gnu/firmware-system* -name  *.flash -exec ln -snf {} /var/www/fw/river/hpe/ \;
+find /usr/lib/x86_64-linux-gnu/firmware-ilo5* -name  *.bin -exec ln -snf {} /var/www/fw/river/hpe/ \;
+
+#======================================
+# Upload management network firmware
 # to the LiveCD
 #--------------------------------------
 mkdir -pv /var/www/fw/network
