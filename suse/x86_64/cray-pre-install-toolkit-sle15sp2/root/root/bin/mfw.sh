@@ -10,9 +10,13 @@ EOM
   exit 1
 fi
 
-fw_home=http://pit/fw/river
+fw=$1
+fw_home=http://pit/fw/river/
 username=${username:-admin}
 password=${password:-password}
+fw_file=$(find $fw_home -name $fw*)
+[ -f $fw_file ] || echo >&2 "Failed to stat $fw_file" && exit 1
+image="$fw_home/$(basename $fw_file)"
 
 # FIXME: Remove '-k' for insecure.
-curl -X POST -k -u $username:$password https://$1/redfish/v1/UpdateService/Actions/UpdateService.Simpleupdate/ -H Content-Type:application/json -d '{"TransferProtocol":"HTTP", "ImageURI":"'$image'"}'
+curl -X POST -k -u $username:$password https://${fw_home}/redfish/v1/UpdateService/Actions/UpdateService.Simpleupdate/ -H Content-Type:application/json -d '{"TransferProtocol":"HTTP", "ImageURI":"'$image'"}'
