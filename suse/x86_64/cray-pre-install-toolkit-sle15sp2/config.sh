@@ -35,8 +35,10 @@ suseSetupProduct
 # Activate services
 #--------------------------------------
 suseInsertService apache2
+suseInsertService basecamp
 suseInsertService chronyd
 suseInsertService dnsmasq
+suseInsertService nexus
 suseInsertService sshd
 
 #======================================
@@ -140,7 +142,7 @@ for curUrl in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
 done #}
 wait
 printf -- "DONE\n"
-printf -- "Extracting BIOS, BMC, and CMC ito var/www/fw/river ... "
+printf -- "Extracting BIOS, BMC, and CMC into ${dataDir} ... "
 for zipArchive in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
   python3 -m zipfile -e ${dataDir}/${zipArchive##*/} ${dataDir}/ &
 done #}

@@ -134,6 +134,10 @@ WARNING: Please consult the README.md file in the top level directory of
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/release/shasta-1.4/"/>
     </repository>
+    <!--MTL: Prefer OSS RPMs; if repos move to Github, this will auto-fetch their RPMs as they produce them (instead of their bitbucket RPMs).-->
+    <repository type="rpm-md" alias="cray-csm-MTL-OSS-sle-15sp2-x86_64" priority="88" imageinclude="true">
+        <source path="http://car.dev.cray.com/artifactory/csm/CRAY-HPE/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
+    </repository>
 
     <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-noarch" priority="89" imageinclude="true">
         <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
@@ -153,6 +157,7 @@ WARNING: Please consult the README.md file in the top level directory of
 
     <packages type="image">
         <!-- Section: CSM Packages -->
+        <package name="apache2"/>
         <package name="cray-metal-basecamp"/>
         <package name="cray-nexus"/>
         <package name="cray-site-init"/>
