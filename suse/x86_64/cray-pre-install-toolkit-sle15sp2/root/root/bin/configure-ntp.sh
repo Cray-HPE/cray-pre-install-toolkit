@@ -25,7 +25,7 @@ create_chrony_config() {
   if [[ -z $UPSTREAM_NTP_SERVER ]]; then
     :
   else
-    echo "server $UPSTREAM_NTP_SERVER iburst trust maxsources 3" >>"$CHRONY_CONF"
+    echo "server $UPSTREAM_NTP_SERVER iburst trust" >>"$CHRONY_CONF"
   fi
 
   for net in ${NTP_LOCAL_NETS}
@@ -33,6 +33,8 @@ create_chrony_config() {
      echo "allow $net" >>"$CHRONY_CONF"
   done
 
+  # Step the clock in a stricter manner than the default *this is the value used in 1.3
+  echo "makestep 0.1 3" >>"$CHRONY_CONF"
   echo "local stratum 3 orphan" >>"$CHRONY_CONF"
   echo "log measurements statistics tracking" >>"$CHRONY_CONF"
   echo "logchange 1.0" >>"$CHRONY_CONF"
@@ -75,3 +77,24 @@ fi
 create_chrony_config
 systemctl enable chronyd
 systemctl restart chronyd
+# Show the current time
+echo "CURRENT TIME SETTINGS"
+echo "rtc: $(hwclock)"
+echo "sys: $(date "+%Y-%m-%d %H:%M:%S.%6N%z")"
+# Ensure we use UTC
+timedatectl set-timezone UTC
+# bursting immediately after restarting the service can sometimes give a 503, even if the server is reachable.
+# This just gives the service a little bit of time to settle
+sleep 15
+# quickly make (4 good measurements / 4 maximum)
+chronyc burst 4/4
+# wait a short bit to make sure the measurements happened
+sleep 15
+# then step the clock immediately if neeed
+chronyc makestep
+hwclock --systohc --utc
+systemctl restart chronyd
+
+echo "NEW TIME SETTINGS"
+echo "rtc: $(hwclock)"
+echo "sys: $(date "+%Y-%m-%d %H:%M:%S.%6N%z")"
