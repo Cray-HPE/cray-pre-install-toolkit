@@ -6,12 +6,13 @@
 @Library('dst-shared@master') _
 
 def skipSuccess = false
+def masterBranch = "main"
 
 pipeline {
   // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
   triggers {
     upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
-    cron(env.BRANCH_NAME =~ '(release/.*|master)' ? '@daily' : '')
+    cron(env.BRANCH_NAME ==~ 'release/.*|main)' ? '@daily' : '')
   }
 
   environment {
