@@ -131,20 +131,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
-    <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-noarch-main" priority="88" imageinclude="true">
-        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/predev/main/"/>
-    </repository>
-
     <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64" priority="89" imageinclude="true">
         <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"/>
     </repository>
-
-    <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64-main" priority="88" imageinclude="true">
-        <source path="https://arti.algol60.net/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/predev/main/"/>
-    </repository>
     <!--MTL: Prefer OSS RPMs; if repos move to Github, this will auto-fetch their RPMs as they produce them (instead of their bitbucket RPMs).-->
     <repository type="rpm-md" alias="cray-csm-MTL-OSS-sle-15sp2-x86_64" priority="88" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/csm/CRAY-HPE/sle15_sp2_ncn/noarch/release/shasta-1.4/"/>
+        <source path="http://car.dev.cray.com/artifactory/csm/CRAY-HPE/sle15_sp2_ncn/noarch/dev/master/"/>
     </repository>
 
     <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-noarch" priority="89" imageinclude="true">
