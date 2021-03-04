@@ -66,6 +66,9 @@ cat << EOF >> /root/.bashrc
 alias ip='ip -c'
 alias ll='ls -l --color'
 alias lid='for file in \$(ls -1d /sys/bus/pci/drivers/*/0000\:*/net/*); do printf "% -6s %s\n" "\$(basename \$file)" \$(grep PCI_ID "\$(dirname \$(dirname \$file))/uevent" | cut -f 2 -d '='); done'
+alias wipeoff="sed -i 's/metal.no-wipe=0/metal.no-wipe=1/g' /var/www/boot/script.ipxe && set-sqfs-links.sh"
+alias wipeon="sed -i 's/metal.no-wipe=1/metal.no-wipe=0/g' /var/www/boot/script.ipxe && set-sqfs-links.sh"
+alias wipestat='grep -o metal.no-wipe=[01] /var/www/ncn-*/script.ipxe'
 source <(kubectl completion bash) 2>/dev/null
 EOF
 
