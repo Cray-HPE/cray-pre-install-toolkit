@@ -183,6 +183,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="checkmedia"/>
         <package name="chrony"/>
         <package name="conman"/>
+        <package name="cray-shasta-mlnx-firmware"/>
         <package name="createrepo_c"/>
         <package name="curl"/>
         <package name="dhcp-client"/>
