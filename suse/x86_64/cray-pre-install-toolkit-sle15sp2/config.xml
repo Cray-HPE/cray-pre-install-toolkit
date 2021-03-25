@@ -158,7 +158,6 @@ WARNING: Please consult the README.md file in the top level directory of
     <packages type="image">
         <!-- Section: CSM Packages -->
         <package name="apache2"/>
-        <package name="cray-metal-basecamp"/>
         <package name="cray-nexus"/>
         <package name="cray-site-init"/>
         <package name="craycli"/>
@@ -168,6 +167,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="hpe-csm-scripts"/>
         <package name="loftsman"/>
         <package name="manifestgen"/>
+        <package name="metal-basecamp"/>
         <package name="metal-ipxe"/>
         <package name="metal-net-scripts"/>
         <!-- Section: Airgap/Firmware Packages -->
