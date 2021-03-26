@@ -66,7 +66,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <user pwdformat="plain" password="" home="/root" name="root" groups="root"/>
     </users>
 
-<!--SLES REPOS:-->
+    <!--SLES REPOS:-->
     <repository type="rpm-md" alias="SLE-Module-Basesystem15-SP2-Pool" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-SUSE/Products/SLE-Module-Basesystem/15-SP2/x86_64/product/"/>
     </repository>
@@ -118,126 +118,6 @@ WARNING: Please consult the README.md file in the top level directory of
     <repository type="rpm-md" alias="Cray-HPE-SPP" priority="99" imageinclude="true">
         <source path="https://arti.dev.cray.com/artifactory/mirror-HPE-SPP/SUSE_LINUX/SLES15-SP2/x86_64/current/"/>
     </repository>
-<!--TEAM REPOS:-->
-    <repository type="rpm-md" alias="cray-csm-CLOUD-sles-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/csm/CLOUD/sle15_sp2_ncn/x86_64/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-CSM-sles-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/CSM/sle15_sp2_ncn/noarch/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-MTL-sle-1sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/noarch/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-MTL-sle-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/MTL/sle15_sp2_ncn/x86_64/dev/master/"/>
-    </repository>
-    <!--MTL: Prefer OSS RPMs; if repos move to Github, this will auto-fetch their RPMs as they produce them (instead of their bitbucket RPMs).-->
-    <repository type="rpm-md" alias="cray-csm-MTL-OSS-sle-15sp2-x86_64" priority="88" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/csm/CRAY-HPE/sle15_sp2_ncn/noarch/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/noarch/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-SPET-sle-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/list/csm/SPET/sle15_sp2_ncn/x86_64/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-noarch" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/noarch/dev/master/"/>
-    </repository>
-
-    <repository type="rpm-md" alias="cray-csm-slingshot-OFI-CRAY-sle-15sp2-x86_64" priority="89" imageinclude="true">
-        <source path="http://car.dev.cray.com/artifactory/slingshot/OFI-CRAY/sle15_sp2_ncn/x86_64/dev/master/"/>
-   </repository>
-
-    <packages type="image">
-        <!-- Section: CSM Packages -->
-        <package name="apache2"/>
-        <package name="cray-nexus"/>
-        <package name="cray-site-init"/>
-        <package name="craycli"/>
-        <package name="csm-install-workarounds"/>
-        <package name="csm-testing"/>
-        <package name="docs-csm-install"/>
-        <package name="hpe-csm-scripts"/>
-        <package name="loftsman"/>
-        <package name="manifestgen"/>
-        <package name="metal-basecamp"/>
-        <package name="metal-ipxe"/>
-        <package name="metal-net-scripts"/>
-        <!-- Section: Airgap/Firmware Packages -->
-        <package name="firmware-ilo5"/><!-- DL325 Gen10+ -->
-        <package name="firmware-system-a41"/><!-- DL325 Gen10 -->
-        <package name="firmware-system-a42"/><!-- DL385 Gen10+ -->
-        <package name="firmware-system-a43"/><!-- DL325 Gen10+ -->
-        <!-- Section: SUSE Packages -->
-        <package name="bash-completion"/>
-        <package name="bc"/>
-        <package name="biosdevname"/>
-        <package name="bsdtar"/>
-        <package name="checkmedia"/>
-        <package name="chrony"/>
-        <package name="conman"/>
-        <package name="cray-shasta-mlnx-firmware"/>
-        <package name="createrepo_c"/>
-        <package name="curl"/>
-        <package name="dhcp-client"/>
-        <package name="ethtool"/>
-        <package name="fontconfig"/>
-        <package name="fonts-config"/>
-        <package name="git"/>
-        <package name="grub2"/>
-        <package name="grub2-branding-SLE"/>
-        <package name="grub2-i386-pc"/>
-        <package name="grub2-x86_64-efi" arch="x86_64"/>
-        <package name="ipmitool"/>
-        <package name="iproute2"/>
-        <package name="iproute2-bash-completion"/>
-        <package name="iputils"/>
-        <package name="jq" />
-        <package name="kernel-default"/>
-        <package name="kernel-firmware"/>
-        <package name="kernel-mft-mlnx-kmp-default"/>
-        <package name="less"/>
-        <package name="lshw" />
-        <package name="lsof" />
-        <package name="lsscsi"/>
-        <package name="lvm2"/>
-        <package name="mft"/>
-        <package name="minicom"/>
-        <package name="nmap"/>
-        <package name="open-lldp"/>
-        <package name="openssh"/>
-        <package name="parted"/>
-        <package name="patterns-base-base"/>
-        <package name="pciutils"/>
-        <package name="pdsh"/>
-        <package name="podman"/>
-        <package name="podman-cni-config"/>
-        <package name="python3-boto3"/>
-        <package name="rsync"/>
-        <package name="screen"/>
-        <package name="shim"/>
-        <package name="squashfs"/>
-        <package name="strace"/>
-        <package name="syslinux"/>
-        <package name="systemd-bash-completion"/>
-        <package name="tar"/>
-        <package name="tcpdump"/>
-        <package name="timezone"/>
-        <package name="traceroute"/>
-        <package name="usbutils"/>
-        <package name="vim"/>
-        <package name="wget"/>
-        <package name="which"/>
-        <package name="wireshark"/>
-        <package name="wol"/>
-    </packages>
     <packages type="iso">
         <package name="branding-SLE"/>
         <package name="dracut-kiwi-live"/>
@@ -255,6 +135,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="glibc-locale"/>
         <package name="SLE_HPC-release"/>
         <package name="udev"/>
+        <package name="timezone"/>
     </packages>
 </image>
 <!--

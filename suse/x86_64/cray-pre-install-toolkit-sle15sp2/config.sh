@@ -15,6 +15,8 @@
 #               :
 # STATUS        : BETA
 #----------------
+set -e
+
 #======================================
 # Functions...
 #--------------------------------------
@@ -25,6 +27,26 @@ test -f /.profile && . /.profile
 # Greeting...
 #--------------------------------------
 echo "Configure image: [$kiwi_iname]..."
+
+#======================================
+# Source rpm-functions...
+#--------------------------------------
+echo "Sourcing /srv/cray/csm-rpms/scripts/rpm-functions.sh"
+. /srv/cray/csm-rpms/scripts/rpm-functions.sh
+
+#======================================
+# Setup Repos...
+#--------------------------------------
+echo "Setting up package repos from rpm-functions"
+# Remove base bootstrap repos in favor of csm-rpm defined repos
+cleanup-all-repos
+setup-package-repos
+
+#======================================
+# Install Packages...
+#--------------------------------------
+echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages"
+install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages
 
 #======================================
 # Setup baseproduct link
@@ -82,10 +104,6 @@ chage -d 0 root
 # Goss is used to validate LiveCD health
 # at builds, installs and runtime.
 #--------------------------------------
-goss_version="0.3.13"
-echo "Installing goss"
-curl -L https://github.com/aelsabbahy/goss/releases/download/v${goss_version}/goss-linux-amd64 -o /usr/bin/goss
-chmod a+x /usr/bin/goss
 # Create symlinks for automated preflight checks
 ln -s $GOSS_BASE/automated/livecd-preflight-checks /usr/bin/livecd-preflight-checks
 ln -s $GOSS_BASE/automated/ncn-preflight-checks /usr/bin/ncn-preflight-checks

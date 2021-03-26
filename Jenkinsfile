@@ -41,6 +41,10 @@ pipeline {
     disableResume()
   }
 
+  parameters {
+    string(name: 'csmRpmRef', defaultValue: "main", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
+  }
+
   stages {
     stage('PREP: ISO NAME') {
       steps {
@@ -53,6 +57,14 @@ pipeline {
           env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
           echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
           slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
+        }
+      }
+    }
+
+    stage('Checkout csm-rpms') {
+      steps {
+        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp2/root/srv/cray/csm-rpms') {
+          git credentialsId: '18f63634-7b3e-4461-acfe-83c6ee647fa4', url: 'https://stash.us.cray.com/scm/csm/csm-rpms.git', branch: params.csmRpmRef
         }
       }
     }
