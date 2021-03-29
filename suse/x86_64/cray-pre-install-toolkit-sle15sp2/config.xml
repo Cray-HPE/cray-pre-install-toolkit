@@ -31,7 +31,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
         <keytable>us</keytable>
-        <timezone>America/Chicago</timezone>
+        <timezone>UTC</timezone>
         <rpm-excludedocs>false</rpm-excludedocs>
         <rpm-check-signatures>false</rpm-check-signatures>
     </preferences>
