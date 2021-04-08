@@ -128,6 +128,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="dracut-kiwi-oem-repart"/>
     </packages>
     <packages type="bootstrap">
+        <package name="gawk"/>
         <package name="ca-certificates"/>
         <package name="ca-certificates-mozilla"/>
         <package name="cracklib-dict-full"/>
