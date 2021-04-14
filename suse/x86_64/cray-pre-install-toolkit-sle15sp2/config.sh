@@ -48,6 +48,9 @@ setup-package-repos
 echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages"
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages
 
+echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages"
+install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages
+
 #======================================
 # Setup baseproduct link
 #--------------------------------------
