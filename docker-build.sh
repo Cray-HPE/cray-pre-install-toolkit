@@ -52,10 +52,10 @@ EOF
 
 
 # Build OS image tarball
-time /usr/bin/kiwi-ng --type iso --debug system build --description $DESC_DIR --target-dir /build
+time /usr/bin/kiwi-ng --profile=PITISO --type iso --debug system build --description $DESC_DIR --target-dir /build
 
 # Delete the pre-install-toolkit version file for build from root overlay
-rm $RELEASE_FILE
+/bin/rm -f $RELEASE_FILE
 
 # Copy build artifacts to external mounted directory
 cp /build/*.iso /build/*.packages /build/*.verified ./build_output

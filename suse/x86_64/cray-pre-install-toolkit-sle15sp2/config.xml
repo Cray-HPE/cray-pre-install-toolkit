@@ -5,6 +5,10 @@ WARNING: Please consult the README.md file in the top level directory of
 -->
 
 <image schemaversion="6.8" name="cray-pre-install-toolkit-sle15sp2">
+    <profiles>
+        <profile name="PITISO" description="CRAY Pre-install Toolkit ISO"/>
+        <profile name="VMX" description="VMX"/>
+    </profiles>
     <description type="system">
         <author>Russell Bunch</author>
         <contact>rustydb@hpe.com</contact>
@@ -14,7 +18,7 @@ WARNING: Please consult the README.md file in the top level directory of
             be used for recovery on any non-compute/service node.
         </specification>
     </description>
-    <preferences>
+    <preferences profiles="PITISO">
         <type image="iso"
               primary="true"
               firmware="uefi"
@@ -35,7 +39,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <rpm-excludedocs>false</rpm-excludedocs>
         <rpm-check-signatures>false</rpm-check-signatures>
     </preferences>
-    <preferences>
+    <preferences profiles="VMX">
         <type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/>
         <type image="oem"
               filesystem="ext4"
