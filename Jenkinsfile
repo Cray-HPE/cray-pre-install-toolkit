@@ -22,6 +22,7 @@ pipeline {
     // Set the target for building
     TARGET_OS = "sle15_sp2_ncn"
     ARCH = "x86_64"
+    IYUM_REPO_MAIN_BRANCH = "main"
   }
 
   agent {
