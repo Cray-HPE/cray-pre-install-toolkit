@@ -14,17 +14,8 @@ if [[ "$(basename ${k8s_kernel} | cut -d '-' -f1,2)" != "$(basename ${ceph_kerne
     echo 'Mismatching kernels! The discovered artifacts will deploy an undesirable stack.' >&2
 fi
 
-# Set default links incase hostname fails to set during DHCP exchange. The k8s image and initrd are safe to start with, if a ceph node boots them by mistake it can wipe and reboot.
-# if -s is passed then set default to storage
-if [[ "${1:--k}" == '-s' ]]; then
-    ln -vsnf .${ceph_kernel///var\/www} /var/www/kernel
-    ln -vsnf .${ceph_initrd///var\/www} /var/www/initrd.img.xz
-    ln -vsnf .${ceph_squashfs///var\/www} /var/www/filesystem.squashfs
-else
-    ln -vsnf .${k8s_kernel///var\/www} /var/www/kernel
-    ln -vsnf .${k8s_initrd///var\/www} /var/www/initrd.img.xz
-    ln -vsnf .${k8s_squashfs///var\/www} /var/www/filesystem.squashfs
-fi
+echo "Making boot directories for nodes with BMCs that have leases in /var/lib/dnsmasq.d/leases"
+echo "Nodes without boot directories will still boot the non-destructive iPXE binary."
 for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
     cp -pv /var/www/boot/script.ipxe .
