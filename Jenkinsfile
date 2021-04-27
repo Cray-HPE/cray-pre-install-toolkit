@@ -24,7 +24,7 @@ pipeline {
   }
 
   agent {
-    node { label 'metal-gcp-builder' }
+    agent { node { label params.nodeLabel } }
   }
 
   // Configuration options applicable to the entire job
@@ -38,6 +38,11 @@ pipeline {
     // Don't bog down the build pipeline; only build on push and manuals or other human intent.
     disableConcurrentBuilds()
     disableResume()
+  }
+
+  parameters {
+    string(name: 'csmRpmRef', defaultValue: "main", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
+    string(name: 'nodeLabel', defaultValue: "node-image-builder", description: 'Label to build nodes on')
   }
 
   stages {
