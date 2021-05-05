@@ -12,7 +12,8 @@ usage() {
 expr "$*" : ".*--help" > /dev/null && usage && exit 0
 
 # parse info from data.json until this can be templated in csi
-UPSTREAM_NTP_SERVER=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/upstream_ntp_server/ {print $4}' || echo -n '' )
+UPSTREAM_NTP_POOLS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."pools"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq)
+UPSTREAM_NTP_SERVERS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."servers"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq)
 NTP_PEERS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_peers/ {print $4}' || echo -n '' )
 NTP_LOCAL_NETS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_local_nets/ {print $4}' || echo -n '' )
 CHRONY_CONF=/etc/chrony.d/cray.conf
@@ -22,10 +23,26 @@ create_chrony_config() {
   # clear the file first, making it if needed
   true >"$CHRONY_CONF"
 
-  if [[ -z $UPSTREAM_NTP_SERVER ]]; then
+  if [[ -z $UPSTREAM_NTP_SERVERS ]]; then
     :
   else
-    echo "server $UPSTREAM_NTP_SERVER iburst trust" >>"$CHRONY_CONF"
+    for s in $UPSTREAM_NTP_SERVERS
+    do
+      if [[ "$s" == "ncn-m001" ]]; then
+        :
+      else
+        echo "server $s iburst trust" >>"$CHRONY_CONF"
+      fi
+    done
+  fi
+
+  if [[ -z $UPSTREAM_NTP_POOLS ]]; then
+    :
+  else
+    for p in $UPSTREAM_NTP_POOLS
+    do
+      echo "pool $p iburst trust" >>"$CHRONY_CONF"
+    done
   fi
 
   for net in ${NTP_LOCAL_NETS}
@@ -48,28 +65,9 @@ create_chrony_config() {
 }
 
 #/ Usage: set-ntp-config.sh [--help]
-#/                          [-u|--upstream-site-ntp] HOST_OR_IP
 #/
-#/    Configures NTP on the NCNs
+#/    Configures NTP on the PIT
 #/
-
-UNKNOWN=()
-while [[ $# -gt 0 ]]
-do
-  case "$1" in
-    -u|--upstream-site-ntp)
-      UPSTREAM_NTP_SERVER="$2"
-      shift
-      shift
-      ;;
-    *) # unknown option
-      UNKNOWN+=("$1")
-      shift
-      ;;
-  esac
-done
-
-set -- "${UNKNOWN[@]}" # restore positional parameters
 
 if [[ -f /etc/chrony.d/pool.conf ]]; then
   rm -f /etc/chrony.d/pool.conf
