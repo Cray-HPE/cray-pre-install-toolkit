@@ -14,7 +14,7 @@ if [[ "$(basename ${k8s_kernel} | cut -d '-' -f1,2)" != "$(basename ${ceph_kerne
     echo 'Mismatching kernels! The discovered artifacts will deploy an undesirable stack.' >&2
 fi
 
-echo "Making boot directories for nodes with BMCs that have leases in /var/lib/dnsmasq.d/leases"
+echo "$0 is creating boot directories for each NCN with a BMC that has a lease in /var/lib/misc/dnsmasq.leases"
 echo "Nodes without boot directories will still boot the non-destructive iPXE binary."
 for ncn in $(grep -Eo 'ncn-[mw]\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
     mkdir -pv ${ncn} && pushd ${ncn}
@@ -34,5 +34,7 @@ for ncn in $(grep -Eo 'ncn-s\w+' /var/lib/misc/dnsmasq.leases | sort -u); do
 done
 
 if ! [ $(pwd) = $WEB_ROOT ]; then
-    rsync -rltDv --remove-source-files ncn-* $WEB_ROOT && rmdir ncn-*
+    rsync -rltDvq --remove-source-files ncn-* $WEB_ROOT 2>/dev/null && rmdir ncn-* || echo >&2 'FATAL: No NCN BMCs found in /var/lib/misc/dnsmasq.leases'
 fi
+
+echo 'done'
