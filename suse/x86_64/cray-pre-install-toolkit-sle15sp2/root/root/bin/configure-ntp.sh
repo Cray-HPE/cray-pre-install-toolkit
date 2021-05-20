@@ -14,10 +14,14 @@ expr "$*" : ".*--help" > /dev/null && usage && exit 0
 # parse info from data.json until this can be templated in csi
 UPSTREAM_NTP_POOLS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."pools"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq)
 UPSTREAM_NTP_SERVERS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."servers"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq)
-NTP_PEERS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_peers/ {print $4}' || echo -n '' )
-NTP_LOCAL_NETS=$(cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_local_nets/ {print $4}' || echo -n '' )
+NTP_LOCAL_NETS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."allow"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq)
+NTP_PEERS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."peers"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq \
+            || cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_peers/ {print $4}' \
+            || echo -n '' )
+NTP_LOCAL_NETS=$(cat /var/www/ephemeral/configs/data.json | jq '.[]."user-data"."ntp"."allow"' | grep '"' | tr -d '"' | tr -d ',' | tr -d ' ' | sort | uniq \
+            || cat /var/www/ephemeral/configs/data.json | jq | awk -F '"' '/ntp_local_nets/ {print $4}' \
+            || echo -n '' )
 CHRONY_CONF=/etc/chrony.d/cray.conf
-
 
 create_chrony_config() {
   # clear the file first, making it if needed
@@ -58,7 +62,8 @@ create_chrony_config() {
 
   for n in $NTP_PEERS
   do
-    if [[ "$HOSTNAME" != "$n" ]]; then
+    # ncn-m001 (pit) should not be a peer to itself
+    if [[ "$HOSTNAME" != "$n" ]] && [[ "$n" != "ncn-m001" ]]; then
       echo "peer $n minpoll -2 maxpoll 9 iburst" >>"$CHRONY_CONF"
     fi
   done
