@@ -2,11 +2,12 @@
 WEB_ROOT=/var/www
 
 function call_bmc {
+    [ -z "$IPMI_PASSWORD" ] && echo >&2 "Need IPMI_PASSWORD set in env." && exit 1
     echo 'Attempting to set all known BMCs (from /etc/conman.conf) to dhcp mode'
     echo "current BMC count: $(grep mgmt /var/lib/misc/dnsmasq.leases | wc -l)"
     (
     export username=root
-    export IPMI_PASSWORD=initial0
+    export IPMI_PASSWORD=$IPMI_PASSWORD
     grep mgmt /etc/conman.conf | grep -v m001 | awk '{print $3}' | cut -d ':' -f2 | tr -d \" | xargs -t -i ipmitool -I lanplus -U $username -E -H {} lan set 3 ipsrc dhcp
     ) >/var/log/metal-bmc-restore.$$.out 2>&1
     echo "new BMC count: $(grep mgmt /var/lib/misc/dnsmasq.leases | wc -l)"
