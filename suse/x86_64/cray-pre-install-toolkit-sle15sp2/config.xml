@@ -29,7 +29,7 @@ WARNING: Please consult the README.md file in the top level directory of
               devicepersistency="by-label"
               publisher="CRAY-HPE"
               volid="CRAYLIVE"
-              kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=0 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell"
+              kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=0 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell rd.md=0 rd.md.conf=0"
               mediacheck="true"/>
         <version>CRAY.VERSION.HERE</version>
         <packagemanager>zypper</packagemanager>

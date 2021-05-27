@@ -65,6 +65,11 @@ suseInsertService chronyd
 suseInsertService dnsmasq
 suseInsertService nexus
 suseInsertService sshd
+systemctl disable mdmon.service
+systemctl disable mdmonitor.service
+systemctl disable mdmonitor-oneshot.service
+systemctl disable mdcheck_start.service
+systemctl disable mdcheck_continue.service
 
 #======================================
 # Setup default target, multi-user
