@@ -51,6 +51,9 @@ install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packa
 echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages"
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages
 
+echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages"
+install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages
+
 #======================================
 # Setup baseproduct link
 #--------------------------------------
