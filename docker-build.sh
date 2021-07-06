@@ -52,7 +52,9 @@ EOF
 
 
 # Build OS image tarball
-time /usr/bin/kiwi-ng --profile=PITISO --type iso --debug system build --description $DESC_DIR --target-dir /build
+zypper --non-interactive in -y wget
+wget https://arti.dev.cray.com/artifactory/dst-misc-stable-local/SigningKeys/HPE-SHASTA-RPM-PROD.asc
+time /usr/bin/kiwi-ng --profile=PITISO --type iso --debug system build --description $DESC_DIR --target-dir /build --signing-key HPE-SHASTA-RPM-PROD.asc
 
 # Delete the pre-install-toolkit version file for build from root overlay
 /bin/rm -f $RELEASE_FILE
