@@ -1,0 +1,14 @@
+NAME='Customer Access'
+
+# Set static IP (becomes "preferred" if dhcp is enabled)
+BOOTPROTO='static'
+IPADDR=''    # i.e. '192.168.96.1/20'
+PREFIXLEN='' # i.e. '20'
+
+# CHANGE AT OWN RISK:
+ETHERDEVICE='bond0'
+
+# DO NOT CHANGE THESE:
+VLAN_PROTOCOL='ieee802-1Q'
+ONBOOT='yes'
+STARTMODE='auto'
