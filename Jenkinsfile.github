@@ -1,4 +1,4 @@
-@Library('csm-shared-library') _
+@Library('csm-shared-library@CASMINST-2545') _
 
 def skipSuccess = false
 def masterBranch = "main"
@@ -79,16 +79,18 @@ pipeline {
     stage('Publish ') {
       steps {
         // Create a "latest" copy
+        sh "ls -l build_output/"
         sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
         sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
         sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-        // upload to arti
         script {
-          copyFiles(artifactName:"build_output/*.iso")
-          copyFiles(artifactName:"build_output/*.packages")
-          copyFiles(artifactName:"build_output/*.verified")
-        }
+					env.VERSION = setImageVersion(env.GIT_COMMIT[0..6])
+					env.ARTIFACTS_DIRECTORY_BASE = "build_output/"
+					def qemuSourceArtifact = "local"
+					def props = "build.url=${env.BUILD_URL};vcs.revision-short=${env.GIT_COMMIT[0..6]};build.source-artifact=${qemuSourceArtifact}"
+					publishCsmImages(pattern: env.ARTIFACTS_DIRECTORY_BASE, imageName: 'cray-pre-install-toolkit', version: env.VERSION, props: props)
+				}
       }
     }
   }
