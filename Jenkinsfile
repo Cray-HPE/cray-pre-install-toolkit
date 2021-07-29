@@ -20,7 +20,7 @@ pipeline {
     // Set product family
     PRODUCT = "csm"
     // Set the target for building
-    TARGET_OS = "sle15_sp2_ncn"
+    TARGET_OS = "sle15_sp3_ncn"
     ARCH = "x86_64"
     IYUM_REPO_MAIN_BRANCH = "main"
   }
@@ -63,7 +63,7 @@ pipeline {
 
     stage('Checkout csm-rpms') {
       steps {
-        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp2/root/srv/cray/csm-rpms') {
+        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
           git credentialsId: '18f63634-7b3e-4461-acfe-83c6ee647fa4', url: 'https://stash.us.cray.com/scm/csm/csm-rpms.git', branch: params.csmRpmRef
         }
       }

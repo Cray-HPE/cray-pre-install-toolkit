@@ -22,7 +22,7 @@ set -ex
 if [[ -n $TARGET_OS ]]; then
   TARGET_OS="$(echo $TARGET_OS | tr -d '_')"
 fi
-DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-${TARGET_OS:-sle15sp2}
+DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-sle15sp3
 RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base
@@ -44,7 +44,7 @@ else
 fi
 
 # Write the pre-install-toolkit version file for build into root overlay
-cat << EOF > $RELEASE_FILE
+cat << EOF > "$RELEASE_FILE"
 VERSION=$PIT_VERSION
 TIMESTAMP=$PIT_TIMESTAMP
 HASH=$PIT_HASH
