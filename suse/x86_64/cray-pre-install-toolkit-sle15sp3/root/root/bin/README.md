@@ -16,18 +16,12 @@ when ran with no args.
 
 - `csi-setup-bond0.sh` 
 - `csi-setup-lan0.sh` 
-- `csi-setup-vlan002.sh` 
-- `csi-setup-vlan004.sh` 
-- `csi-setup-vlan007.sh` 
 
 > `csi-pxe-*.sh`
 
 These scripts all setup DHCP/DNS over the interfaces they correspond to.
 
 - `csi-pxe-bond0.sh` 
-- `csi-pxe-vlan002.sh` 
-- `csi-pxe-vlan004.sh` 
-- `csi-pxe-vlan007.sh` 
 
 ## Bootstrap / Devel. Scripts
 
