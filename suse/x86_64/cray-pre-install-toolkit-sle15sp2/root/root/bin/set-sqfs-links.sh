@@ -15,7 +15,7 @@ function call_bmc {
         channel=3
     fi
 
-    [ -z "$IPMI_PASSWORD" ] && echo >&2 'Need IPMI_PASSWORD set in env (export IPMI_PASSWORD=password).' && exit 1
+    [ -z "$IPMI_PASSWORD" ] && echo >&2 'Need IPMI_PASSWORD set in env (export IPMI_PASSWORD=password).' && return 1
     echo 'Attempting to set all known BMCs (from /etc/conman.conf) to dhcp mode'
     echo "current BMC count: $(grep -c mgmt /var/lib/misc/dnsmasq.leases)"
     (
@@ -39,7 +39,7 @@ if [[ "$(basename ${k8s_kernel} | cut -d '-' -f1,2)" != "$(basename ${ceph_kerne
     echo 'Mismatching kernels! The discovered artifacts will deploy an undesirable stack.' >&2
 fi
 
-call_bmc
+call_bmc || echo no BMC password set, using existing dnsmasq.leases
 
 echo "$0 is creating boot directories for each NCN with a BMC that has a lease in /var/lib/misc/dnsmasq.leases"
 echo "Nodes without boot directories will still boot the non-destructive iPXE binary."
