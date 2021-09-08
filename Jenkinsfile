@@ -41,7 +41,7 @@ pipeline {
   }
 
   parameters {
-    string(name: 'csmRpmRef', defaultValue: "release/1.1", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
+    string(name: 'csmRpmRef', defaultValue: "main", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
     string(name: 'nodeLabel', defaultValue: "metal-gcp-builder", description: 'Label to build nodes on')
   }
 
