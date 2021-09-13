@@ -32,5 +32,5 @@ fi
 
 mkdir -pv /var/www/ephemeral/data/${dir}
 pushd /var/www/ephemeral/data/${dir}
-wget --mirror -np -nH --cut-dirs=4 -A *.kernel,*initrd*,*.squashfs -nv https://arti.dev.cray.com:443/artifactory/node-images-${stream}-local/shasta/${type}/${id}/
+wget --mirror -np -nH --cut-dirs=4 -A *.kernel,*initrd*,*.squashfs -nv https://artifactory.algol60.net/artifactory/csm-images/${stream}/${type}/${id}/
 popd
