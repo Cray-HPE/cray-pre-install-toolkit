@@ -7,6 +7,7 @@
 
 def skipSuccess = false
 def masterBranch = "main"
+def credentialsId = 'artifactory-algol60'
 
 pipeline {
   // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
@@ -16,7 +17,8 @@ pipeline {
   }
 
   environment {
-    LATEST_NAME="cray-pre-install-toolkit-latest"
+    NAME = "cray-pre-install-toolkit"
+    LATEST_NAME="${NAME}-latest"
     // Set product family
     PRODUCT = "csm"
     // Set the target for building
@@ -71,13 +73,16 @@ pipeline {
 
     stage('BUILD: Build Image') {
       steps {
-        script {
+        withCredentials([usernamePassword(credentialsId: credentialsId, usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
           // Run the build script. It will ensure
           // any cached docker image is removed so
           // the latest is pulled. The output of the
           // build will be copied to the 'build_output'
           // subdirectory.
+
           sh '''
+              ARTIFACTORY_USER=${ARTIFACTORY_USER} \
+              ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN} \
               ./build.sh ${WORKSPACE}
           '''
         }
@@ -91,13 +96,21 @@ pipeline {
         sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
         sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-        // transfer (artifactName:"build_output/*.iso")
-        // transfer (artifactName:"build_output/*.packages")
-        // transfer (artifactName:"build_output/*.verified")
-        //def props = "build.url=${env.GET_REPO_NAME};vcs.revision-short=${env.VERSION}"
-        publishCsmImages(pattern: "build_output/*.iso", imageName: LATEST_NAME, version: env.VERSION, props: "")
-        publishCsmImages(pattern: "build_output/*.packages", imageName: LATEST_NAME, version: env.VERSION, props: "")
-        publishCsmImages(pattern: "build_output/*.verified", imageName: LATEST_NAME, version: env.VERSION, props: "")
+        publishCsmImages(pattern: "build_output/*.iso", imageName: NAME, version: env.VERSION, props: "none")
+        publishCsmImages(pattern: "build_output/*.packages", imageName: NAME, version: env.VERSION, props: "none")
+        publishCsmImages(pattern: "build_output/*.verified", imageName: NAME, version: env.VERSION, props: "none")
+      }
+    }
+  }
+  post('Post Run Conditions') {
+    always {
+      script {
+        if (getContext(hudson.FilePath)) {
+          currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
+          // Forcefully cleanup leftover files from docker owned by root so next run wont error out
+          sh 'sudo chown -R jenkins:jenkins .'
+          sh 'sudo rm -rf build_output'
+        }
       }
     }
   }
