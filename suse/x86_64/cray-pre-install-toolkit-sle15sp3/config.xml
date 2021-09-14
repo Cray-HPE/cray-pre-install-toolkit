@@ -137,6 +137,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="ca-certificates-mozilla"/>
         <package name="cracklib-dict-full"/>
         <package name="filesystem"/>
+        <package name="gettext-runtime"/>
         <package name="glibc-locale"/>
         <package name="SLE_HPC-release"/>
         <package name="udev"/>
