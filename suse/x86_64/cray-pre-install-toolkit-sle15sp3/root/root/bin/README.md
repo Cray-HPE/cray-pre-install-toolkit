@@ -3,6 +3,20 @@
 The scripts located at `/root/bin` are bound to the LiveCD, these assist with environment setup
  for first or subsequent reuse of the LiveCD.
 
+## BIOS / Bootstrap Helpers
+
+These scripts control the BIOS of the CRAY non-compute-nodes for configuring plan-of-record BIOS (to the extent that it can be).
+
+> `bios-baseline.sh`
+
+The main run script, targets all known BMCs in `/etc/dnsmasq.d/statics.conf` and `/etc/hosts`.
+
+This script can run on a non-compute-node or a pre-install-toolkit environment.
+
+> `bios-hpe-baseline.ini`
+
+The main configuration script. Anything in here must match what's in the target.
+
 ## CSI Scripts
 
 These scripts pre-date the cray-site-init tool, they exist today to help offline or remote-environments
