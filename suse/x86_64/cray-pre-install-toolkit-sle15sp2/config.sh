@@ -55,6 +55,13 @@ echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-tool
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages
 
 #======================================
+# Lock the kernel...
+#--------------------------------------
+uname -r
+rpm -qa kernel-default
+zypper addlock kernel-default
+
+#======================================
 # Setup baseproduct link
 #--------------------------------------
 suseSetupProduct
