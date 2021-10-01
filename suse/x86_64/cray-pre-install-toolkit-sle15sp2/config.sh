@@ -183,7 +183,8 @@ printf -- "Downloading River BIOS, BMC, and CMC ... "
 mkdir -p ${dataDir}
 for curUrl in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
 echo curl  "${curUrl} >${dataDir}/${curUrl##*/} "
-  curl "${curUrl}" >${dataDir}/${curUrl##*/} &
+  destFileName=${dataDir}/${curUrl##*/}
+  curl "${curUrl}" >${destFileName} &
 done #}
 wait
 printf -- "DONE\n"
