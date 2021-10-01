@@ -141,6 +141,7 @@ WARNING: Please consult the README.md file in the top level directory of
         <package name="SLE_HPC-release"/>
         <package name="udev"/>
         <package name="timezone"/>
+        <package name="rpm"/>
     </packages>
 </image>
 <!--
