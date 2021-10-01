@@ -193,7 +193,7 @@ for rpmFile in ${biosUrls}; do #{
   extractedBaseDir=/var/tmp/opt/cray/FW/bios/${rpmFile##*/}
   extractedBaseDir=${extractedBaseDir%-bios-*}-bios
   [ -d ${extractedBaseDir}/bios ] && {
-    read serverModel< <(find ${extractedBaseDir} -name *F01*.pdf | tail -1)
+    read serverModel< <(find ${extractedBaseDir} -name "*F01*.pdf" | tail -1)
     serverModel=MZ${serverModel#*MZ}
     serverModel=${serverModel%.pdf}
     #mv ${extractedBaseDir}/bios ${dataDir}/${serverModel}
@@ -201,7 +201,7 @@ for rpmFile in ${biosUrls}; do #{
   }
 
   [ -d ${extractedBaseDir}/bmc ] && {
-    read bmcVer< <(find ${extractedBaseDir}/bmc -name *.bin | tail)
+    read bmcVer< <(find ${extractedBaseDir}/bmc -name "*.bin" | tail)
     bmcVer=${bmcVer##*/}
     bmcVer=${bmcVer%.bin}
     #mv ${extractedBaseDir}/bmc ${dataDir}/${bmcVer}
@@ -209,7 +209,7 @@ for rpmFile in ${biosUrls}; do #{
   }
 
   [ -d ${extractedBaseDir}/cmc ] && {
-    read cmcVer< <(find ${extractedBaseDir}/cmc -name *.bin | tail)
+    read cmcVer< <(find ${extractedBaseDir}/cmc -name "*.bin" | tail)
     cmcVer=${cmcVer##*/}
     cmcVer=${cmcVer%.bin}
     #mv ${extractedBaseDir}/cmc ${dataDir}/${cmcVer}
