@@ -172,40 +172,56 @@ wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/art
 #   The fw images will be available at
 #   http://$(ip a show vlan004 | grep inet | awk '{print $2}')/fw/river/{128409,628402,MZ32,MZ62,MZ92}*
 #--------------------------------------
-declare -r BIOS_RVR_BASE_URL=https://stash.us.cray.com/projects/BIOSRVR/repos/bios-rvr/raw
+declare -r BIOS_RVR_BASE_URL=http://car.dev.cray.com/artifactory/shasta-firmware/HPE/sle15_sp2_ncn/x86_64/release/shasta-1.5/ccs-team
 declare dataDir=${DATA_DIR:-/var/www/fw/river} \
         branch="refs%2Fheads%2Fmaster" \
-        branch=refs%2Fheads%2Frelease%2Fshasta-1.4 \
+        branch=refs%2Fheads%2Frelease%2Fshasta-1.5 \
         shSvrScriptsUrl=${BIOS_RVR_BASE_URL}/sh-svr-scripts \
-        biosUrls="${BIOS_RVR_BASE_URL}/sh-svr-1264up-bios/BIOS/MZ32-AR0-YF_C17_F01.zip ${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BIOS/MZ62-HD0-YF_C20_F01b.zip ${BIOS_RVR_BASE_URL}/sh-svr-5264-gpu-bios/BIOS/MZ92-FS0-YF_C20_F01.zip" \
-        bmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/BMC/128409.zip \
-        cmcUrl=${BIOS_RVR_BASE_URL}/sh-svr-3264-bios/CMC/628402.zip \
+        biosUrls="${BIOS_RVR_BASE_URL}/sh-svr-1264up-bios-21.03.00-20211001024239_f54891e.x86_64.rpm ${BIOS_RVR_BASE_URL}/sh-svr-3264-bios-21.03.00-20211001024239_f54891e.x86_64.rpm ${BIOS_RVR_BASE_URL}/sh-svr-5264-gpu-bios-21.03.00-20211001024239_f54891e.x86_64.rpm" \
         line= fileName= curUrl=
-mkdir -p ${dataDir}/${shSvrScriptsUrl##*/}
-printf -- "Downloading sh-svr-scripts ... "
-while read line; do #{
-  set ${line} >/dev/null 2>&1
-  [ ${#} -eq 4 ] || continue
-  fileName=${4}
-  curl -sL ${shSvrScriptsUrl}/${fileName}?at=${branch} -o ${dataDir}/${shSvrScriptsUrl##*/}/${fileName} &
-done< <(curl -sk ${shSvrScriptsUrl}?at=${branch}) #}
-wait
-printf -- "DONE\n"
 printf -- "Downloading River BIOS, BMC, and CMC ... "
+mkdir -p ${dataDir}
 for curUrl in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
-  curl -sL ${curUrl}?at=${branch} -o ${dataDir}/${curUrl##*/} &
+echo curl  "${curUrl} >${dataDir}/${curUrl##*/} "
+  curl "${curUrl}" >${dataDir}/${curUrl##*/} &
 done #}
 wait
 printf -- "DONE\n"
 printf -- "Extracting BIOS, BMC, and CMC into ${dataDir} ... "
-for zipArchive in ${biosUrls} ${bmcUrl} ${cmcUrl}; do #{
-  python3 -m zipfile -e ${dataDir}/${zipArchive##*/} ${dataDir}/ &
+for rpmFile in ${biosUrls}; do #{
+  rpm2cpio ${dataDir}/${rpmFile##*/} | (cd /var/tmp; cpio -idm)
+  extractedBaseDir=/var/tmp/opt/cray/FW/bios/${rpmFile##*/}
+  extractedBaseDir=${extractedBaseDir%-bios-*}-bios
+  [ -d ${extractedBaseDir}/bios ] && {
+    read serverModel< <(find ${extractedBaseDir} -name *F01*.pdf | tail -1)
+    serverModel=MZ${serverModel#*MZ}
+    serverModel=${serverModel%.pdf}
+    #mv ${extractedBaseDir}/bios ${dataDir}/${serverModel}
+    cp -a ${extractedBaseDir}/bios ${dataDir}/${serverModel} &
+  }
+
+  [ -d ${extractedBaseDir}/bmc ] && {
+    read bmcVer< <(find ${extractedBaseDir}/bmc -name *.bin | tail)
+    bmcVer=${bmcVer##*/}
+    bmcVer=${bmcVer%.bin}
+    #mv ${extractedBaseDir}/bmc ${dataDir}/${bmcVer}
+    cp -a ${extractedBaseDir}/bmc ${dataDir}/${bmcVer} &
+  }
+
+  [ -d ${extractedBaseDir}/cmc ] && {
+    read cmcVer< <(find ${extractedBaseDir}/cmc -name *.bin | tail)
+    cmcVer=${cmcVer##*/}
+    cmcVer=${cmcVer%.bin}
+    #mv ${extractedBaseDir}/cmc ${dataDir}/${cmcVer}
+    cp -a ${extractedBaseDir}/cmc ${dataDir}/${cmcVer} &
+  }
 done #}
 wait
 printf -- "DONE\n"
+
+printf -- "Copying sh-svr-scripts ... "
+cp -a /var/tmp/opt/cray/FW/bios/sh-svr-1264up-bios/{sh-svr-scripts,sh-svr-dmi-management,sh-svr-sku-update} ${dataDir}/
+printf -- "DONE\n"
+
 printf -- "Removing unused files & directories.\n"
-find ${dataDir}/1* -maxdepth 1 ! -name fw | tail -n+2 | xargs rm -rf
-find ${dataDir}/6* -maxdepth 1 ! -name fw | tail -n+2 | xargs rm -rf
-find ${dataDir}/MZ3* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
-find ${dataDir}/MZ6* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
-find ${dataDir}/MZ9* -maxdepth 1 ! -name RBU | tail -n+2 | xargs rm -rf
+rm -rf ${dataDir}/*rpm /var/tmp/opt
