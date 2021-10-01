@@ -174,7 +174,7 @@ declare dataDir=${DATA_DIR:-/var/www/fw/river} \
         line= fileName= curUrl=
 printf -- "Downloading River BIOS, BMC, and CMC ... "
 mkdir -p ${dataDir}
-for cUrUrl in ${biosUrls}; do #{
+for curUrl in ${biosUrls}; do #{
   destFileName=${dataDir}/${curUrl##*/}
   curl "${curUrl}" >${destFileName} &
 done #}
