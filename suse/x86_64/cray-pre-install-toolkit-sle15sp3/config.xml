@@ -123,18 +123,12 @@ WARNING: Please consult the README.md file in the top level directory of
         <source path="https://arti.dev.cray.com/artifactory/mirror-HPE-SPP/SUSE_LINUX/SLES15-SP3/x86_64/current/"/>
     </repository>
 
-    <!-- TODO:
-        csm-rpms needs to be updated _first_ but it'll collide with the existing files on the ISO (chicken and egg)
-        Therefore, this is adding the pit-init package to include the scripts. Once csm-rpms release/1.2 has pit-init, this repo
-        can be removed, as well as <package name="pit-init"/> from the list below.
-     -->
     <repository type="rpm-md" alias="Cray-CSM-temp" priority="99" imageinclude="true">
         <source path="https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable"/>
     </repository>
     <packages type="iso">
         <package name="branding-SLE"/>
         <package name="dracut-kiwi-live"/>
-        <package name="pit-init"/>
     </packages>
     <packages type="oem">
         <package name="branding-SLE"/>
