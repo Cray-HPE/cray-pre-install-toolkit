@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 
-if [ -z ${BOOTSTRAP_MAC_NAME+x} ]
-then
+if [ -z ${BOOTSTRAP_MAC_NAME+x} ]; then
   bootstrap_mac_name="em1"
 else
   bootstrap_mac_name="$BOOTSTRAP_MAC_NAME"
 fi
 
-if [ -z ${BOND_MAC_NAME+x} ]
-then
+if [ -z ${BOND_MAC_NAME+x} ]; then
   bond_mac_name="bond0"
 else
   bond_mac_name="$BOND_MAC_NAME"
 fi
+
+if [ -z "$IPMI_PASSWORD" ]; then
+  echo >&2 'Need to export IPMI_PASSWORD for BMC access'
+  echo >&2 '(optionally: export username, otherwise $(whoami) [current user] is used)'
+  exit 1
+fi
+username=${username:-$(whoami)}
 
 ncn_regex="ncn-[s|m|w]0*([0-9]+)*"
 
@@ -33,7 +38,7 @@ do
     alias_name="Storage$index"
   fi
 
-  bmc_mac=$(ipmitool -I lanplus -U root -P initial0 -H ${xname%n0} lan print |
+  bmc_mac=$(ipmitool -I lanplus -U $username -P $IPMI_PASSWORD -H ${xname%n0} lan print |
   grep "MAC Address" | rev | cut -d' ' -f1 | rev)
   bootstrap_mac=$(ssh $xname cat /sys/class/net/"$bootstrap_mac_name"/address)
   bond_mac=$(ssh $xname cat /sys/class/net/"$bond_mac_name"/address)
@@ -51,7 +56,7 @@ do
     alias_name="Master$index"
   fi
 
-  bmc_mac=$(ipmitool -I lanplus -U root -P initial0 -H ${xname%n0} lan print |
+  bmc_mac=$(ipmitool -I lanplus -U $username -P $IPMI_PASSWORD -H ${xname%n0} lan print |
   grep "MAC Address" | rev | cut -d' ' -f1 | rev)
   bootstrap_mac=$(ssh $xname cat /sys/class/net/"$bootstrap_mac_name"/address)
   bond_mac=$(ssh $xname cat /sys/class/net/"$bond_mac_name"/address)
