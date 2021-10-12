@@ -1,6 +1,9 @@
 #!/bin/bash
+LOG_DIR=/var/log/metal/
+trap 'echo See logs for contacted nodes in $LOG_DIR' EXIT INT HUP TERM
 
 set -u
+set -o pipefail
 
 bmc_username=${USERNAME:-$(whoami)}
 if [[ $(hostname) == *-pit ]]; then
@@ -8,87 +11,162 @@ if [[ $(hostname) == *-pit ]]; then
 else
     host_bmc="$(hostname)-mgmt"
 fi
-LOG_DIR=/var/log/metal/
 mkdir -pv $LOG_DIR
+
+HPE_CONF="$(dirname $0)/$(basename $0 | cut -d '.' -f1 | sed 's/-/-hpe-/g').ini"
+BASELINE=$(cat $HPE_CONF)
 
 # Lay of the Land; rules to abide by for reusable code, and easy identification of problems from new eyeballs.
 # - For anything vendor related, use a common acronym (e.g. GigaByte=gb Hewlett Packard Enterprise=hpe)
 # - do not add "big" (functions longer than 25 lines, give or take a reasonably, contextually relevant few couple of lines)
-
-
 function check_compatibility() {
-    local vendor=${1:-''}
+    local vendor
+    local target=${1:-}
+    if [ $target = $host_bmc ]; then
+        vendor=$(ipmitool fru | grep -i 'board mfg' | tail -n 1 | cut -d ':' -f2 | tr -d ' ')
+    else
+        vendor=$(ipmitool -I lanplus -U $bmc_username -E -H $target fru | grep -i 'board mfg' | tail -n 1 | cut -d ':' -f2 | tr -d ' ')
+    fi
     case $vendor in
         *GIGABYTE*)
-            :
+            echo "No BIOS Baseline for (nothing to do): $vendor" && return 1
             ;;
         *Marvell*|HP|HPE)
-            ilo_config
+            :
             ;;
         *'Intel'*'Corporation'*)
-            echo :
+            echo "No BIOS Baseline for (nothing to do): $vendor" && return 1
             ;;
         *)
-            :
+            echo >&2 "Unknown/new/unfamiliar vendor: $vendor" && return 1
             ;;
     esac
 }
 
-
 # die.. (quit and write a message into standard error).
-function die(){
+function die() {
     [ -n "$1" ] && echo >&2 "$1" && exit 1
+}
+
+# warn.. (print to stderr but do not exit).
+function warn() {
+    [ -n "$1" ] && echo >&2 "$1"
 }
 
 # Use IPMI_PASSWORD to align with ipmitools usage of the same environment variable as described in the Shasta documentation.
 bmc_password=${IPMI_PASSWORD:-''}
 [ -z "$bmc_password" ] && die 'Need IPMI_PASSWORD exported to the environment.'
 
+# COMPATIBLE VENDOR(S): HPE
 function ilo_config() {
-    check_compatibility hpe || die -
-    (
-        # Attempt a network boot only once on every interface connected to the deployment network.
-        echo 'Setting "NetworkBootRetry=Disabled" ... '; ilorest set "NetworkBootRetry=Disabled" --selector=Bios. --commit
+    local respecs
+    # TODO: Should we run `ilorest --nologo biosdefaults` first? It would add a lot of pending changes.
+    respecs=$(ilorest --nologo list $(cat $HPE_CONF | cut -d '=' -f1 | tr -s '\n' ' ') --selector=BIOS. | diff --side-by-side --left-column $HPE_CONF - | awk '{print $NF}' | grep '=' | cut -d '=' -f1 | tr -s '\n' '|' | sed 's/|$//g')
+    echo $respecs
+    [ -z "$respecs" ] && return 0
+    eval ilorest --nologo set $(grep -E "($respecs)" $HPE_CONF | xargs -i echo \"{}\" | tr -s '\n' ' ') --selector=Bios. --commit
+    ilorest --nologo pending
+}
 
-        # Attempt a network boot only once on every interface connected to the deployment network.
-        echo 'Setting "HttpSupport=Disabled" ... '; ilorest set "HttpSupport=Disabled" --selector=Bios. --commit
-
-        # Disable unused features; speed the boot process up, and remove unknown unknowns.
-        echo 'Setting "iSCSISoftwareInitiator=Disabled" ... '; ilorest set "iSCSISoftwareInitiator=Disabled" --selector=Bios. --commit
-
-        # Enable deterministic success/failure by assuring an end state is met; do not loop through entire BIOS or any subset.
-        echo 'Setting "BootOrderPolicy=AttemptOnce" ... '; ilorest set "BootOrderPolicy=AttemptOnce" --selector=Bios. --commit
-
-        # IPv4 is supported for both HTTP and PXE network boots, IPv6 is pending. See Cray System Management for a time-table.
-        echo 'Setting "PrebootNetworkEnvPolicy=IPv4 ... '; ilorest set "PrebootNetworkEnvPolicy=IPv4" --selector=Bios. --commit
-
-        # Ensure nothing is queued as far as changes/deltas go, and reboot to ensure all deltas/changes are picked up.
-        ilorest pending
-    ) 2>&1 >$LOG_DIR/${ncn_bmc}.log
+# COMPATIBLE VENDOR(S): HPE
+function ilo_verify() {
+    # Without set -e or set -x or set -? this conditional doesn't wait for the return from ilorest --nologo.
+    local actual
+    local expected
+    keys=$(cat $HPE_CONF | cut -d '=' -f1 | tr -s '\n' ' ')
+    actual=$(ilorest --nologo list $keys --selector=BIOS.)
+    if [ ! "${DEBUG:-0}" = 0 ] ; then
+        echo
+        echo $actual
+        echo $BASELINE
+    fi
+    [ -z "$actual" ] && echo >&2 "actual was empty; error reading from ilorest"
+    if [ "$BASELINE" = "$actual" ] ; then
+            echo "up-to-spec"
+            return 0
+    else
+            echo "differs from spec"
+            return 1
+    fi
 }
 
 function run_ilo() {
     # This only runs on HPE hardware.
-    local vendor='hpe'
     local hosts_file=/etc/dnsmasq.d/statics.conf
-    echo "This will ignore the host this was ran on [$host_bmc]"
+    local need_recon=()
+    echo "The running host [$host_bmc] will have settings applied last."
     [ -f $hosts_file ] || hosts_file=/etc/hosts
-    for ncn_bmc in $(grep -oP 'ncn-\w\d+-mgmt' $hosts_file | sort -u | grep -v ncn-m001-mgmt); do
-        echo; echo "${ncn_bmc} ================================"
-
-        check_compatibility $vendor || die "$ncn_bmc is not of H[ewlett]P[ackard]E[nterprise] origin and will not have an iLO configured."
-
-        ilorest login ${ncn_bmc} -u ${bmc_username} -p ${bmc_password}
-
-        ilo_config
-
-        date && ilorest logout
+    num_bmcs=$(grep -oP 'ncn-\w\d+-mgmt' $hosts_file | sort -u | wc -l)
+    echo "Verifying $((${num_bmcs})) iLO/BMCs (non-compute nodes) match BIOS baseline spec."
+    for ncn_bmc in $(grep -oP 'ncn-\w\d+-mgmt' $hosts_file | sort -u | grep -v $host_bmc); do
+        echo "================================"; printf "Checking ${ncn_bmc} ... "
+        if ! check_compatibility $ncn_bmc = 0; then
+            echo "Skipping ... No baseline settings for $ncn_bmc"
+        else
+            ilorest --nologo login ${ncn_bmc} -u ${bmc_username} -p ${bmc_password} >/dev/null
+            # TODO: If we add GB and Intel, then we need more conditionals here or something
+            #       in order to prevent any ilorest activity.
+            if ilo_verify = "0" ; then :
+            else
+                need_recon+=( "$ncn_bmc" )
+            fi
+            ilorest --nologo logout 2>&1 >/dev/null
+        fi
     done
-    echo "Applying settings to localhost [$host_bmc]"
-    ilorest login 127.0.0.1 -u ${bmc_username} -p ${bmc_password}
-    ilo_config
-    date
-    ilorest logout
+    echo "================================"; printf "Checking (self) ${host_bmc} ... "
+        if ! check_compatibility $host_bmc = 0; then
+            echo "Skipping ... No baseline settings for $host_bmc"
+        else
+            ilorest --nologo login -u ${bmc_username} -p ${bmc_password} >/dev/null
+            if ilo_verify = "0" ; then :
+            else
+                need_recon+=( "$host_bmc" )
+            fi
+            ilorest --nologo logout 2>&1 >/dev/null
+        fi
+    # if running in Jenkins or if -y was given just continue.
+    if [[ -n "${CI:-}" ]]; then
+        echo "${#need_recon[@]} of $num_bmcs need BIOS Baseline applied ... proceeding [CI/automation environment detected]"
+    elif [[ "${BIOS:-'no'}" = 'yes' ]] ; then
+        echo "${#need_recon[@]} of $num_bmcs need BIOS Baseline applied ... proceeding [-y provided on cmdline]."
+    elif [[ "${CHECK:-'no'}" = 'yes' ]] ; then
+        [ "${#need_recon[@]}" = '0' ] && return 0 || die "${#need_recon[@]} of $(($num_bmcs - 1)) need BIOS Baseline applied ... exiting."
+    elif [ "${#need_recon[@]}" = '0' ] ; then
+        echo 'All NCNs are up-to-spec'
+        return 0
+    else
+        read -r -p "${#need_recon[@]} of $num_bmcs need BIOS Baseline applied ... proceed? [Y/n]:" response
+        case "$response" in
+            [yY][eE][sS]|[yY])
+                :
+                ;;
+            *)
+                echo 'exiting ...'
+                return 0
+                ;;
+        esac
+    fi
+    for ncn_bmc in ${need_recon[@]}; do
+        echo "================================"; printf "Configuring ${ncn_bmc} ... "
+        if [ $ncn_bmc = $host_bmc ]; then
+            # Login to self
+            ilorest --nologo login -u ${bmc_username} -p ${bmc_password} >/dev/null
+        else
+            ilorest --nologo login ${ncn_bmc} -u ${bmc_username} -p ${bmc_password} >/dev/null
+        fi
+
+        ilo_config 2>&1 >$LOG_DIR/${ncn_bmc}.log
+        ilorest --nologo logout 2>&1 >/dev/null
+        echo 'done'
+    done
+
+    echo "Settings will apply on the next (re)boot of each NCN: ${need_recon[@]}"
 }
 
+if [[ ${1:-} = '-y' ]]; then
+    export BIOS=yes
+elif [[ ${1:-} = '--check' ]]; then
+    export CHECK=yes
+fi
 run_ilo
+echo "Re-run this script with --check as the first and only argument to validate spec."
