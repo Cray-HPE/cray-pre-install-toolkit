@@ -23,6 +23,9 @@ else
   export PIT_HASH=$(echo $PIT_SLUG | cut -d '-' -f3)
 fi
 
+export ARTIFACTORY_USER=$ARTIFACTORY_USER
+export ARTIFACTORY_TOKEN=$ARTIFACTORY_TOKEN
+
 # If the image already exists on the node,
 # remove it. If the image is in use by a
 # running container it will only be untagged.
@@ -41,7 +44,7 @@ fi
 # outside the container.
 # Map /dev to /dev so loop devices will work
 # the first time they are created after boot
-docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH  -v ${WORKSPACE}:/base -v /dev:/dev --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
+docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH -e ARTIFACTORY_USER -e ARTIFACTORY_TOKEN -v ${WORKSPACE}:/base -v /dev:/dev --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
 # Chown the files created in docker so jenkins user can mv them
