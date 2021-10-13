@@ -80,8 +80,8 @@ pipeline {
           // subdirectory.
 
           sh '''
-              ARTIFACTORY_USER=${ARTIFACTORY_USER} \
-              ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN} \
+              export ARTIFACTORY_USER=${ARTIFACTORY_USER}
+              export ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN}
               ./build.sh ${WORKSPACE}
           '''
         }
