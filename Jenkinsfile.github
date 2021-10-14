@@ -95,9 +95,7 @@ pipeline {
         sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
         sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-        publishCsmImages(pattern: "build_output/*.iso", imageName: NAME, version: env.VERSION, props: "none")
-        publishCsmImages(pattern: "build_output/*.packages", imageName: NAME, version: env.VERSION, props: "none")
-        publishCsmImages(pattern: "build_output/*.verified", imageName: NAME, version: env.VERSION, props: "none")
+        publishCsmImages(pattern: "build_output/", imageName: NAME, version: env.VERSION, props: "none")
       }
     }
   }
