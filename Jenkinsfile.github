@@ -9,6 +9,7 @@ def skipSuccess = false
 def masterBranch = "main"
 def credentialsId = 'artifactory-algol60'
 
+def isStable = env.TAG_NAME != null || env.BRANCH_NAME == 'main' ? true : false
 pipeline {
   triggers {
     upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
@@ -23,6 +24,7 @@ pipeline {
     // Set the target for building
     TARGET_OS = "sle15_sp2_ncn"
     ARCH = "x86_64"
+    IS_STABLE = "${isStable}"
     IYUM_REPO_MAIN_BRANCH = "main"
   }
 
@@ -80,8 +82,8 @@ pipeline {
           // subdirectory.
 
           sh '''
-              export ARTIFACTORY_USER=${ARTIFACTORY_USER}
-              export ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN}
+              ARTIFACTORY_USER=${ARTIFACTORY_USER}
+              ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN}
               ./build.sh ${WORKSPACE}
           '''
         }
@@ -95,7 +97,7 @@ pipeline {
         sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
         sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
 
-        publishCsmImages(pattern: "build_output/", imageName: NAME, version: env.VERSION, props: "none")
+        publishCsmImages(pattern: "build_output/", imageName: NAME, version: env.VERSION, isStable: isStable, props: "none")
       }
     }
   }
