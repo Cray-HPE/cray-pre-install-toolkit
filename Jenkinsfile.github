@@ -90,7 +90,7 @@ pipeline {
       }
     }
 
-    stage('BUILD: Transfer Images') {
+    stage('PUBLISH: Transfer Images') {
       steps {
         // Create a "latest" copy
         sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
