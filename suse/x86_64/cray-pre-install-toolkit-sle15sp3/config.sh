@@ -29,6 +29,13 @@ test -f /.profile && . /.profile
 echo "Configure image: [$kiwi_iname]..."
 
 #======================================
+# Add python symlink
+#--------------------------------------
+pushd /usr/bin
+ln -snf python3 python
+popd
+
+#======================================
 # Source rpm-functions...
 #--------------------------------------
 echo "Sourcing /srv/cray/csm-rpms/scripts/rpm-functions.sh"

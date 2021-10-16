@@ -29,11 +29,11 @@ test -f /.profile && . /.profile
 echo "Configure image: [$kiwi_iname]..."
 
 #======================================
-# Lock the kernel...
+# Add python symlink
 #--------------------------------------
-uname -r
-rpm -qa kernel-default
-zypper addlock kernel-default
+pushd /usr/bin
+ln -snf python3 python
+popd
 
 #======================================
 # Source rpm-functions...
