@@ -45,9 +45,6 @@ setup-package-repos
 #======================================
 # Install Packages...
 #--------------------------------------
-echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages"
-install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages
-
 echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages"
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages
 
@@ -135,30 +132,6 @@ kubectl_version="1.19.9"
 echo "Installing kubectl"
 curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod a+x /usr/local/bin/kubectl
-
-#======================================
-# Setup Server Firmware Files into the
-# webroot.
-#--------------------------------------
-mkdir -pv /var/www/fw/river/hpe
-find /usr/lib/x86_64-linux-gnu/firmware-system* -name  *.flash -exec ln -snf {} /var/www/fw/river/hpe/ \;
-find /usr/lib/x86_64-linux-gnu/firmware-ilo5* -name  *.bin -exec ln -snf {} /var/www/fw/river/hpe/ \;
-
-
-#======================================
-# Setup PCIe Firmware Files into the
-# webroot.
-#--------------------------------------
-# This is provided by cray-shasta-mlnx-firmware
-ln -snf ../../../usr/share/firmware/ /var/www/fw/pcie
-
-#======================================
-# Upload management network firmware
-# to the LiveCD
-#--------------------------------------
-mkdir -pv /var/www/fw/network
-cd /var/www/fw/network
-wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/artifactory/list/integration-firmware
 
 #======================================
 # Download and extract River BIOS, BMC, and CMC.
