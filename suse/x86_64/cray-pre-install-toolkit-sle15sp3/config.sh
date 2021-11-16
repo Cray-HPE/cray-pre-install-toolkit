@@ -144,28 +144,11 @@ curl -L https://storage.googleapis.com/kubernetes-release/release/v${kubectl_ver
 chmod a+x /usr/local/bin/kubectl
 
 #======================================
-# Setup Server Firmware Files into the
-# webroot.
+# Firmware comes from HFP, but we can still keep these directories for convenience and backwards compatibility
 #--------------------------------------
 mkdir -pv /var/www/fw/river/hpe
-find /usr/lib/x86_64-linux-gnu/firmware-system* -name  *.flash -exec ln -snf {} /var/www/fw/river/hpe/ \;
-find /usr/lib/x86_64-linux-gnu/firmware-ilo5* -name  *.bin -exec ln -snf {} /var/www/fw/river/hpe/ \;
-
-
-#======================================
-# Setup PCIe Firmware Files into the
-# webroot.
-#--------------------------------------
-# This is provided by cray-shasta-mlnx-firmware
-ln -snf ../../../usr/share/firmware/ /var/www/fw/pcie
-
-#======================================
-# Upload management network firmware
-# to the LiveCD
-#--------------------------------------
 mkdir -pv /var/www/fw/network
-cd /var/www/fw/network
-wget --mirror -np -nH --cut-dirs=4 -A "*stable*" -nv http://car.dev.cray.com/artifactory/list/integration-firmware
+mkdir -pv /var/www/fw/pcie
 
 #======================================
 # Download and extract River BIOS, BMC, and CMC.
