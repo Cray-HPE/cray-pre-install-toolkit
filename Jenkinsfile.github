@@ -8,8 +8,8 @@
 def skipSuccess = false
 def masterBranch = "main"
 def credentialsId = 'artifactory-algol60'
-
 def isStable = env.TAG_NAME != null || env.BRANCH_NAME == 'main' ? true : false
+
 pipeline {
   triggers {
     upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
@@ -82,8 +82,8 @@ pipeline {
           // subdirectory.
 
           sh '''
-              ARTIFACTORY_USER=${ARTIFACTORY_USER}
-              ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN}
+              ARTIFACTORY_USER=${ARTIFACTORY_USER} \
+              ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN} \
               ./build.sh ${WORKSPACE}
           '''
         }
@@ -92,12 +92,13 @@ pipeline {
 
     stage('PUBLISH: Transfer Images') {
       steps {
-        // Create a "latest" copy
-        sh "cp build_output/*.iso build_output/${LATEST_NAME}.iso"
-        sh "cp build_output/*.packages build_output/${LATEST_NAME}.packages"
-        sh "cp build_output/*.verified build_output/${LATEST_NAME}.verified"
-
         publishCsmImages(pattern: "build_output/", imageName: NAME, version: env.VERSION, isStable: isStable, props: "none")
+
+        // Create a "latest" copy
+        sh "mv build_output/*.iso build_output/${LATEST_NAME}.iso"
+        sh "mv build_output/*.packages build_output/${LATEST_NAME}.packages"
+        sh "mv build_output/*.verified build_output/${LATEST_NAME}.verified"
+        publishCsmImages(pattern: "build_output/", imageName: NAME, version: 'latest', isStable: isStable, props: "none")
       }
     }
   }
