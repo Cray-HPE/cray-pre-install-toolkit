@@ -47,7 +47,7 @@ echo "Sourcing /srv/cray/csm-rpms/scripts/rpm-functions.sh"
 echo "Setting up package repos from rpm-functions"
 # Remove base bootstrap repos in favor of csm-rpm defined repos
 cleanup-all-repos
-setup-package-repos
+setup-package-repos --pit
 
 #======================================
 # Install Packages...
