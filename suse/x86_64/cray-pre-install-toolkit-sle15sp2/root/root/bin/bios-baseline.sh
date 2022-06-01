@@ -99,13 +99,13 @@ function run_ilo() {
     elif [[ "${CHECK:-'no'}" = 'yes' ]] ; then
         [ "${#need_recon[@]}" = '0' ] && return 0 || die "${#need_recon[@]} of $(($num_bmcs - 1)) need BIOS Baseline applied ... exiting."
     else
-        read -r -p "${#need_recon[@]} of $(($num_bmcs - 1)) need BIOS Baseline applied ... proceed? [Y/n]:" response
+        read -r -p "${#need_recon[@]} of $(($num_bmcs - 1)) need BIOS Baseline applied ... proceed? [y/N]:" response
         case "$response" in
             [yY][eE][sS]|[yY])
                 :
                 ;;
             *)
-                echo 'exiting ...'
+                echo 'exiting without applying BIOS Baselines...'
                 return 0
                 ;;
         esac
