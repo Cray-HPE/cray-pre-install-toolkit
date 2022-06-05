@@ -52,9 +52,6 @@ setup-package-repos --pit
 #======================================
 # Install Packages...
 #--------------------------------------
-echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages"
-install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/firmware.packages
-
 echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages"
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages
 
