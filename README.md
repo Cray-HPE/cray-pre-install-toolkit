@@ -39,9 +39,9 @@ The repo is comprised of the following content:
 
 ### Kiwi descriptions
       
-* `suse/x86_64/cray-pre-install-toolkit-sle15sp3`
+* `suse/x86_64/cray-pre-install-toolkit-sle15sp4`
     * Cray developed description, derived from the Leap 15.2
-      description, using SLE 15 SP3 as the base. This description is
+      description, using SLE 15 SP4 as the base. This description is
       used to generate the JeOS image for the Live OS Media to boot an
       NCN for installation.
 
@@ -49,7 +49,7 @@ The repo is comprised of the following content:
 ## Anatomy of a description
 
 The following files and directories are found in the
-`suse/x86_64/cray-pre-install-toolkit-sle15sp3` description:
+`suse/x86_64/cray-pre-install-toolkit-sle15sp4` description:
 
 * config.sh
     * Configuration shell script that runs after the target image
@@ -70,7 +70,7 @@ The following files and directories are found in the
 ## How to update the installation image description
 
 The description used to generate installation images for the NCN nodes
-is: `suse/x86_64/cray-pre-install-toolkit-sle15sp3`. Modify the content within that
+is: `suse/x86_64/cray-pre-install-toolkit-sle15sp4`. Modify the content within that
 subdirectory to add new packages to the image or change the image
 definition.
 
