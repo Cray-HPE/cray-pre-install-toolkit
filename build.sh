@@ -6,7 +6,7 @@ else
 	WORKSPACE=$1
 fi
 
-DOCKER_IMAGE="artifactory.algol60.net/csm-docker/stable/build-cray-pre-install-toolkit:v1.0.1"
+DOCKER_IMAGE="artifactory.algol60.net/csm-docker/stable/build-cray-pre-install-toolkit:v1.1.0"
 BUILD_OUTPUT=${WORKSPACE}/build_output
 
 if [[ -z $PIT_SLUG ]]; then
