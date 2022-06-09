@@ -27,6 +27,8 @@ RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base
 
+envsubst < ${DESC_DIR}/config.template.xml > ${DESC_DIR}/config.xml
+
 # Clean the build directory if it exists, or
 # create it if it doesn't.
 if [[ -e /build ]]; then
