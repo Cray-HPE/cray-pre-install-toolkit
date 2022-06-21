@@ -11,11 +11,6 @@ def credentialsId = 'artifactory-algol60'
 def isStable = env.TAG_NAME != null || env.BRANCH_NAME == 'main' ? true : false
 
 pipeline {
-  // FIXME: Need to build when basecamp RPM and nexus RPM build, not when basecamp docker is built.
-  triggers {
-    upstream(upstreamProjects: 'basecamp,ipxe,cray-pre-install-toolkit-builder,cray-site-init,docs-non-compute-nodes', threshold: hudson.model.Result.SUCCESS)
-    cron(env.BRANCH_NAME ==~ 'main' ? '@daily' : '')
-  }
 
   environment {
     NAME = "cray-pre-install-toolkit"
@@ -23,7 +18,7 @@ pipeline {
     // Set product family
     PRODUCT = "csm"
     // Set the target for building
-    TARGET_OS = "sle15_sp3_ncn"
+    TARGET_OS = "sle15_sp4_ncn"
     ARCH = "x86_64"
     IS_STABLE = "${isStable}"
   }
@@ -66,7 +61,7 @@ pipeline {
 
     stage('Checkout csm-rpms') {
       steps {
-        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
+        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp4/root/srv/cray/csm-rpms') {
            git credentialsId: 'jenkins-algol60-cray-hpe-github-integration', url: 'https://github.com/Cray-HPE/csm-rpms.git', branch: params.csmRpmRef
         }
       }
