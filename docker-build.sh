@@ -22,7 +22,7 @@ set -ex
 if [[ -n $TARGET_OS ]]; then
   TARGET_OS="$(echo $TARGET_OS | tr -d '_')"
 fi
-DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-sle15sp4
+DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-sle15sp3
 RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base
