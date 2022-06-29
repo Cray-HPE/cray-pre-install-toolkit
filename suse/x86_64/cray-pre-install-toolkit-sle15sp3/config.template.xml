@@ -11,7 +11,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </profiles>
     <description type="system">
         <author>Russell Bunch</author>
-        <contact>rustydb@hpe.com</contact>
+        <contact>doomslayer@hpe.com</contact>
         <specification>
             CRAY Pre-install Toolkit for facilitating deployments on bare-metal and/or prior
             deployments into the High-Performance-Computing-as-a-Service stack. This tool can also
@@ -28,6 +28,7 @@ WARNING: Please consult the README.md file in the top level directory of
               hybridpersistent_filesystem="xfs"
               devicepersistency="by-label"
               publisher="CRAY-HPE"
+              preparer_id="CRAY-HPE - https://github.com/Cray-HPE/cray-pre-install-toolkit"
               volid="CRAYLIVE"
               kernelcmdline="payload=file://dev/sda3 splash=silent mediacheck=0 biosdevname=1 console=tty0 console=ttyS0,115200 mitigations=auto iommu=pt pcie_ports=native transparent_hugepage=never rd.shell rd.md=0 rd.md.conf=0"
               mediacheck="true"/>
