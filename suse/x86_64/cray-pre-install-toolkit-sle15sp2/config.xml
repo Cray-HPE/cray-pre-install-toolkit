@@ -11,7 +11,7 @@ WARNING: Please consult the README.md file in the top level directory of
     </profiles>
     <description type="system">
         <author>Russell Bunch</author>
-        <contact>rustydb@hpe.com</contact>
+        <contact>doomslayer@hpe.com</contact>
         <specification>
             CRAY Pre-install Toolkit for facilitating deployments on bare-metal and/or prior
             deployments into the High-Performance-Computing-as-a-Service stack. This tool can also
