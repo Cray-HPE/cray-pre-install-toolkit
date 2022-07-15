@@ -1,41 +1,27 @@
-// Jenkinsfile for building the CRAY Pre-install Toolkit LiveOS image
-// via kiwi-ng.
-
-// Jenkins Shared Libraries are implemented in our CI model (https://connect.us.cray.com/confluence/display/DST/Best+Practices+and+How-To%27s)
-// Jenkins Global Variables are enabled in our CI mode
 @Library('csm-shared-library') _
 
-def skipSuccess = false
-def masterBranch = "main"
-def credentialsId = 'artifactory-algol60'
-def isStable = env.TAG_NAME != null || env.BRANCH_NAME == 'main' ? true : false
+def isStable = env.TAG_NAME != null ? true : false
 
 pipeline {
 
   environment {
-    NAME = "cray-pre-install-toolkit"
-    LATEST_NAME="${NAME}-latest"
-    // Set product family
-    PRODUCT = "csm"
     // Set the target for building
-    TARGET_OS = "sle15_sp3_ncn"
     ARCH = "x86_64"
-    IS_STABLE = "${isStable}"
+    BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+    GIT_REPO_NAME = getRepoName()
+    LATEST_NAME="${GIT_REPO_NAME}-latest"
+    TARGET_OS = "sle-15sp3"
+    VERSION = sh(returnStdout: true, script: "git describe --tags | tr -d '^v'").trim()
   }
 
   agent { node { label params.nodeLabel } }
 
   // Configuration options applicable to the entire job
   options {
-    // This build should not take long, fail the build if it appears stuck
-    timeout(time: 240, unit: 'MINUTES')
-
-    // Don't fill up the build server with unnecessary cruft
     buildDiscarder(logRotator(numToKeepStr: '20'))
-
-    // Don't bog down the build pipeline; only build on push and manuals or other human intent.
     disableConcurrentBuilds()
-    disableResume()
+    timeout(time: 240, unit: 'MINUTES')
+    timestamps()
   }
 
   parameters {
@@ -45,16 +31,12 @@ pipeline {
 
   stages {
     stage('PREP: ISO NAME') {
+      environment {
+        PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}"
+      }
       steps {
         script {
-          // Define these vars here so they're mutable (vs. global).
-          env.VERSION = sh(returnStdout: true, script: "cat .version").trim()
-          env.BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
-          env.GIT_TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
-          env.PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}-g${env.GIT_TAG}"
-          env.GIT_REPO_NAME = sh(returnStdout: true, script: "basename -s .git ${GIT_URL}").trim()
-          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('_', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
-          // slackNotify(channel: "livecd-ci-alerts", credential: "", color: "#cccccc", message: "Repo: *${env.GIT_REPO_NAME}*\nBranch: *${env.GIT_BRANCH}*\nSlug: ${env.PIT_SLUG}\nBuild: ${env.BUILD_URL}\nStatus: `STARTING`")
+          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('-', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
         }
       }
     }
@@ -69,7 +51,7 @@ pipeline {
 
     stage('BUILD: Build Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: credentialsId, usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
+        withCredentials([usernamePassword(credentialsId: 'artifactory-algol60', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
           // Run the build script. It will ensure
           // any cached docker image is removed so
           // the latest is pulled. The output of the
@@ -87,13 +69,13 @@ pipeline {
 
     stage('PUBLISH: Transfer Images') {
       steps {
-        publishCsmImages(pattern: "build_output/", imageName: NAME, version: env.VERSION, isStable: isStable, props: "none")
+        publishCsmImages(pattern: "build_output/", imageName: env.GIT_REPO_NAME, version: env.VERSION, isStable: isStable, props: "none")
 
         // Create a "latest" copy
         sh "mv build_output/*.iso build_output/${LATEST_NAME}.iso"
         sh "mv build_output/*.packages build_output/${LATEST_NAME}.packages"
         sh "mv build_output/*.verified build_output/${LATEST_NAME}.verified"
-        publishCsmImages(pattern: "build_output/", imageName: NAME, version: 'latest', isStable: isStable, props: "none")
+        publishCsmImages(pattern: "build_output/", imageName: env.GIT_REPO_NAME, version: 'latest', isStable: isStable, props: "none")
       }
     }
   }

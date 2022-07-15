@@ -11,16 +11,13 @@ BUILD_OUTPUT=${WORKSPACE}/build_output
 
 if [[ -z $PIT_SLUG ]]; then
   # Get x.y.z version from .version file
-  export PIT_VERSION=$(cat .version)
+  export PIT_VERSION=$VERSION
   # Get a timestamp for this build based on this rename operation
   export PIT_TIMESTAMP=$(date -u '+%Y%m%d%H%M%S')
-  # Get HEAD commit ID for the branch used in build
-  export PIT_HASH=$(git log -n 1 --pretty=format:'%h')
-  export PIT_SLUG="${PIT_VERSION}-${PIT_TIMESTAMP}-g${PIT_HASH}"
+  export PIT_SLUG="${PIT_VERSION}-${PIT_TIMESTAMP}"
 else
   export PIT_VERSION=$(echo $PIT_SLUG | cut -d '-' -f1)
   export PIT_TIMESTAMP=$(echo $PIT_SLUG | cut -d '-' -f2)
-  export PIT_HASH=$(echo $PIT_SLUG | cut -d '-' -f3)
 fi
 
 export ARTIFACTORY_USER=$ARTIFACTORY_USER
@@ -44,7 +41,7 @@ fi
 # outside the container.
 # Map /dev to /dev so loop devices will work
 # the first time they are created after boot
-docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e PIT_HASH -e ARTIFACTORY_USER -e ARTIFACTORY_TOKEN -v ${WORKSPACE}:/base -v /dev:/dev --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
+docker run --rm -e PIT_VERSION -e PIT_TIMESTAMP -e TARGET_OS -e ARTIFACTORY_USER -e ARTIFACTORY_TOKEN -v ${WORKSPACE}:/base -v /dev:/dev --privileged --dns 172.30.84.40 --dns 172.31.84.40 ${DOCKER_IMAGE} bash /base/docker-build.sh
 [[ $? -ne 0 ]] && echo "Failed: docker run command" && exit 1
 
 # Chown the files created in docker so jenkins user can mv them
