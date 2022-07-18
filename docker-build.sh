@@ -20,9 +20,9 @@ trap save_build_dir ERR
 set -ex
 # If TARGET_OS is defined, it's likely from automation and needs the underscores striped.
 if [[ -n $TARGET_OS ]]; then
-  TARGET_OS="$(echo $TARGET_OS | tr -d '_')"
+  TARGET_OS="$(echo $TARGET_OS | tr -d '-')"
 fi
-DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-sle15sp3
+DESC_DIR=suse/${ARCH:-x86_64}/cray-pre-install-toolkit-${TARGET_OS}
 RELEASE_FILE=$DESC_DIR/root/etc/pit-release
 
 cd /base
@@ -49,7 +49,6 @@ fi
 cat << EOF > "$RELEASE_FILE"
 VERSION=$PIT_VERSION
 TIMESTAMP=$PIT_TIMESTAMP
-HASH=$PIT_HASH
 EOF
 
 
