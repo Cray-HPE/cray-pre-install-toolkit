@@ -30,18 +30,8 @@ pipeline {
   }
 
   stages {
-    stage('PREP: ISO NAME') {
-      environment {
-        PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}"
-      }
-      steps {
-        script {
-          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('-', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
-        }
-      }
-    }
 
-    stage('Checkout csm-rpms') {
+    stage('Prep: Checkout csm-rpms') {
       steps {
         dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
            git credentialsId: 'jenkins-algol60-cray-hpe-github-integration', url: 'https://github.com/Cray-HPE/csm-rpms.git', branch: params.csmRpmRef
@@ -49,15 +39,13 @@ pipeline {
       }
     }
 
-    stage('BUILD: Build Image') {
+    stage('Build: Image') {
+      environment {
+        PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}"
+      }
       steps {
         withCredentials([usernamePassword(credentialsId: 'artifactory-algol60', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
-          // Run the build script. It will ensure
-          // any cached docker image is removed so
-          // the latest is pulled. The output of the
-          // build will be copied to the 'build_output'
-          // subdirectory.
-
+          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('-', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
           sh '''
               ARTIFACTORY_USER=${ARTIFACTORY_USER} \
               ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN} \
@@ -67,7 +55,7 @@ pipeline {
       }
     }
 
-    stage('PUBLISH: Transfer Images') {
+    stage('Publish: Images') {
       steps {
         publishCsmImages(pattern: "build_output/", imageName: env.GIT_REPO_NAME, version: env.VERSION, isStable: isStable, props: "none")
 
