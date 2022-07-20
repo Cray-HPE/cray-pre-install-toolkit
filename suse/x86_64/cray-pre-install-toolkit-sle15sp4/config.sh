@@ -54,9 +54,7 @@ echo "Configure image: [$kiwi_iname]..."
 #======================================
 # Add python symlink
 #--------------------------------------
-pushd /usr/bin
-ln -snf python3 python
-popd
+ln -snf python3 /usr/bin/python
 
 #======================================
 # Source rpm-functions...
@@ -80,6 +78,34 @@ install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packa
 
 echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages"
 install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages
+
+#======================================
+# Install generic Python tools; ensures
+# both the default python and any other
+# installed python system versions have 
+# basic buildtools.
+#--------------------------------------
+function setup_python {
+    local pythons
+
+    local        pip_ver='21.3.1'
+    local      build_ver='0.8.0'
+    local setuptools_ver='59.6.0'
+    local      wheel_ver='0.37.1'
+    local virtualenv_ver='20.15.1'
+
+    readarray -t pythons < <(find /usr/bin/ -regex '.*python3\.[0-9]+')
+    printf 'Discovered [%s] python binaries: %s\n' "${#pythons[@]}" "${pythons[*]}"
+    for python in "${pythons[@]}"; do
+        $python -m pip install -U "pip==$pip_ver" || $python -m ensurepip
+        $python -m pip install -U \
+            "build==-$build_ver" \
+            "setuptools==$setuptools_ver" \
+            "virtualenv==$virtualenv_ver" \
+            "wheel==$wheel_ver" 
+    done
+}
+setup_python
 
 #======================================
 # Lock the kernel...
