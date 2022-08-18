@@ -67,12 +67,28 @@ setup-package-repos --pit
 
 #======================================
 # Install Packages...
+# This repo makes metal (hardware) artifacts
+# therefore only base and metal .package files 
+# are referenced.
 #--------------------------------------
-echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages"
-install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/base.packages
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-common/base.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-common/base.packages
 
-echo "Installing packages from /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages"
-install-packages /srv/cray/csm-rpms/packages/cray-pre-install-toolkit/metal.packages
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-common/metal.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-common/metal.packages
+
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-pre-install-toolkit/base.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-pre-install-toolkit/base.packages
+
+#======================================
+# Setup apparmor for dnsmasq
+# TODO: Move this into the metal-ipxe.spec file.
+# NOTE: editing local/usr.sbin.dnsmasq 
+# apparmor profile does not work
+#--------------------------------------
+echo 'Adding `/var/www/boot` to apparmor for dnsmasq'
+sed -i -E 's/(@\{TFTP_DIR\}=.*)/\1 \/var\/www\/boot/g' /etc/apparmor.d/usr.sbin.dnsmasq
+rm -fv /etc/dnsmasq.conf.rpmnew
 
 #======================================
 # Setup Python3 environments.
