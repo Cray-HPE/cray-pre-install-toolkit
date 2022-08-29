@@ -141,6 +141,12 @@ zypper --verbose clean --all
 rm -r /etc/zypp/repos.d/*
 cp /dev/null /var/log/zypper.log
 
+#=========================================
+# Purge SUSEConnect lines from mounts.conf
+#-----------------------------------------
+# remove all lines that start with '/', leaving the informational comment header intact
+test -f /etc/containers/mounts.conf && sed -i '/^\//d' /etc/containers/mounts.conf
+
 #======================================
 # Set hostname to pit
 #--------------------------------------
