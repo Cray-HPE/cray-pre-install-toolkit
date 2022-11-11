@@ -1,82 +1,107 @@
+/*
+ *
+ *  MIT License
+ *
+ *  (C) Copyright 2021-2022 Hewlett Packard Enterprise Development LP
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without limitation
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ *  and/or sell copies of the Software, and to permit persons to whom the
+ *  Software is furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included
+ *  in all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *  OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *  OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
 @Library('csm-shared-library') _
 
 def isStable = env.TAG_NAME != null ? true : false
 
 pipeline {
 
-  environment {
-    // Set the target for building
-    ARCH = "x86_64"
-    BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
-    GIT_REPO_NAME = getRepoName()
-    LATEST_NAME="${GIT_REPO_NAME}-latest"
-    TARGET_OS = "sle-15sp3"
-    VERSION = sh(returnStdout: true, script: "git describe --tags | tr -d '^v'").trim()
-  }
-
-  agent { node { label params.nodeLabel } }
-
-  // Configuration options applicable to the entire job
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '20'))
-    disableConcurrentBuilds()
-    timeout(time: 240, unit: 'MINUTES')
-    timestamps()
-  }
-
-  parameters {
-    string(name: 'csmRpmRef', defaultValue: "main", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
-    string(name: 'nodeLabel', defaultValue: "metal-gcp-builder-large", description: 'Label to build nodes on')
-  }
-
-  stages {
-
-    stage('Prep: Checkout csm-rpms') {
-      steps {
-        dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
-           git credentialsId: 'jenkins-algol60-cray-hpe-github-integration', url: 'https://github.com/Cray-HPE/csm-rpms.git', branch: params.csmRpmRef
-        }
-      }
+    environment {
+        // Set the target for building
+        ARCH = "x86_64"
+        BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
+        NAME = getRepoName()
+        LATEST_NAME = "${NAME}-latest"
+        TARGET_OS = "sle-15sp3"
+        VERSION = sh(returnStdout: true, script: "git describe --tags | tr -d '^v'").trim()
     }
 
-    stage('Build: Image') {
-      environment {
-        PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}"
-      }
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'artifactory-algol60', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
-          echo "${env.GIT_REPO_NAME}-${env.TARGET_OS.replaceAll('-', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
-          sh '''
+    agent { node { label params.nodeLabel } }
+
+    // Configuration options applicable to the entire job
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        disableConcurrentBuilds()
+        timeout(time: 240, unit: 'MINUTES')
+        timestamps()
+    }
+
+    parameters {
+        string(name: 'csmRpmRef', defaultValue: "main", description: 'The branch or ref to use when checking out csm-rpm repo for repo list and package lock versions')
+        string(name: 'nodeLabel', defaultValue: "metal-gcp-builder-large", description: 'Label to build nodes on')
+    }
+
+    stages {
+
+        stage('Prep: Checkout csm-rpms') {
+            steps {
+                dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
+                    git credentialsId: 'jenkins-algol60-cray-hpe-github-integration', url: 'https://github.com/Cray-HPE/csm-rpms.git', branch: params.csmRpmRef
+                }
+            }
+        }
+
+        stage('Build: Image') {
+            environment {
+                PIT_SLUG = "${env.VERSION}-${env.BUILD_DATE}"
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'artifactory-algol60', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_TOKEN')]) {
+                    echo "${env.NAME}-${env.TARGET_OS.replaceAll('-', '')}.${env.ARCH}-${env.PIT_SLUG}.iso"
+                    sh '''
               ARTIFACTORY_USER=${ARTIFACTORY_USER} \
               ARTIFACTORY_TOKEN=${ARTIFACTORY_TOKEN} \
               ./build.sh ${WORKSPACE}
           '''
+                }
+            }
         }
-      }
-    }
 
-    stage('Publish: Images') {
-      steps {
-        publishCsmImages(pattern: "build_output/", imageName: env.GIT_REPO_NAME, version: env.VERSION, isStable: isStable, props: "none")
+        stage('Publish: Images') {
+            steps {
+                publishCsmImages(pattern: "build_output/", imageName: env.NAME, version: env.VERSION, isStable: isStable, props: "none")
 
-        // Create a "latest" copy
-        sh "mv build_output/*.iso build_output/${LATEST_NAME}.iso"
-        sh "mv build_output/*.packages build_output/${LATEST_NAME}.packages"
-        sh "mv build_output/*.verified build_output/${LATEST_NAME}.verified"
-        publishCsmImages(pattern: "build_output/", imageName: env.GIT_REPO_NAME, version: 'latest', isStable: isStable, props: "none")
-      }
-    }
-  }
-  post('Post Run Conditions') {
-    always {
-      script {
-        if (getContext(hudson.FilePath)) {
-          currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
-          // Forcefully cleanup leftover files from docker owned by root so next run wont error out
-          sh 'sudo chown -R jenkins:jenkins .'
-          sh 'sudo rm -rf build_output'
+                // Create a "latest" copy
+                sh "mv build_output/*.iso build_output/${LATEST_NAME}.iso"
+                sh "mv build_output/*.packages build_output/${LATEST_NAME}.packages"
+                sh "mv build_output/*.verified build_output/${LATEST_NAME}.verified"
+                publishCsmImages(pattern: "build_output/", imageName: env.NAME, version: 'latest', isStable: isStable, props: "none")
+            }
         }
-      }
     }
-  }
+    post('Post Run Conditions') {
+        always {
+            script {
+                if (getContext(hudson.FilePath)) {
+                    currentBuild.result = currentBuild.result == null ? "SUCCESS" : currentBuild.result
+                    // Forcefully cleanup leftover files from docker owned by root so next run wont error out
+                    sh 'sudo chown -R jenkins:jenkins .'
+                    sh 'sudo rm -rf build_output'
+                }
+            }
+        }
+    }
 }
