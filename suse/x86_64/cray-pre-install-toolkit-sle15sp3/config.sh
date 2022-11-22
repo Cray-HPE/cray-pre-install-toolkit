@@ -131,7 +131,8 @@ ln -snf python3 python
 popd
 
 #======================================
-# Lock the kernel...
+# Lock the kernel, and recompile dracut
+# to include dmsquash-live.
 #--------------------------------------
 uname -r
 rpm -qa kernel-default
@@ -199,6 +200,11 @@ EOF
 # at first login.
 #--------------------------------------
 chage -d 0 root
+
+#======================================
+# Ensure our basic initrd includes
+# dmsquash-live.
+#--------------------------------------
 
 #======================================
 # Goss is used to validate LiveCD health
