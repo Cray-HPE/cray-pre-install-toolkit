@@ -71,11 +71,23 @@ setup-package-repos --pit
 # therefore only base and metal .package files 
 # are referenced.
 #--------------------------------------
-echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-common/base.packages"
-install-packages /srv/cray/csm-rpms/packages/node-image-common/base.packages
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-base/base.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-base/base.packages
 
-echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-common/metal.packages"
-install-packages /srv/cray/csm-rpms/packages/node-image-common/metal.packages
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-base/metal.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-base/metal.packages
+
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-base/base.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-base/base.packages
+
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-base/metal.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-base/metal.packages
+
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-ncn-common/base.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-ncn-common/base.packages
+
+echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-ncn-common/metal.packages"
+install-packages /srv/cray/csm-rpms/packages/node-image-ncn-common/metal.packages
 
 echo "Installing packages from /srv/cray/csm-rpms/packages/node-image-pre-install-toolkit/base.packages"
 install-packages /srv/cray/csm-rpms/packages/node-image-pre-install-toolkit/base.packages
