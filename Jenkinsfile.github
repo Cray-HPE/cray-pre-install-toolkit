@@ -35,7 +35,7 @@ pipeline {
         BUILD_DATE = sh(returnStdout: true, script: "date -u '+%Y%m%d%H%M%S'").trim()
         NAME = getRepoName()
         LATEST_NAME = "${NAME}-latest"
-        TARGET_OS = "sle-15sp3"
+        TARGET_OS = "sle-15sp4"
         VERSION = sh(returnStdout: true, script: "git describe --tags | tr -d '^v'").trim()
     }
 
@@ -58,7 +58,7 @@ pipeline {
 
         stage('Prep: Checkout csm-rpms') {
             steps {
-                dir('suse/x86_64/cray-pre-install-toolkit-sle15sp3/root/srv/cray/csm-rpms') {
+                dir("suse/x86_64/cray-pre-install-toolkit-${TARGET_OS.replaceAll('-', '')}/root/srv/cray/csm-rpms") {
                     git credentialsId: 'jenkins-algol60-cray-hpe-github-integration', url: 'https://github.com/Cray-HPE/csm-rpms.git', branch: params.csmRpmRef
                 }
             }
