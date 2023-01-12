@@ -47,6 +47,12 @@ test -f /.kconfig && . /.kconfig
 test -f /.profile && . /.profile
 
 #======================================
+# Set the RPM DB back to bdb until
+# SUSE has ndb working in prime time.
+#--------------------------------------
+rpmdb --rebuilddb --define "_db_backend bdb"
+
+#======================================
 # Greeting...
 #--------------------------------------
 echo "Configure image: [$kiwi_iname]..."
